@@ -118,7 +118,8 @@ for epoch in range(EPOCHS):
     train_total_loss = 0.0
     train_batches = 0
 
-    for images, targets in train_loader:
+    for batch_index, (images, targets) in enumerate(val_loader):
+        
 
         images = images.to(DEVICE)
         targets = targets.to(DEVICE)
@@ -147,25 +148,40 @@ for epoch in range(EPOCHS):
 
     model.eval()
 
-    val_total_loss = 0.0
-    val_batches = 0
+    val_total_loss += loss.item()
+    val_batches += 1
 
     with torch.no_grad():
 
-        for images, targets in val_loader:
+     for batch_index, (images, targets) in enumerate(train_loader):
 
-            images = images.to(DEVICE)
-            targets = targets.to(DEVICE)
+        images = images.to(DEVICE)
+        targets = targets.to(DEVICE)
 
-            # Forward
-            outputs = model(images)
+    # Forward
+        outputs = model(images)
 
-            # Loss
-            loss = criterion(outputs, targets)
+    # Loss
+        loss = criterion(outputs, targets)
 
-            # Record
-            val_total_loss += loss.item()
-            val_batches += 1
+    # Backward
+    optimizer.zero_grad()
+    loss.backward()
+    optimizer.step()
+
+    # Record
+    batch_loss = loss.item()
+
+    val_total_loss = 0.0
+    val_batches = 0
+
+    # Progress
+    if (batch_index + 1) % 50 == 0:
+        print(
+        f"Epoch {epoch + 1} | "
+        f"Val Batch {batch_index + 1}/{len(val_loader)} | "
+        f"Loss: {loss.item():.4f}"
+    )
 
     val_loss = val_total_loss / val_batches
 
