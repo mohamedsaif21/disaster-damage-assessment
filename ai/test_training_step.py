@@ -19,14 +19,13 @@ print("U-NET TRAINING STEP TEST")
 print("======================================")
 
 
-# Dataset
+# Load dataset
 dataset = XBDDataset(
     DATASET_ROOT,
     TRAIN_CSV,
     image_size=256,
 )
 
-# Small batch
 loader = DataLoader(
     dataset,
     batch_size=2,
@@ -39,14 +38,14 @@ print("Images :", images.shape)
 print("Targets:", targets.shape)
 
 
-# Model
+# Create model
 model = UNet(
     in_channels=6,
     num_classes=5,
 )
 
 
-# Loss
+# Loss function
 criterion = nn.CrossEntropyLoss()
 
 # Optimizer
@@ -73,11 +72,14 @@ optimizer.zero_grad()
 
 loss.backward()
 
+print("Backward pass: OK")
+
+
+# Update model weights
 optimizer.step()
 
-
-print("Backward pass: OK")
 print("Optimizer step: OK")
+
 
 print("======================================")
 print("TRAINING STEP PASSED")
