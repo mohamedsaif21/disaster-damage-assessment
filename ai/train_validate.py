@@ -109,17 +109,21 @@ optimizer = torch.optim.Adam(
 
 for epoch in range(EPOCHS):
 
-    # ----------------------------------
-    # Training
-    # ----------------------------------
+    print()
+    print("--------------------------------------")
+    print(f"Epoch {epoch + 1}/{EPOCHS}")
+    print("--------------------------------------")
+
+    # ==================================
+    # TRAINING
+    # ==================================
 
     model.train()
 
     train_total_loss = 0.0
     train_batches = 0
 
-    for batch_index, (images, targets) in enumerate(val_loader):
-        
+    for batch_index, (images, targets) in enumerate(train_loader):
 
         images = images.to(DEVICE)
         targets = targets.to(DEVICE)
@@ -130,68 +134,76 @@ for epoch in range(EPOCHS):
         # Loss
         loss = criterion(outputs, targets)
 
+        if batch_index == 0:
+            print(f"First training batch completed | Loss: {loss.item():.4f}")
+
         # Backward
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
 
-        # Record
-        train_total_loss += loss.item()
+        # Record loss
+        batch_loss = loss.item()
+
+        train_total_loss += batch_loss
         train_batches += 1
+
+        # Progress
+        if (batch_index + 1) % 10 == 0:
+            print(
+                f"Training Batch "
+                f"{batch_index + 1}/{len(train_loader)} "
+                f"| Loss: {batch_loss:.4f}"
+            )
 
     train_loss = train_total_loss / train_batches
 
 
-    # ----------------------------------
-    # Validation
-    # ----------------------------------
+    # ==================================
+    # VALIDATION
+    # ==================================
 
     model.eval()
-
-    val_total_loss += loss.item()
-    val_batches += 1
-
-    with torch.no_grad():
-
-     for batch_index, (images, targets) in enumerate(train_loader):
-
-        images = images.to(DEVICE)
-        targets = targets.to(DEVICE)
-
-    # Forward
-        outputs = model(images)
-
-    # Loss
-        loss = criterion(outputs, targets)
-
-    # Backward
-    optimizer.zero_grad()
-    loss.backward()
-    optimizer.step()
-
-    # Record
-    batch_loss = loss.item()
 
     val_total_loss = 0.0
     val_batches = 0
 
-    # Progress
-    if (batch_index + 1) % 50 == 0:
-        print(
-        f"Epoch {epoch + 1} | "
-        f"Val Batch {batch_index + 1}/{len(val_loader)} | "
-        f"Loss: {loss.item():.4f}"
-    )
+    with torch.no_grad():
+
+        for batch_index, (images, targets) in enumerate(val_loader):
+
+            images = images.to(DEVICE)
+            targets = targets.to(DEVICE)
+
+            # Forward
+            outputs = model(images)
+
+            # Loss
+            loss = criterion(outputs, targets)
+
+            # Record loss
+            batch_loss = loss.item()
+
+            val_total_loss += batch_loss
+            val_batches += 1
+
+            # Progress
+            if (batch_index + 1) % 50 == 0:
+                print(
+                    f"Validation Batch "
+                    f"{batch_index + 1}/{len(val_loader)} "
+                    f"| Loss: {batch_loss:.4f}"
+                )
 
     val_loss = val_total_loss / val_batches
 
 
-    # ----------------------------------
+    # ==================================
     # Epoch Results
-    # ----------------------------------
+    # ==================================
 
     print()
-    print(f"Epoch {epoch + 1}/{EPOCHS}")
+    print(f"Epoch {epoch + 1} Results")
     print(f"Training Loss:   {train_loss:.4f}")
     print(f"Validation Loss: {val_loss:.4f}")
 
