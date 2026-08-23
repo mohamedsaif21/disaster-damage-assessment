@@ -15,12 +15,14 @@ from unet import UNet
 # ======================================
 
 DATASET_ROOT = r"D:\Projects\Datasets\xBD"
+
 TRAIN_CSV = r"D:\Projects\Datasets\xBD\splits\train.csv"
+VAL_CSV = r"D:\Projects\Datasets\xBD\splits\val.csv"
 
 IMAGE_SIZE = 256
 BATCH_SIZE = 2
 LEARNING_RATE = 1e-4
-EPOCHS = 1
+EPOCHS = 3
 
 DEVICE = torch.device(
     "cuda" if torch.cuda.is_available() else "cpu"
@@ -32,27 +34,48 @@ DEVICE = torch.device(
 # ======================================
 
 print("======================================")
-print("xBD U-NET TRAINING")
+print("xBD U-NET TRAINING + VALIDATION")
 print("======================================")
 
 print("Device:", DEVICE)
 
 
-dataset = XBDDataset(
+# ======================================
+# Datasets
+# ======================================
+
+train_dataset = XBDDataset(
     DATASET_ROOT,
     TRAIN_CSV,
     image_size=IMAGE_SIZE,
 )
 
+val_dataset = XBDDataset(
+    DATASET_ROOT,
+    VAL_CSV,
+    image_size=IMAGE_SIZE,
+)
 
-loader = DataLoader(
-    dataset,
+
+# ======================================
+# DataLoaders
+# ======================================
+
+train_loader = DataLoader(
+    train_dataset,
     batch_size=BATCH_SIZE,
     shuffle=True,
 )
 
+val_loader = DataLoader(
+    val_dataset,
+    batch_size=BATCH_SIZE,
+    shuffle=False,
+)
 
-print("Training samples:", len(dataset))
+
+print("Training samples:", len(train_dataset))
+print("Validation samples:", len(val_dataset))
 print("Batch size:", BATCH_SIZE)
 
 
@@ -81,20 +104,21 @@ optimizer = torch.optim.Adam(
 
 
 # ======================================
-# Training
+# Training + Validation
 # ======================================
 
 for epoch in range(EPOCHS):
 
+    # ----------------------------------
+    # Training
+    # ----------------------------------
+
     model.train()
 
-    total_loss = 0.0
-    processed_batches = 0
+    train_total_loss = 0.0
+    train_batches = 0
 
-    print()
-    print(f"Epoch {epoch + 1}/{EPOCHS}")
-
-    for batch_index, (images, targets) in enumerate(loader):
+    for images, targets in train_loader:
 
         images = images.to(DEVICE)
         targets = targets.to(DEVICE)
@@ -107,34 +131,53 @@ for epoch in range(EPOCHS):
 
         # Backward
         optimizer.zero_grad()
-
         loss.backward()
-
         optimizer.step()
 
-        # Record loss
-        batch_loss = loss.item()
+        # Record
+        train_total_loss += loss.item()
+        train_batches += 1
 
-        total_loss += batch_loss
-        processed_batches += 1
+    train_loss = train_total_loss / train_batches
 
-        # Temporary test limit
-        if processed_batches <= 5:
-            print(
-                f"Batch {batch_index + 1} "
-                f"Loss: {batch_loss:.4f}"
-            )
 
-        # Stop after 5 batches for testing
-        if processed_batches == 5:
-            break
+    # ----------------------------------
+    # Validation
+    # ----------------------------------
 
-    # Average loss
-    average_loss = total_loss / processed_batches
+    model.eval()
+
+    val_total_loss = 0.0
+    val_batches = 0
+
+    with torch.no_grad():
+
+        for images, targets in val_loader:
+
+            images = images.to(DEVICE)
+            targets = targets.to(DEVICE)
+
+            # Forward
+            outputs = model(images)
+
+            # Loss
+            loss = criterion(outputs, targets)
+
+            # Record
+            val_total_loss += loss.item()
+            val_batches += 1
+
+    val_loss = val_total_loss / val_batches
+
+
+    # ----------------------------------
+    # Epoch Results
+    # ----------------------------------
 
     print()
-    print(f"Processed batches: {processed_batches}")
-    print(f"Average loss: {average_loss:.4f}")
+    print(f"Epoch {epoch + 1}/{EPOCHS}")
+    print(f"Training Loss:   {train_loss:.4f}")
+    print(f"Validation Loss: {val_loss:.4f}")
 
 
 # ======================================
@@ -143,5 +186,5 @@ for epoch in range(EPOCHS):
 
 print()
 print("======================================")
-print("TRAINING COMPLETE")
+print("TRAINING + VALIDATION COMPLETE")
 print("======================================")

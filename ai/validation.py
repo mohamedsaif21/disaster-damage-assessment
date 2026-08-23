@@ -15,12 +15,11 @@ from unet import UNet
 # ======================================
 
 DATASET_ROOT = r"D:\Projects\Datasets\xBD"
-TRAIN_CSV = r"D:\Projects\Datasets\xBD\splits\train.csv"
+
+VAL_CSV = r"D:\Projects\Datasets\xBD\splits\val.csv"
 
 IMAGE_SIZE = 256
 BATCH_SIZE = 2
-LEARNING_RATE = 1e-4
-EPOCHS = 1
 
 DEVICE = torch.device(
     "cuda" if torch.cuda.is_available() else "cpu"
@@ -32,7 +31,7 @@ DEVICE = torch.device(
 # ======================================
 
 print("======================================")
-print("xBD U-NET TRAINING")
+print("xBD U-NET VALIDATION TEST")
 print("======================================")
 
 print("Device:", DEVICE)
@@ -40,7 +39,7 @@ print("Device:", DEVICE)
 
 dataset = XBDDataset(
     DATASET_ROOT,
-    TRAIN_CSV,
+    VAL_CSV,
     image_size=IMAGE_SIZE,
 )
 
@@ -48,11 +47,11 @@ dataset = XBDDataset(
 loader = DataLoader(
     dataset,
     batch_size=BATCH_SIZE,
-    shuffle=True,
+    shuffle=False,
 )
 
 
-print("Training samples:", len(dataset))
+print("Validation samples:", len(dataset))
 print("Batch size:", BATCH_SIZE)
 
 
@@ -69,72 +68,60 @@ model = model.to(DEVICE)
 
 
 # ======================================
-# Loss + Optimizer
+# Loss
 # ======================================
 
 criterion = nn.CrossEntropyLoss()
 
-optimizer = torch.optim.Adam(
-    model.parameters(),
-    lr=LEARNING_RATE,
-)
-
 
 # ======================================
-# Training
+# Validation
 # ======================================
 
-for epoch in range(EPOCHS):
+model.eval()
 
-    model.train()
+total_loss = 0.0
+processed_batches = 0
 
-    total_loss = 0.0
-    processed_batches = 0
 
-    print()
-    print(f"Epoch {epoch + 1}/{EPOCHS}")
+with torch.no_grad():
 
     for batch_index, (images, targets) in enumerate(loader):
 
         images = images.to(DEVICE)
         targets = targets.to(DEVICE)
 
-        # Forward
+        # Forward pass
         outputs = model(images)
 
-        # Loss
+        # Calculate loss
         loss = criterion(outputs, targets)
 
-        # Backward
-        optimizer.zero_grad()
-
-        loss.backward()
-
-        optimizer.step()
-
-        # Record loss
         batch_loss = loss.item()
 
         total_loss += batch_loss
         processed_batches += 1
 
-        # Temporary test limit
         if processed_batches <= 5:
             print(
                 f"Batch {batch_index + 1} "
                 f"Loss: {batch_loss:.4f}"
             )
 
-        # Stop after 5 batches for testing
+        # Validation sanity test
         if processed_batches == 5:
             break
 
-    # Average loss
-    average_loss = total_loss / processed_batches
 
-    print()
-    print(f"Processed batches: {processed_batches}")
-    print(f"Average loss: {average_loss:.4f}")
+# ======================================
+# Average validation loss
+# ======================================
+
+average_loss = total_loss / processed_batches
+
+print()
+print("Processed batches:", processed_batches)
+print(f"Average validation loss: {average_loss:.4f}")
 
 
 # ======================================
@@ -143,5 +130,5 @@ for epoch in range(EPOCHS):
 
 print()
 print("======================================")
-print("TRAINING COMPLETE")
+print("VALIDATION TEST COMPLETE")
 print("======================================")
