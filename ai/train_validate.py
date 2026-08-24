@@ -24,6 +24,9 @@ BATCH_SIZE = 2
 LEARNING_RATE = 1e-4
 EPOCHS = 3
 
+CHECKPOINT_DIR = r"ai\checkpoints"
+BEST_MODEL_PATH = r"ai\checkpoints\best_model.pth"
+
 DEVICE = torch.device(
     "cuda" if torch.cuda.is_available() else "cpu"
 )
@@ -104,6 +107,13 @@ optimizer = torch.optim.Adam(
 
 
 # ======================================
+# Best Model Tracking
+# ======================================
+
+best_val_loss = float("inf")
+
+
+# ======================================
 # Training + Validation
 # ======================================
 
@@ -135,17 +145,20 @@ for epoch in range(EPOCHS):
         loss = criterion(outputs, targets)
 
         if batch_index == 0:
-            print(f"First training batch completed | Loss: {loss.item():.4f}")
+            print(
+                f"First training batch completed | "
+                f"Loss: {loss.item():.4f}"
+            )
 
         # Backward
         optimizer.zero_grad()
+
         loss.backward()
+
         optimizer.step()
 
         # Record loss
-        batch_loss = loss.item()
-
-        train_total_loss += batch_loss
+        train_total_loss += loss.item()
         train_batches += 1
 
         # Progress
@@ -153,7 +166,7 @@ for epoch in range(EPOCHS):
             print(
                 f"Training Batch "
                 f"{batch_index + 1}/{len(train_loader)} "
-                f"| Loss: {batch_loss:.4f}"
+                f"| Loss: {loss.item():.4f}"
             )
 
     train_loss = train_total_loss / train_batches
@@ -182,9 +195,7 @@ for epoch in range(EPOCHS):
             loss = criterion(outputs, targets)
 
             # Record loss
-            batch_loss = loss.item()
-
-            val_total_loss += batch_loss
+            val_total_loss += loss.item()
             val_batches += 1
 
             # Progress
@@ -192,7 +203,7 @@ for epoch in range(EPOCHS):
                 print(
                     f"Validation Batch "
                     f"{batch_index + 1}/{len(val_loader)} "
-                    f"| Loss: {batch_loss:.4f}"
+                    f"| Loss: {loss.item():.4f}"
                 )
 
     val_loss = val_total_loss / val_batches
@@ -208,6 +219,33 @@ for epoch in range(EPOCHS):
     print(f"Validation Loss: {val_loss:.4f}")
 
 
+    # ==================================
+    # Save Best Model
+    # ==================================
+
+    if val_loss < best_val_loss:
+
+        best_val_loss = val_loss
+
+        checkpoint = {
+            "epoch": epoch + 1,
+            "model_state_dict": model.state_dict(),
+            "optimizer_state_dict": optimizer.state_dict(),
+            "train_loss": train_loss,
+            "val_loss": val_loss,
+        }
+
+        torch.save(
+            checkpoint,
+            BEST_MODEL_PATH,
+        )
+
+        print()
+        print("Best model saved!")
+        print(f"Path: {BEST_MODEL_PATH}")
+        print(f"Validation Loss: {val_loss:.4f}")
+
+
 # ======================================
 # Complete
 # ======================================
@@ -216,3 +254,6 @@ print()
 print("======================================")
 print("TRAINING + VALIDATION COMPLETE")
 print("======================================")
+
+print(f"Best Validation Loss: {best_val_loss:.4f}")
+print(f"Best Model: {BEST_MODEL_PATH}")
