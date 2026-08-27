@@ -22,7 +22,7 @@ VAL_CSV = r"D:\Projects\Datasets\xBD\splits\val.csv"
 IMAGE_SIZE = 256
 BATCH_SIZE = 2
 LEARNING_RATE = 1e-4
-EPOCHS = 3
+EPOCHS = 5
 
 CHECKPOINT_DIR = r"ai\checkpoints"
 BEST_MODEL_PATH = r"ai\checkpoints\best_model.pth"
@@ -98,7 +98,22 @@ model = model.to(DEVICE)
 # Loss + Optimizer
 # ======================================
 
-criterion = nn.CrossEntropyLoss()
+class_weights = torch.tensor(
+    [
+        0.0078,  # Class 0: Background
+        0.1653,  # Class 1: No Damage
+        1.4010,  # Class 2: Minor Damage
+        1.0366,  # Class 3: Major Damage
+        2.3893,  # Class 4: Destroyed
+    ],
+    dtype=torch.float32,
+).to(DEVICE)
+
+
+criterion = nn.CrossEntropyLoss(
+    weight=class_weights
+)
+
 
 optimizer = torch.optim.Adam(
     model.parameters(),
@@ -124,6 +139,7 @@ for epoch in range(EPOCHS):
     print(f"Epoch {epoch + 1}/{EPOCHS}")
     print("--------------------------------------")
 
+
     # ==================================
     # TRAINING
     # ==================================
@@ -133,16 +149,25 @@ for epoch in range(EPOCHS):
     train_total_loss = 0.0
     train_batches = 0
 
+
     for batch_index, (images, targets) in enumerate(train_loader):
 
         images = images.to(DEVICE)
         targets = targets.to(DEVICE)
 
+
         # Forward
+
         outputs = model(images)
 
+
         # Loss
-        loss = criterion(outputs, targets)
+
+        loss = criterion(
+            outputs,
+            targets
+        )
+
 
         if batch_index == 0:
             print(
@@ -150,24 +175,33 @@ for epoch in range(EPOCHS):
                 f"Loss: {loss.item():.4f}"
             )
 
+
         # Backward
+
         optimizer.zero_grad()
 
         loss.backward()
 
         optimizer.step()
 
+
         # Record loss
+
         train_total_loss += loss.item()
+
         train_batches += 1
 
+
         # Progress
+
         if (batch_index + 1) % 10 == 0:
+
             print(
                 f"Training Batch "
                 f"{batch_index + 1}/{len(train_loader)} "
                 f"| Loss: {loss.item():.4f}"
             )
+
 
     train_loss = train_total_loss / train_batches
 
@@ -181,6 +215,7 @@ for epoch in range(EPOCHS):
     val_total_loss = 0.0
     val_batches = 0
 
+
     with torch.no_grad():
 
         for batch_index, (images, targets) in enumerate(val_loader):
@@ -188,23 +223,37 @@ for epoch in range(EPOCHS):
             images = images.to(DEVICE)
             targets = targets.to(DEVICE)
 
+
             # Forward
+
             outputs = model(images)
 
+
             # Loss
-            loss = criterion(outputs, targets)
+
+            loss = criterion(
+                outputs,
+                targets
+            )
+
 
             # Record loss
+
             val_total_loss += loss.item()
+
             val_batches += 1
 
+
             # Progress
+
             if (batch_index + 1) % 50 == 0:
+
                 print(
                     f"Validation Batch "
                     f"{batch_index + 1}/{len(val_loader)} "
                     f"| Loss: {loss.item():.4f}"
                 )
+
 
     val_loss = val_total_loss / val_batches
 
@@ -214,8 +263,11 @@ for epoch in range(EPOCHS):
     # ==================================
 
     print()
+
     print(f"Epoch {epoch + 1} Results")
+
     print(f"Training Loss:   {train_loss:.4f}")
+
     print(f"Validation Loss: {val_loss:.4f}")
 
 
@@ -227,6 +279,7 @@ for epoch in range(EPOCHS):
 
         best_val_loss = val_loss
 
+
         checkpoint = {
             "epoch": epoch + 1,
             "model_state_dict": model.state_dict(),
@@ -235,14 +288,19 @@ for epoch in range(EPOCHS):
             "val_loss": val_loss,
         }
 
+
         torch.save(
             checkpoint,
             BEST_MODEL_PATH,
         )
 
+
         print()
+
         print("Best model saved!")
+
         print(f"Path: {BEST_MODEL_PATH}")
+
         print(f"Validation Loss: {val_loss:.4f}")
 
 
@@ -251,9 +309,11 @@ for epoch in range(EPOCHS):
 # ======================================
 
 print()
+
 print("======================================")
 print("TRAINING + VALIDATION COMPLETE")
 print("======================================")
 
 print(f"Best Validation Loss: {best_val_loss:.4f}")
+
 print(f"Best Model: {BEST_MODEL_PATH}")
