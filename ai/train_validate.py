@@ -1,10 +1,11 @@
 import sys
+from pathlib import Path
 
 sys.path.insert(0, "ai")
 
 import torch
 import torch.nn as nn
-
+import torch.nn.functional as F
 from torch.utils.data import DataLoader
 
 from dataset import XBDDataset
@@ -22,11 +23,11 @@ VAL_CSV = r"D:\Projects\Datasets\xBD\splits\val.csv"
 
 IMAGE_SIZE = 256
 BATCH_SIZE = 2
-LEARNING_RATE = 1e-4
 
-# We are running 5 epochs
+LEARNING_RATE = 1e-4
 EPOCHS = 5
 
+CHECKPOINT_DIR = r"ai\checkpoints"
 BEST_MODEL_PATH = r"ai\checkpoints\best_model.pth"
 
 DEVICE = torch.device(
@@ -43,6 +44,8 @@ print("xBD U-NET TRAINING + VALIDATION")
 print("======================================")
 
 print("Device:", DEVICE)
+print("Epochs:", EPOCHS)
+print("Batch size:", BATCH_SIZE)
 
 
 # ======================================
@@ -81,7 +84,8 @@ val_loader = DataLoader(
 
 print("Training samples:", len(train_dataset))
 print("Validation samples:", len(val_dataset))
-print("Batch size:", BATCH_SIZE)
+print("Training batches:", len(train_loader))
+print("Validation batches:", len(val_loader))
 
 
 # ======================================
@@ -97,36 +101,106 @@ model = model.to(DEVICE)
 
 
 # ======================================
-# Weighted Loss
+# Loss Function
 # ======================================
+
+# Softer class weights.
+#
+# 0 = Background
+# 1 = No Damage
+# 2 = Minor Damage
+# 3 = Major Damage
+# 4 = Destroyed
 
 class_weights = torch.tensor(
     [
-        0.0078,   # Class 0: Background
-        0.1653,   # Class 1: No Damage
-        1.4010,   # Class 2: Minor Damage
-        1.0366,   # Class 3: Major Damage
-        2.3893,   # Class 4: Destroyed
+        0.25,
+        0.75,
+        1.50,
+        1.75,
+        2.00,
     ],
     dtype=torch.float32,
 ).to(DEVICE)
 
 
 print()
-print("======================================")
-print("CLASS WEIGHTS")
-print("======================================")
-
-print("Class 0 (Background): 0.0078")
-print("Class 1 (No Damage):  0.1653")
-print("Class 2 (Minor):      1.4010")
-print("Class 3 (Major):      1.0366")
-print("Class 4 (Destroyed):  2.3893")
+print("Class weights:")
+print("Class 0 (Background):", class_weights[0].item())
+print("Class 1 (No Damage):", class_weights[1].item())
+print("Class 2 (Minor Damage):", class_weights[2].item())
+print("Class 3 (Major Damage):", class_weights[3].item())
+print("Class 4 (Destroyed):", class_weights[4].item())
 
 
-criterion = nn.CrossEntropyLoss(
+# ======================================
+# Weighted Cross Entropy
+# ======================================
+
+cross_entropy = nn.CrossEntropyLoss(
     weight=class_weights
 )
+
+
+# ======================================
+# Dice Loss
+# ======================================
+
+def dice_loss(outputs, targets, num_classes=5):
+
+    probabilities = F.softmax(outputs, dim=1)
+
+    targets_one_hot = F.one_hot(
+        targets,
+        num_classes=num_classes
+    )
+
+    targets_one_hot = targets_one_hot.permute(
+        0, 3, 1, 2
+    ).float()
+
+    smooth = 1e-6
+
+    intersection = (
+        probabilities * targets_one_hot
+    ).sum(dim=(0, 2, 3))
+
+    denominator = (
+        probabilities.sum(dim=(0, 2, 3))
+        + targets_one_hot.sum(dim=(0, 2, 3))
+    )
+
+    dice = (
+        (2.0 * intersection + smooth)
+        / (denominator + smooth)
+    )
+
+    return 1.0 - dice.mean()
+
+
+# ======================================
+# Combined Loss
+# ======================================
+
+def combined_loss(outputs, targets):
+
+    ce_loss = cross_entropy(
+        outputs,
+        targets
+    )
+
+    d_loss = dice_loss(
+        outputs,
+        targets,
+        num_classes=5
+    )
+
+    total_loss = (
+        0.7 * ce_loss
+        + 0.3 * d_loss
+    )
+
+    return total_loss
 
 
 # ======================================
@@ -167,32 +241,43 @@ for epoch in range(EPOCHS):
     train_total_loss = 0.0
     train_batches = 0
 
-    for batch_index, (images, targets) in enumerate(train_loader):
+    for batch_index, (images, targets) in enumerate(
+        train_loader
+    ):
 
         images = images.to(DEVICE)
         targets = targets.to(DEVICE)
 
 
-        # ------------------------------
-        # Forward Pass
-        # ------------------------------
+        # Forward pass
 
         outputs = model(images)
 
 
-        # ------------------------------
-        # Weighted Loss
-        # ------------------------------
+        # Combined loss
 
-        loss = criterion(
+        loss = combined_loss(
             outputs,
             targets
         )
 
 
-        # ------------------------------
-        # First Batch Information
-        # ------------------------------
+        # Backward pass
+
+        optimizer.zero_grad()
+
+        loss.backward()
+
+        optimizer.step()
+
+
+        # Record loss
+
+        train_total_loss += loss.item()
+        train_batches += 1
+
+
+        # First batch
 
         if batch_index == 0:
 
@@ -202,29 +287,7 @@ for epoch in range(EPOCHS):
             )
 
 
-        # ------------------------------
-        # Backward Pass
-        # ------------------------------
-
-        optimizer.zero_grad()
-
-        loss.backward()
-
-        optimizer.step()
-
-
-        # ------------------------------
-        # Record Loss
-        # ------------------------------
-
-        train_total_loss += loss.item()
-
-        train_batches += 1
-
-
-        # ------------------------------
         # Progress
-        # ------------------------------
 
         if (batch_index + 1) % 10 == 0:
 
@@ -235,10 +298,9 @@ for epoch in range(EPOCHS):
             )
 
 
-    # Calculate average training loss
-
     train_loss = (
-        train_total_loss / train_batches
+        train_total_loss
+        / train_batches
     )
 
 
@@ -251,44 +313,36 @@ for epoch in range(EPOCHS):
     val_total_loss = 0.0
     val_batches = 0
 
-
     with torch.no_grad():
 
-        for batch_index, (images, targets) in enumerate(val_loader):
+        for batch_index, (images, targets) in enumerate(
+            val_loader
+        ):
 
             images = images.to(DEVICE)
             targets = targets.to(DEVICE)
 
 
-            # ------------------------------
-            # Forward Pass
-            # ------------------------------
+            # Forward pass
 
             outputs = model(images)
 
 
-            # ------------------------------
-            # Weighted Loss
-            # ------------------------------
+            # Combined loss
 
-            loss = criterion(
+            loss = combined_loss(
                 outputs,
                 targets
             )
 
 
-            # ------------------------------
-            # Record Loss
-            # ------------------------------
+            # Record loss
 
             val_total_loss += loss.item()
-
             val_batches += 1
 
 
-            # ------------------------------
             # Progress
-            # ------------------------------
 
             if (batch_index + 1) % 50 == 0:
 
@@ -299,10 +353,9 @@ for epoch in range(EPOCHS):
                 )
 
 
-    # Calculate average validation loss
-
     val_loss = (
-        val_total_loss / val_batches
+        val_total_loss
+        / val_batches
     )
 
 
@@ -331,6 +384,10 @@ for epoch in range(EPOCHS):
 
         best_val_loss = val_loss
 
+        Path(CHECKPOINT_DIR).mkdir(
+            parents=True,
+            exist_ok=True
+        )
 
         checkpoint = {
 
@@ -347,7 +404,6 @@ for epoch in range(EPOCHS):
 
             "val_loss":
                 val_loss,
-
         }
 
 
@@ -381,9 +437,11 @@ print("TRAINING + VALIDATION COMPLETE")
 print("======================================")
 
 print(
-    f"Best Validation Loss: {best_val_loss:.4f}"
+    f"Best Validation Loss: "
+    f"{best_val_loss:.4f}"
 )
 
 print(
-    f"Best Model: {BEST_MODEL_PATH}"
+    f"Best Model: "
+    f"{BEST_MODEL_PATH}"
 )
