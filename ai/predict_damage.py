@@ -7,6 +7,7 @@ import torch
 import numpy as np
 from PIL import Image
 import matplotlib.pyplot as plt
+import pandas as pd
 
 from unet import UNet
 
@@ -15,14 +16,17 @@ from unet import UNet
 # CONFIGURATION
 # ======================================
 
-PRE_IMAGE_PATH = r"D:\Projects\Datasets\xBD\train\images\YOUR_SAMPLE_pre_disaster.png"
-POST_IMAGE_PATH = r"D:\Projects\Datasets\xBD\train\images\YOUR_SAMPLE_post_disaster.png"
+DATASET_ROOT = Path(r"D:\Projects\Datasets\xBD")
+VAL_CSV = DATASET_ROOT / "splits" / "val.csv"
 
-MODEL_PATH = r"ai\checkpoints\best_model.pth"
+MODEL_PATH = Path(r"ai\checkpoints\best_model.pth")
 
 OUTPUT_DIR = Path("outputs/damage_predictions")
 
 IMAGE_SIZE = 256
+
+# Which validation sample to test
+SAMPLE_INDEX = 0
 
 DEVICE = torch.device(
     "cuda" if torch.cuda.is_available() else "cpu"
@@ -53,10 +57,87 @@ print("======================================")
 print("Device:", DEVICE)
 print("Model:", MODEL_PATH)
 
+
 OUTPUT_DIR.mkdir(
     parents=True,
     exist_ok=True
 )
+
+
+# ======================================
+# LOAD VALIDATION CSV
+# ======================================
+
+print()
+print("Loading validation data...")
+
+samples = pd.read_csv(VAL_CSV)
+
+print(
+    "Validation samples:",
+    len(samples)
+)
+
+
+# ======================================
+# SELECT SAMPLE
+# ======================================
+
+sample_id = samples.iloc[
+    SAMPLE_INDEX
+]["sample_id"]
+
+
+print()
+print("Selected sample:", sample_id)
+
+
+# ======================================
+# IMAGE PATHS
+# ======================================
+
+IMAGE_DIR = (
+    DATASET_ROOT /
+    "train" /
+    "images"
+)
+
+pre_path = (
+    IMAGE_DIR /
+    f"{sample_id}_pre_disaster.png"
+)
+
+post_path = (
+    IMAGE_DIR /
+    f"{sample_id}_post_disaster.png"
+)
+
+
+print()
+print("Pre-disaster image:")
+print(pre_path)
+
+print()
+print("Post-disaster image:")
+print(post_path)
+
+
+# ======================================
+# CHECK FILES
+# ======================================
+
+if not pre_path.exists():
+
+    raise FileNotFoundError(
+        f"Pre-disaster image not found:\n{pre_path}"
+    )
+
+
+if not post_path.exists():
+
+    raise FileNotFoundError(
+        f"Post-disaster image not found:\n{post_path}"
+    )
 
 
 # ======================================
@@ -71,17 +152,22 @@ model = UNet(
     num_classes=5,
 )
 
+
 checkpoint = torch.load(
     MODEL_PATH,
     map_location=DEVICE
 )
 
+
 model.load_state_dict(
     checkpoint["model_state_dict"]
 )
 
+
 model = model.to(DEVICE)
+
 model.eval()
+
 
 print("Model loaded successfully.")
 
@@ -94,11 +180,12 @@ print()
 print("Loading images...")
 
 pre_image = Image.open(
-    PRE_IMAGE_PATH
+    pre_path
 ).convert("RGB")
 
+
 post_image = Image.open(
-    POST_IMAGE_PATH
+    post_path
 ).convert("RGB")
 
 
@@ -111,6 +198,7 @@ pre_image_resized = pre_image.resize(
     Image.Resampling.BILINEAR
 )
 
+
 post_image_resized = post_image.resize(
     (IMAGE_SIZE, IMAGE_SIZE),
     Image.Resampling.BILINEAR
@@ -118,13 +206,14 @@ post_image_resized = post_image.resize(
 
 
 # ======================================
-# CONVERT TO NUMPY
+# NUMPY CONVERSION
 # ======================================
 
 pre_array = np.array(
     pre_image_resized,
     dtype=np.float32
 )
+
 
 post_array = np.array(
     post_image_resized,
@@ -133,7 +222,7 @@ post_array = np.array(
 
 
 # ======================================
-# NORMALIZE
+# NORMALIZATION
 # ======================================
 
 pre_array = pre_array / 255.0
@@ -149,6 +238,7 @@ pre_array = np.transpose(
     (2, 0, 1)
 )
 
+
 post_array = np.transpose(
     post_array,
     (2, 0, 1)
@@ -156,7 +246,7 @@ post_array = np.transpose(
 
 
 # ======================================
-# COMBINE PRE + POST
+# COMBINE 6 CHANNELS
 # ======================================
 
 image = np.concatenate(
@@ -184,15 +274,17 @@ image = image.unsqueeze(0)
 image = image.to(DEVICE)
 
 
+print()
 print("Input shape:", image.shape)
 
 
 # ======================================
-# PREDICTION
+# MODEL PREDICTION
 # ======================================
 
 print()
 print("Running prediction...")
+
 
 with torch.no_grad():
 
@@ -204,14 +296,22 @@ with torch.no_grad():
     )
 
 
-# Remove batch dimension
+# ======================================
+# REMOVE BATCH DIMENSION
+# ======================================
 
-prediction = prediction.squeeze(0)
+prediction = prediction.squeeze(
+    0
+)
+
 
 prediction = prediction.cpu().numpy()
 
 
-print("Prediction shape:", prediction.shape)
+print(
+    "Prediction shape:",
+    prediction.shape
+)
 
 
 # ======================================
@@ -257,6 +357,7 @@ damage_pixels = np.sum(
     prediction >= 2
 )
 
+
 damage_percentage = (
     damage_pixels /
     total_pixels
@@ -268,10 +369,12 @@ print("======================================")
 print("DAMAGE SUMMARY")
 print("======================================")
 
+
 print(
     f"Damaged pixels: "
     f"{damage_pixels}"
 )
+
 
 print(
     f"Damage percentage: "
@@ -283,20 +386,15 @@ print(
 # DAMAGE LEVEL
 # ======================================
 
-destroyed_percentage = class_percentages[4]
-major_percentage = class_percentages[3]
-minor_percentage = class_percentages[2]
-
-
-if destroyed_percentage > 5:
+if class_percentages[4] > 5:
 
     damage_level = "SEVERE"
 
-elif major_percentage > 5:
+elif class_percentages[3] > 5:
 
     damage_level = "MAJOR"
 
-elif minor_percentage > 5:
+elif class_percentages[2] > 5:
 
     damage_level = "MINOR"
 
@@ -306,8 +404,8 @@ else:
 
 
 print(
-    f"Overall Damage Level: "
-    f"{damage_level}"
+    "Overall Damage Level:",
+    damage_level
 )
 
 
@@ -317,12 +415,14 @@ print(
 
 mask_path = (
     OUTPUT_DIR /
-    "damage_mask.png"
+    f"{sample_id}_damage_mask.png"
 )
+
 
 mask_image = Image.fromarray(
     prediction.astype(np.uint8)
 )
+
 
 mask_image.save(
     mask_path
@@ -342,7 +442,7 @@ print()
 print("Generating visualization...")
 
 
-figure = plt.figure(
+plt.figure(
     figsize=(16, 5)
 )
 
@@ -382,7 +482,7 @@ plt.axis("off")
 
 
 # --------------------------------------
-# DAMAGE MASK
+# PREDICTION
 # --------------------------------------
 
 plt.subplot(1, 4, 3)
@@ -427,21 +527,24 @@ plt.axis("off")
 
 
 # ======================================
-# SAVE FIGURE
+# SAVE VISUALIZATION
 # ======================================
 
 figure_path = (
     OUTPUT_DIR /
-    "damage_assessment.png"
+    f"{sample_id}_damage_assessment.png"
 )
 
+
 plt.tight_layout()
+
 
 plt.savefig(
     figure_path,
     dpi=150,
     bbox_inches="tight"
 )
+
 
 plt.close()
 
@@ -460,8 +563,15 @@ print("======================================")
 print("DAMAGE PREDICTION COMPLETE")
 print("======================================")
 
+
 print()
-print("Overall Damage Level:", damage_level)
+print("Sample:", sample_id)
+
+print(
+    "Overall Damage Level:",
+    damage_level
+)
+
 print(
     f"Total Damage: "
     f"{damage_percentage:.2f}%"
