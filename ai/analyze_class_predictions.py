@@ -1,26 +1,45 @@
 import os
 import sys
+import inspect
 import torch
 import numpy as np
 import pandas as pd
 from torch.utils.data import DataLoader
 
-# ---------------------------------------------------------
-# Add project root to Python path
-# ---------------------------------------------------------
-PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# =========================================================
+# PROJECT PATH
+# =========================================================
+
+PROJECT_ROOT = os.path.dirname(
+    os.path.dirname(
+        os.path.abspath(__file__)
+    )
+)
+
 sys.path.append(PROJECT_ROOT)
+
+
+# =========================================================
+# IMPORT PROJECT FILES
+# =========================================================
 
 from ai.dataset import XBDDataset
 from ai.unet import UNet
 
 
-# ---------------------------------------------------------
-# Configuration
-# ---------------------------------------------------------
-DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+# =========================================================
+# CONFIGURATION
+# =========================================================
 
+DEVICE = torch.device(
+    "cuda" if torch.cuda.is_available() else "cpu"
+)
+
+# Your actual xBD validation CSV
 VAL_CSV = r"D:\Projects\Datasets\xBD\splits\val.csv"
+
+# Your trained model
 MODEL_PATH = os.path.join(
     PROJECT_ROOT,
     "ai",
@@ -28,6 +47,7 @@ MODEL_PATH = os.path.join(
     "best_model.pth"
 )
 
+# Output directory
 OUTPUT_DIR = os.path.join(
     PROJECT_ROOT,
     "outputs",
@@ -46,32 +66,227 @@ CLASS_NAMES = [
 ]
 
 
-# ---------------------------------------------------------
-# Create output directory
-# ---------------------------------------------------------
-os.makedirs(OUTPUT_DIR, exist_ok=True)
+# =========================================================
+# CREATE OUTPUT DIRECTORY
+# =========================================================
+
+os.makedirs(
+    OUTPUT_DIR,
+    exist_ok=True
+)
 
 
-# ---------------------------------------------------------
-# Header
-# ---------------------------------------------------------
-print("=" * 50)
+# =========================================================
+# HEADER
+# =========================================================
+
+print("=" * 60)
 print("xBD CLASS PREDICTION ANALYSIS")
-print("=" * 50)
+print("=" * 60)
 
 print(f"Device: {DEVICE}")
 print(f"Model: {MODEL_PATH}")
 print(f"Validation CSV: {VAL_CSV}")
 
 
-# ---------------------------------------------------------
-# Load validation dataset
-# ---------------------------------------------------------
-print("\nLoading validation dataset...")
+# =========================================================
+# CHECK PATHS
+# =========================================================
 
-val_dataset = XBDDataset(
-    csv_path=VAL_CSV
+if not os.path.exists(VAL_CSV):
+
+    print("\nERROR: Validation CSV not found!")
+    print(VAL_CSV)
+    sys.exit(1)
+
+
+if not os.path.exists(MODEL_PATH):
+
+    print("\nERROR: Model checkpoint not found!")
+    print(MODEL_PATH)
+    sys.exit(1)
+
+
+# =========================================================
+# DETECT XBD DATASET CONSTRUCTOR
+# =========================================================
+
+print("\n")
+print("=" * 60)
+print("CHECKING XBD DATASET")
+print("=" * 60)
+
+signature = inspect.signature(
+    XBDDataset.__init__
 )
+
+parameters = list(
+    signature.parameters.values()
+)[1:]  # Remove self
+
+print("\nXBDDataset constructor parameters:")
+
+for parameter in parameters:
+
+    print(
+        f"  {parameter.name}: "
+        f"default={parameter.default}"
+    )
+
+
+# =========================================================
+# CREATE VALIDATION DATASET
+# =========================================================
+
+print("\nCreating validation dataset...")
+
+
+def create_validation_dataset():
+
+    """
+    Automatically adapts to the constructor
+    used by the existing dataset.py.
+
+    We intentionally do not modify dataset.py.
+    """
+
+    parameter_names = [
+        parameter.name.lower()
+        for parameter in parameters
+    ]
+
+    # -----------------------------------------------------
+    # Case 1:
+    # Constructor accepts csv_file
+    # -----------------------------------------------------
+
+    if "csv_file" in parameter_names:
+
+        print("Using parameter: csv_file")
+
+        return XBDDataset(
+            csv_file=VAL_CSV
+        )
+
+    # -----------------------------------------------------
+    # Case 2:
+    # Constructor accepts csv
+    # -----------------------------------------------------
+
+    if "csv" in parameter_names:
+
+        print("Using parameter: csv")
+
+        return XBDDataset(
+            csv=VAL_CSV
+        )
+
+    # -----------------------------------------------------
+    # Case 3:
+    # Constructor accepts csv_path
+    # -----------------------------------------------------
+
+    if "csv_path" in parameter_names:
+
+        print("Using parameter: csv_path")
+
+        return XBDDataset(
+            csv_path=VAL_CSV
+        )
+
+    # -----------------------------------------------------
+    # Case 4:
+    # Constructor accepts csv_file_path
+    # -----------------------------------------------------
+
+    if "csv_file_path" in parameter_names:
+
+        print("Using parameter: csv_file_path")
+
+        return XBDDataset(
+            csv_file_path=VAL_CSV
+        )
+
+    # -----------------------------------------------------
+    # Case 5:
+    # Constructor accepts split_file
+    # -----------------------------------------------------
+
+    if "split_file" in parameter_names:
+
+        print("Using parameter: split_file")
+
+        return XBDDataset(
+            split_file=VAL_CSV
+        )
+
+    # -----------------------------------------------------
+    # Case 6:
+    # Constructor accepts annotation_file
+    # -----------------------------------------------------
+
+    if "annotation_file" in parameter_names:
+
+        print("Using parameter: annotation_file")
+
+        return XBDDataset(
+            annotation_file=VAL_CSV
+        )
+
+    # -----------------------------------------------------
+    # Case 7:
+    # Constructor accepts a single required argument
+    # -----------------------------------------------------
+
+    required_parameters = [
+        parameter
+        for parameter in parameters
+        if parameter.default is inspect.Parameter.empty
+    ]
+
+    if len(required_parameters) == 1:
+
+        print(
+            "Using the single required "
+            "dataset argument."
+        )
+
+        return XBDDataset(
+            VAL_CSV
+        )
+
+    # -----------------------------------------------------
+    # Could not automatically determine constructor
+    # -----------------------------------------------------
+
+    print("\nERROR: Could not determine how to")
+    print("create XBDDataset from your dataset.py.")
+
+    print("\nDetected constructor:")
+
+    print(signature)
+
+    print("\nPlease send me the output above.")
+
+    sys.exit(1)
+
+
+val_dataset = create_validation_dataset()
+
+
+# =========================================================
+# DATASET INFORMATION
+# =========================================================
+
+print(
+    f"\nValidation samples: "
+    f"{len(val_dataset)}"
+)
+
+
+# =========================================================
+# DATALOADER
+# =========================================================
 
 val_loader = DataLoader(
     val_dataset,
@@ -80,14 +295,20 @@ val_loader = DataLoader(
     num_workers=0
 )
 
-print(f"Validation samples: {len(val_dataset)}")
-print(f"Validation batches: {len(val_loader)}")
+print(
+    f"Validation batches: "
+    f"{len(val_loader)}"
+)
 
 
-# ---------------------------------------------------------
-# Load model
-# ---------------------------------------------------------
-print("\nLoading model...")
+# =========================================================
+# LOAD MODEL
+# =========================================================
+
+print("\n")
+print("=" * 60)
+print("LOADING MODEL")
+print("=" * 60)
 
 model = UNet(
     in_channels=6,
@@ -99,10 +320,30 @@ checkpoint = torch.load(
     map_location=DEVICE
 )
 
-# Your checkpoint contains model_state_dict
-model.load_state_dict(
-    checkpoint["model_state_dict"]
-)
+
+# Your training script saves a dictionary containing
+# model_state_dict.
+if isinstance(checkpoint, dict):
+
+    if "model_state_dict" in checkpoint:
+
+        model.load_state_dict(
+            checkpoint["model_state_dict"]
+        )
+
+    else:
+
+        # Fallback if checkpoint itself is a state_dict
+        model.load_state_dict(
+            checkpoint
+        )
+
+else:
+
+    model.load_state_dict(
+        checkpoint
+    )
+
 
 model.to(DEVICE)
 model.eval()
@@ -110,31 +351,54 @@ model.eval()
 print("Model loaded successfully.")
 
 
-# ---------------------------------------------------------
-# Statistics
-# ---------------------------------------------------------
+# =========================================================
+# STATISTICS
+# =========================================================
 
-actual_pixels = np.zeros(NUM_CLASSES, dtype=np.int64)
-predicted_pixels = np.zeros(NUM_CLASSES, dtype=np.int64)
+actual_pixels = np.zeros(
+    NUM_CLASSES,
+    dtype=np.int64
+)
 
-# Confusion matrix
+predicted_pixels = np.zeros(
+    NUM_CLASSES,
+    dtype=np.int64
+)
+
 confusion_matrix = np.zeros(
     (NUM_CLASSES, NUM_CLASSES),
     dtype=np.int64
 )
 
 
-# ---------------------------------------------------------
-# Evaluation
-# ---------------------------------------------------------
-print("\nAnalyzing predictions...")
+# =========================================================
+# EVALUATION
+# =========================================================
+
+print("\n")
+print("=" * 60)
+print("ANALYZING VALIDATION PREDICTIONS")
+print("=" * 60)
+
 
 with torch.no_grad():
 
-    for batch_index, (images, targets) in enumerate(val_loader):
+    for batch_index, batch in enumerate(val_loader):
+
+        # -------------------------------------------------
+        # Dataset returns:
+        #
+        # images, targets
+        # -------------------------------------------------
+
+        images, targets = batch
 
         images = images.to(DEVICE)
         targets = targets.to(DEVICE)
+
+        # -------------------------------------------------
+        # Forward pass
+        # -------------------------------------------------
 
         outputs = model(images)
 
@@ -143,12 +407,24 @@ with torch.no_grad():
             dim=1
         )
 
-        # Move to CPU
-        targets_np = targets.cpu().numpy()
-        predictions_np = predictions.cpu().numpy()
+        # -------------------------------------------------
+        # Convert to NumPy
+        # -------------------------------------------------
+
+        targets_np = (
+            targets
+            .cpu()
+            .numpy()
+        )
+
+        predictions_np = (
+            predictions
+            .cpu()
+            .numpy()
+        )
 
         # -------------------------------------------------
-        # Class pixel counts
+        # Count actual and predicted pixels
         # -------------------------------------------------
 
         for class_id in range(NUM_CLASSES):
@@ -166,56 +442,91 @@ with torch.no_grad():
         # -------------------------------------------------
 
         target_flat = targets_np.reshape(-1)
+
         prediction_flat = predictions_np.reshape(-1)
 
         for actual_class in range(NUM_CLASSES):
 
-            mask = target_flat == actual_class
+            actual_mask = (
+                target_flat == actual_class
+            )
 
-            if np.any(mask):
+            if np.any(actual_mask):
 
-                predicted_for_actual = prediction_flat[mask]
+                predicted_for_actual = (
+                    prediction_flat[actual_mask]
+                )
 
-                for predicted_class in range(NUM_CLASSES):
+                for predicted_class in range(
+                    NUM_CLASSES
+                ):
 
                     confusion_matrix[
                         actual_class,
                         predicted_class
                     ] += np.sum(
-                        predicted_for_actual == predicted_class
+                        predicted_for_actual
+                        == predicted_class
                     )
 
+        # -------------------------------------------------
         # Progress
+        # -------------------------------------------------
+
         if (batch_index + 1) % 25 == 0:
 
             print(
                 f"Processed Batch "
-                f"{batch_index + 1}/{len(val_loader)}"
+                f"{batch_index + 1}/"
+                f"{len(val_loader)}"
             )
 
 
-# ---------------------------------------------------------
-# Calculate percentages
-# ---------------------------------------------------------
+# =========================================================
+# CLASS DISTRIBUTION
+# =========================================================
+
 total_actual_pixels = actual_pixels.sum()
+
 total_predicted_pixels = predicted_pixels.sum()
 
+
 actual_percentage = (
-    actual_pixels / total_actual_pixels
+    actual_pixels /
+    total_actual_pixels
 ) * 100
+
 
 predicted_percentage = (
-    predicted_pixels / total_predicted_pixels
+    predicted_pixels /
+    total_predicted_pixels
 ) * 100
 
 
-# ---------------------------------------------------------
-# Precision / Recall / F1 / IoU
-# ---------------------------------------------------------
-precision = np.zeros(NUM_CLASSES)
-recall = np.zeros(NUM_CLASSES)
-f1_score = np.zeros(NUM_CLASSES)
-iou = np.zeros(NUM_CLASSES)
+# =========================================================
+# METRICS
+# =========================================================
+
+precision = np.zeros(
+    NUM_CLASSES,
+    dtype=np.float64
+)
+
+recall = np.zeros(
+    NUM_CLASSES,
+    dtype=np.float64
+)
+
+f1_score = np.zeros(
+    NUM_CLASSES,
+    dtype=np.float64
+)
+
+iou = np.zeros(
+    NUM_CLASSES,
+    dtype=np.float64
+)
+
 
 for class_id in range(NUM_CLASSES):
 
@@ -234,22 +545,49 @@ for class_id in range(NUM_CLASSES):
         - true_positive
     )
 
+    # -----------------------------------------------------
     # Precision
-    if true_positive + false_positive > 0:
+    # -----------------------------------------------------
+
+    if (
+        true_positive
+        + false_positive
+    ) > 0:
+
         precision[class_id] = (
             true_positive /
-            (true_positive + false_positive)
+            (
+                true_positive
+                + false_positive
+            )
         )
 
+    # -----------------------------------------------------
     # Recall
-    if true_positive + false_negative > 0:
+    # -----------------------------------------------------
+
+    if (
+        true_positive
+        + false_negative
+    ) > 0:
+
         recall[class_id] = (
             true_positive /
-            (true_positive + false_negative)
+            (
+                true_positive
+                + false_negative
+            )
         )
 
+    # -----------------------------------------------------
     # F1
-    if precision[class_id] + recall[class_id] > 0:
+    # -----------------------------------------------------
+
+    if (
+        precision[class_id]
+        + recall[class_id]
+    ) > 0:
+
         f1_score[class_id] = (
             2
             * precision[class_id]
@@ -261,7 +599,10 @@ for class_id in range(NUM_CLASSES):
             )
         )
 
+    # -----------------------------------------------------
     # IoU
+    # -----------------------------------------------------
+
     union = (
         true_positive
         + false_positive
@@ -269,50 +610,55 @@ for class_id in range(NUM_CLASSES):
     )
 
     if union > 0:
+
         iou[class_id] = (
-            true_positive / union
+            true_positive /
+            union
         )
 
 
-# ---------------------------------------------------------
-# Print class analysis
-# ---------------------------------------------------------
+# =========================================================
+# PRINT CLASS DISTRIBUTION
+# =========================================================
+
 print("\n")
-print("=" * 70)
+print("=" * 80)
 print("CLASS DISTRIBUTION ANALYSIS")
-print("=" * 70)
+print("=" * 80)
 
 print(
-    f"{'Class':<15}"
+    f"{'Class':<18}"
     f"{'Actual %':>12}"
     f"{'Predicted %':>15}"
-    f"{'Actual Pixels':>18}"
+    f"{'Actual Pixels':>20}"
     f"{'Predicted Pixels':>20}"
 )
 
-print("-" * 70)
+print("-" * 80)
+
 
 for class_id in range(NUM_CLASSES):
 
     print(
-        f"{CLASS_NAMES[class_id]:<15}"
+        f"{CLASS_NAMES[class_id]:<18}"
         f"{actual_percentage[class_id]:>11.2f}%"
         f"{predicted_percentage[class_id]:>14.2f}%"
-        f"{actual_pixels[class_id]:>18,}"
+        f"{actual_pixels[class_id]:>20,}"
         f"{predicted_pixels[class_id]:>20,}"
     )
 
 
-# ---------------------------------------------------------
-# Metrics
-# ---------------------------------------------------------
+# =========================================================
+# PRINT METRICS
+# =========================================================
+
 print("\n")
 print("=" * 70)
 print("PER-CLASS METRICS")
 print("=" * 70)
 
 print(
-    f"{'Class':<15}"
+    f"{'Class':<18}"
     f"{'Precision':>12}"
     f"{'Recall':>12}"
     f"{'F1':>12}"
@@ -321,173 +667,305 @@ print(
 
 print("-" * 70)
 
+
 for class_id in range(NUM_CLASSES):
 
     print(
-        f"{CLASS_NAMES[class_id]:<15}"
-        f"{precision[class_id]:>11.4f}"
+        f"{CLASS_NAMES[class_id]:<18}"
+        f"{precision[class_id]:>12.4f}"
         f"{recall[class_id]:>12.4f}"
         f"{f1_score[class_id]:>12.4f}"
         f"{iou[class_id]:>12.4f}"
     )
 
 
-# ---------------------------------------------------------
-# Confusion Matrix
-# ---------------------------------------------------------
+# =========================================================
+# CONFUSION MATRIX
+# =========================================================
+
 print("\n")
-print("=" * 70)
+print("=" * 80)
 print("CONFUSION MATRIX")
-print("=" * 70)
+print("=" * 80)
 
 print("Rows = Actual")
-print("Columns = Predicted\n")
+print("Columns = Predicted")
+print()
+
 
 print(
-    f"{'':<15}"
+    f"{'Actual / Pred':<18}"
     + "".join(
-        f"{name[:10]:>12}"
+        f"{name[:10]:>14}"
         for name in CLASS_NAMES
     )
 )
 
+
 for actual_class in range(NUM_CLASSES):
 
     print(
-        f"{CLASS_NAMES[actual_class]:<15}"
+        f"{CLASS_NAMES[actual_class]:<18}"
         + "".join(
-            f"{confusion_matrix[actual_class, predicted_class]:>12,}"
+            f"{confusion_matrix[actual_class, predicted_class]:>14,}"
             for predicted_class in range(NUM_CLASSES)
         )
     )
 
 
-# ---------------------------------------------------------
-# Important damage-class analysis
-# ---------------------------------------------------------
-print("\n")
-print("=" * 70)
-print("DAMAGE CLASS ANALYSIS")
-print("=" * 70)
+# =========================================================
+# DAMAGE CLASS ANALYSIS
+# =========================================================
 
-damage_classes = [2, 3, 4]
+print("\n")
+print("=" * 80)
+print("DAMAGE CLASS ANALYSIS")
+print("=" * 80)
+
+
+damage_classes = [
+    2,  # Minor
+    3,  # Major
+    4   # Destroyed
+]
+
 
 for class_id in damage_classes:
 
-    actual_count = actual_pixels[class_id]
-    predicted_count = predicted_pixels[class_id]
-
-    print(f"\n{CLASS_NAMES[class_id]}:")
+    print("\n" + CLASS_NAMES[class_id])
 
     print(
-        f"  Actual pixels:     {actual_count:,}"
+        f"  Actual pixels:       "
+        f"{actual_pixels[class_id]:,}"
     )
 
     print(
-        f"  Predicted pixels:  {predicted_count:,}"
+        f"  Predicted pixels:    "
+        f"{predicted_pixels[class_id]:,}"
     )
 
     print(
-        f"  Actual percentage:  {actual_percentage[class_id]:.4f}%"
+        f"  Actual percentage:   "
+        f"{actual_percentage[class_id]:.4f}%"
     )
 
     print(
-        f"  Predicted percentage: "
-        f"{predicted_percentage[class_id]:.4f}%"
+        f"  Predicted percentage:"
+        f" {predicted_percentage[class_id]:.4f}%"
     )
 
     print(
-        f"  Precision: {precision[class_id]:.4f}"
+        f"  Precision:           "
+        f"{precision[class_id]:.4f}"
     )
 
     print(
-        f"  Recall:    {recall[class_id]:.4f}"
+        f"  Recall:              "
+        f"{recall[class_id]:.4f}"
     )
 
     print(
-        f"  F1 Score:  {f1_score[class_id]:.4f}"
+        f"  F1 Score:            "
+        f"{f1_score[class_id]:.4f}"
     )
 
     print(
-        f"  IoU:       {iou[class_id]:.4f}"
+        f"  IoU:                 "
+        f"{iou[class_id]:.4f}"
     )
 
 
-# ---------------------------------------------------------
-# Save CSV
-# ---------------------------------------------------------
+# =========================================================
+# WHERE MINOR DAMAGE GOES
+# =========================================================
+
+print("\n")
+print("=" * 80)
+print("MINOR DAMAGE ERROR DISTRIBUTION")
+print("=" * 80)
+
+minor_row = confusion_matrix[2]
+
+minor_total = minor_row.sum()
+
+
+for predicted_class in range(NUM_CLASSES):
+
+    count = minor_row[predicted_class]
+
+    percentage = (
+        count / minor_total * 100
+        if minor_total > 0
+        else 0
+    )
+
+    print(
+        f"Actual Minor Damage → "
+        f"{CLASS_NAMES[predicted_class]:<15}"
+        f"{count:>12,} "
+        f"({percentage:.2f}%)"
+    )
+
+
+# =========================================================
+# WHERE MAJOR DAMAGE GOES
+# =========================================================
+
+print("\n")
+print("=" * 80)
+print("MAJOR DAMAGE ERROR DISTRIBUTION")
+print("=" * 80)
+
+major_row = confusion_matrix[3]
+
+major_total = major_row.sum()
+
+
+for predicted_class in range(NUM_CLASSES):
+
+    count = major_row[predicted_class]
+
+    percentage = (
+        count / major_total * 100
+        if major_total > 0
+        else 0
+    )
+
+    print(
+        f"Actual Major Damage → "
+        f"{CLASS_NAMES[predicted_class]:<15}"
+        f"{count:>12,} "
+        f"({percentage:.2f}%)"
+    )
+
+
+# =========================================================
+# SAVE CLASS RESULTS
+# =========================================================
+
 results = []
+
 
 for class_id in range(NUM_CLASSES):
 
     results.append({
-        "class_id": class_id,
-        "class_name": CLASS_NAMES[class_id],
-        "actual_pixels": int(actual_pixels[class_id]),
-        "predicted_pixels": int(predicted_pixels[class_id]),
-        "actual_percentage": actual_percentage[class_id],
-        "predicted_percentage": predicted_percentage[class_id],
-        "precision": precision[class_id],
-        "recall": recall[class_id],
-        "f1_score": f1_score[class_id],
-        "iou": iou[class_id]
+
+        "class_id":
+            class_id,
+
+        "class_name":
+            CLASS_NAMES[class_id],
+
+        "actual_pixels":
+            int(actual_pixels[class_id]),
+
+        "predicted_pixels":
+            int(predicted_pixels[class_id]),
+
+        "actual_percentage":
+            actual_percentage[class_id],
+
+        "predicted_percentage":
+            predicted_percentage[class_id],
+
+        "precision":
+            precision[class_id],
+
+        "recall":
+            recall[class_id],
+
+        "f1_score":
+            f1_score[class_id],
+
+        "iou":
+            iou[class_id]
     })
 
-results_df = pd.DataFrame(results)
 
-csv_path = os.path.join(
+results_df = pd.DataFrame(
+    results
+)
+
+
+class_results_path = os.path.join(
     OUTPUT_DIR,
     "class_prediction_analysis.csv"
 )
 
+
 results_df.to_csv(
-    csv_path,
+    class_results_path,
     index=False
 )
 
 
-# ---------------------------------------------------------
-# Save confusion matrix
-# ---------------------------------------------------------
+# =========================================================
+# SAVE CONFUSION MATRIX
+# =========================================================
+
 confusion_df = pd.DataFrame(
     confusion_matrix,
     index=CLASS_NAMES,
     columns=CLASS_NAMES
 )
 
+
 confusion_path = os.path.join(
     OUTPUT_DIR,
     "confusion_matrix.csv"
 )
+
 
 confusion_df.to_csv(
     confusion_path
 )
 
 
-# ---------------------------------------------------------
-# Final summary
-# ---------------------------------------------------------
+# =========================================================
+# FINAL SUMMARY
+# =========================================================
+
 print("\n")
-print("=" * 70)
+print("=" * 80)
 print("ANALYSIS COMPLETE")
-print("=" * 70)
+print("=" * 80)
 
-print(f"Class analysis saved to:")
-print(csv_path)
+print(
+    "\nClass analysis saved to:"
+)
 
-print(f"\nConfusion matrix saved to:")
-print(confusion_path)
+print(
+    class_results_path
+)
 
-print("\nKey classes:")
+print(
+    "\nConfusion matrix saved to:"
+)
+
+print(
+    confusion_path
+)
+
+
+print("\n")
+print("=" * 80)
+print("KEY DAMAGE CLASS RESULTS")
+print("=" * 80)
+
 
 for class_id in damage_classes:
 
     print(
-        f"{CLASS_NAMES[class_id]} "
-        f"→ IoU: {iou[class_id]:.4f}, "
-        f"Recall: {recall[class_id]:.4f}, "
-        f"Predicted: {predicted_percentage[class_id]:.2f}%"
+        f"{CLASS_NAMES[class_id]:<18}"
+        f"IoU: {iou[class_id]:.4f} | "
+        f"Recall: {recall[class_id]:.4f} | "
+        f"F1: {f1_score[class_id]:.4f} | "
+        f"Predicted: "
+        f"{predicted_percentage[class_id]:.2f}%"
     )
 
-print("\n" + "=" * 70)
+
+print("\n")
+print("=" * 80)
+print("DONE")
+print("=" * 80)
