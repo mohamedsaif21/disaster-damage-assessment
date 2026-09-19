@@ -395,7 +395,7 @@ for epoch in range(EPOCHS):
 
         if (
             batch_idx + 1
-        ) % 100 == 0:
+        ) % 10 == 0:
 
             print(
                 f"Epoch [{epoch + 1}/{EPOCHS}] "
