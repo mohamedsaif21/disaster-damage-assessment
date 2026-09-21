@@ -1,0 +1,6 @@
+Class,Actual Pixels,Actual %,Predicted Pixels,Predicted %
+Background,17093729,93.4873,17208170,94.1132
+No Damage,862228,4.7156,946540,5.1767
+Minor Damage,122697,0.6710,0,0.0000
+Major Damage,120969,0.6616,10,0.0001
+Destroyed,84921,0.4644,129824,0.7100
