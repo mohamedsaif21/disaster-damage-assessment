@@ -1,0 +1,1396 @@
+sample_id,class_id,class_name,original_pixels,resized_pixels,scaled_resized_pixels,retention_percent
+hurricane-michael_00000341,0,Background,1034367,64652,1034432,100.00628403651702
+hurricane-michael_00000341,1,No Damage,10856,674,10784,99.3367722918202
+hurricane-michael_00000341,2,Minor Damage,2328,145,2320,99.65635738831615
+hurricane-michael_00000341,3,Major Damage,1025,65,1040,101.46341463414635
+hurricane-michael_00000341,4,Destroyed,0,0,0,0.0
+hurricane-michael_00000102,0,Background,896757,56085,897360,100.06724229640807
+hurricane-michael_00000102,1,No Damage,94242,5899,94384,100.15067591944144
+hurricane-michael_00000102,2,Minor Damage,39164,2429,38864,99.23399039934634
+hurricane-michael_00000102,3,Major Damage,15603,950,15200,97.41716336601935
+hurricane-michael_00000102,4,Destroyed,2810,173,2768,98.50533807829181
+hurricane-michael_00000446,0,Background,942434,58892,942272,99.98281046736429
+hurricane-michael_00000446,1,No Damage,68105,4236,67776,99.51692239923648
+hurricane-michael_00000446,2,Minor Damage,18447,1177,18832,102.0870602265951
+hurricane-michael_00000446,3,Major Damage,19590,1231,19696,100.5410923940786
+hurricane-michael_00000446,4,Destroyed,0,0,0,0.0
+hurricane-florence_00000510,0,Background,1029136,64326,1029216,100.00777351098398
+hurricane-florence_00000510,1,No Damage,19243,1198,19168,99.61024788234683
+hurricane-florence_00000510,2,Minor Damage,0,0,0,0.0
+hurricane-florence_00000510,3,Major Damage,0,0,0,0.0
+hurricane-florence_00000510,4,Destroyed,197,12,192,97.46192893401016
+santa-rosa-wildfire_00000084,0,Background,813282,50783,812528,99.90728923054981
+santa-rosa-wildfire_00000084,1,No Damage,15608,971,15536,99.53869810353665
+santa-rosa-wildfire_00000084,2,Minor Damage,0,0,0,0.0
+santa-rosa-wildfire_00000084,3,Major Damage,0,0,0,0.0
+santa-rosa-wildfire_00000084,4,Destroyed,219686,13782,220512,100.37599118742204
+hurricane-michael_00000358,0,Background,1002943,62711,1003376,100.0431729420316
+hurricane-michael_00000358,1,No Damage,35323,2186,34976,99.01763723353056
+hurricane-michael_00000358,2,Minor Damage,6452,398,6368,98.69807811531308
+hurricane-michael_00000358,3,Major Damage,3858,241,3856,99.94815966822188
+hurricane-michael_00000358,4,Destroyed,0,0,0,0.0
+hurricane-michael_00000142,0,Background,962876,60170,962720,99.98379853688326
+hurricane-michael_00000142,1,No Damage,61599,3852,61632,100.05357229825161
+hurricane-michael_00000142,2,Minor Damage,16758,1060,16960,101.20539443847714
+hurricane-michael_00000142,3,Major Damage,7104,438,7008,98.64864864864865
+hurricane-michael_00000142,4,Destroyed,239,16,256,107.11297071129707
+socal-fire_00000013,0,Background,1048576,65536,1048576,100.0
+socal-fire_00000013,1,No Damage,0,0,0,0.0
+socal-fire_00000013,2,Minor Damage,0,0,0,0.0
+socal-fire_00000013,3,Major Damage,0,0,0,0.0
+socal-fire_00000013,4,Destroyed,0,0,0,0.0
+socal-fire_00000277,0,Background,1048576,65536,1048576,100.0
+socal-fire_00000277,1,No Damage,0,0,0,0.0
+socal-fire_00000277,2,Minor Damage,0,0,0,0.0
+socal-fire_00000277,3,Major Damage,0,0,0,0.0
+socal-fire_00000277,4,Destroyed,0,0,0,0.0
+hurricane-michael_00000380,0,Background,1048576,65536,1048576,100.0
+hurricane-michael_00000380,1,No Damage,0,0,0,0.0
+hurricane-michael_00000380,2,Minor Damage,0,0,0,0.0
+hurricane-michael_00000380,3,Major Damage,0,0,0,0.0
+hurricane-michael_00000380,4,Destroyed,0,0,0,0.0
+hurricane-michael_00000196,0,Background,947092,59240,947840,100.07897859975587
+hurricane-michael_00000196,1,No Damage,46897,2894,46304,98.7355267927586
+hurricane-michael_00000196,2,Minor Damage,29441,1819,29104,98.85533779423254
+hurricane-michael_00000196,3,Major Damage,20556,1303,20848,101.42050982681457
+hurricane-michael_00000196,4,Destroyed,4590,280,4480,97.60348583877996
+hurricane-michael_00000269,0,Background,1002797,62683,1002928,100.01306346149819
+hurricane-michael_00000269,1,No Damage,28046,1751,28016,99.89303287456322
+hurricane-michael_00000269,2,Minor Damage,6962,425,6800,97.67308244757254
+hurricane-michael_00000269,3,Major Damage,5878,375,6000,102.07553589656347
+hurricane-michael_00000269,4,Destroyed,4893,302,4832,98.75332107091764
+santa-rosa-wildfire_00000155,0,Background,760100,47481,759696,99.94684909880279
+santa-rosa-wildfire_00000155,1,No Damage,80496,5028,80448,99.94036970781157
+santa-rosa-wildfire_00000155,2,Minor Damage,1159,75,1200,103.53753235547887
+santa-rosa-wildfire_00000155,3,Major Damage,0,0,0,0.0
+santa-rosa-wildfire_00000155,4,Destroyed,206821,12952,207232,100.19872256685733
+santa-rosa-wildfire_00000320,0,Background,1048576,65536,1048576,100.0
+santa-rosa-wildfire_00000320,1,No Damage,0,0,0,0.0
+santa-rosa-wildfire_00000320,2,Minor Damage,0,0,0,0.0
+santa-rosa-wildfire_00000320,3,Major Damage,0,0,0,0.0
+santa-rosa-wildfire_00000320,4,Destroyed,0,0,0,0.0
+hurricane-harvey_00000515,0,Background,977844,61125,978000,100.01595346496987
+hurricane-harvey_00000515,1,No Damage,70732,4411,70576,99.77944918848611
+hurricane-harvey_00000515,2,Minor Damage,0,0,0,0.0
+hurricane-harvey_00000515,3,Major Damage,0,0,0,0.0
+hurricane-harvey_00000515,4,Destroyed,0,0,0,0.0
+santa-rosa-wildfire_00000129,0,Background,865073,54064,865024,99.99433573814002
+santa-rosa-wildfire_00000129,1,No Damage,19065,1186,18976,99.53317597692106
+santa-rosa-wildfire_00000129,2,Minor Damage,583,33,528,90.56603773584906
+santa-rosa-wildfire_00000129,3,Major Damage,0,0,0,0.0
+santa-rosa-wildfire_00000129,4,Destroyed,163855,10253,164048,100.11778706783436
+socal-fire_00000572,0,Background,1048576,65536,1048576,100.0
+socal-fire_00000572,1,No Damage,0,0,0,0.0
+socal-fire_00000572,2,Minor Damage,0,0,0,0.0
+socal-fire_00000572,3,Major Damage,0,0,0,0.0
+socal-fire_00000572,4,Destroyed,0,0,0,0.0
+palu-tsunami_00000189,0,Background,973267,60839,973424,100.0161312363411
+palu-tsunami_00000189,1,No Damage,43451,2722,43552,100.23244574348115
+palu-tsunami_00000189,2,Minor Damage,0,0,0,0.0
+palu-tsunami_00000189,3,Major Damage,6482,389,6224,96.01974699166924
+palu-tsunami_00000189,4,Destroyed,25376,1586,25376,100.0
+socal-fire_00000151,0,Background,1048576,65536,1048576,100.0
+socal-fire_00000151,1,No Damage,0,0,0,0.0
+socal-fire_00000151,2,Minor Damage,0,0,0,0.0
+socal-fire_00000151,3,Major Damage,0,0,0,0.0
+socal-fire_00000151,4,Destroyed,0,0,0,0.0
+santa-rosa-wildfire_00000103,0,Background,984405,61530,984480,100.00761881542657
+santa-rosa-wildfire_00000103,1,No Damage,35997,2261,36176,100.49726366086063
+santa-rosa-wildfire_00000103,2,Minor Damage,1570,97,1552,98.85350318471338
+santa-rosa-wildfire_00000103,3,Major Damage,3351,200,3200,95.49388242315726
+santa-rosa-wildfire_00000103,4,Destroyed,23253,1448,23168,99.63445576914806
+mexico-earthquake_00000096,0,Background,1042898,65185,1042960,100.00594497256682
+mexico-earthquake_00000096,1,No Damage,5678,351,5616,98.90806622050017
+mexico-earthquake_00000096,2,Minor Damage,0,0,0,0.0
+mexico-earthquake_00000096,3,Major Damage,0,0,0,0.0
+mexico-earthquake_00000096,4,Destroyed,0,0,0,0.0
+socal-fire_00000915,0,Background,1048576,65536,1048576,100.0
+socal-fire_00000915,1,No Damage,0,0,0,0.0
+socal-fire_00000915,2,Minor Damage,0,0,0,0.0
+socal-fire_00000915,3,Major Damage,0,0,0,0.0
+socal-fire_00000915,4,Destroyed,0,0,0,0.0
+santa-rosa-wildfire_00000250,0,Background,1002322,62641,1002256,99.99341528969732
+santa-rosa-wildfire_00000250,1,No Damage,4066,254,4064,99.9508116084604
+santa-rosa-wildfire_00000250,2,Minor Damage,1036,65,1040,100.38610038610038
+santa-rosa-wildfire_00000250,3,Major Damage,0,0,0,0.0
+santa-rosa-wildfire_00000250,4,Destroyed,41152,2576,41216,100.15552099533438
+hurricane-harvey_00000344,0,Background,1005210,62818,1005088,99.98786323255837
+hurricane-harvey_00000344,1,No Damage,28570,1800,28800,100.8050402520126
+hurricane-harvey_00000344,2,Minor Damage,14796,918,14688,99.27007299270073
+hurricane-harvey_00000344,3,Major Damage,0,0,0,0.0
+hurricane-harvey_00000344,4,Destroyed,0,0,0,0.0
+santa-rosa-wildfire_00000191,0,Background,1042972,65185,1042960,99.99884944178751
+santa-rosa-wildfire_00000191,1,No Damage,0,0,0,0.0
+santa-rosa-wildfire_00000191,2,Minor Damage,0,0,0,0.0
+santa-rosa-wildfire_00000191,3,Major Damage,0,0,0,0.0
+santa-rosa-wildfire_00000191,4,Destroyed,5604,351,5616,100.21413276231263
+hurricane-harvey_00000261,0,Background,1042943,65179,1042864,99.99242528115151
+hurricane-harvey_00000261,1,No Damage,0,0,0,0.0
+hurricane-harvey_00000261,2,Minor Damage,0,0,0,0.0
+hurricane-harvey_00000261,3,Major Damage,5633,357,5712,101.40244984910349
+hurricane-harvey_00000261,4,Destroyed,0,0,0,0.0
+hurricane-michael_00000208,0,Background,1030867,64421,1030736,99.98729225011567
+hurricane-michael_00000208,1,No Damage,11741,743,11888,101.25202282599437
+hurricane-michael_00000208,2,Minor Damage,5214,327,5232,100.34522439585731
+hurricane-michael_00000208,3,Major Damage,754,45,720,95.49071618037135
+hurricane-michael_00000208,4,Destroyed,0,0,0,0.0
+socal-fire_00000923,0,Background,1046226,65385,1046160,99.99369161156385
+socal-fire_00000923,1,No Damage,756,50,800,105.82010582010581
+socal-fire_00000923,2,Minor Damage,0,0,0,0.0
+socal-fire_00000923,3,Major Damage,0,0,0,0.0
+socal-fire_00000923,4,Destroyed,1594,101,1616,101.38017565872019
+santa-rosa-wildfire_00000249,0,Background,1037819,64865,1037840,100.00202347422817
+santa-rosa-wildfire_00000249,1,No Damage,179,11,176,98.32402234636871
+santa-rosa-wildfire_00000249,2,Minor Damage,0,0,0,0.0
+santa-rosa-wildfire_00000249,3,Major Damage,0,0,0,0.0
+santa-rosa-wildfire_00000249,4,Destroyed,10578,660,10560,99.8298355076574
+socal-fire_00000252,0,Background,1044745,65297,1044752,100.00067001995703
+socal-fire_00000252,1,No Damage,3831,239,3824,99.8172800835291
+socal-fire_00000252,2,Minor Damage,0,0,0,0.0
+socal-fire_00000252,3,Major Damage,0,0,0,0.0
+socal-fire_00000252,4,Destroyed,0,0,0,0.0
+hurricane-matthew_00000102,0,Background,1034768,64672,1034752,99.99845375968333
+hurricane-matthew_00000102,1,No Damage,1489,95,1520,102.08193418401612
+hurricane-matthew_00000102,2,Minor Damage,10152,631,10096,99.44838455476753
+hurricane-matthew_00000102,3,Major Damage,1957,124,1984,101.37966274910578
+hurricane-matthew_00000102,4,Destroyed,210,14,224,106.66666666666667
+hurricane-michael_00000003,0,Background,992667,62022,992352,99.96826730414126
+hurricane-michael_00000003,1,No Damage,0,0,0,0.0
+hurricane-michael_00000003,2,Minor Damage,52146,3277,52432,100.54846009281633
+hurricane-michael_00000003,3,Major Damage,3440,215,3440,100.0
+hurricane-michael_00000003,4,Destroyed,323,22,352,108.9783281733746
+palu-tsunami_00000178,0,Background,711197,44502,712032,100.11740769435191
+palu-tsunami_00000178,1,No Damage,208831,13034,208544,99.86256829685249
+palu-tsunami_00000178,2,Minor Damage,0,0,0,0.0
+palu-tsunami_00000178,3,Major Damage,1669,108,1728,103.53505092869982
+palu-tsunami_00000178,4,Destroyed,126879,7892,126272,99.52159143751132
+hurricane-harvey_00000157,0,Background,1048314,65518,1048288,99.99751982707471
+hurricane-harvey_00000157,1,No Damage,0,0,0,0.0
+hurricane-harvey_00000157,2,Minor Damage,0,0,0,0.0
+hurricane-harvey_00000157,3,Major Damage,262,18,288,109.92366412213741
+hurricane-harvey_00000157,4,Destroyed,0,0,0,0.0
+hurricane-florence_00000008,0,Background,1017739,63601,1017616,99.98791438669443
+hurricane-florence_00000008,1,No Damage,30837,1935,30960,100.39887148555306
+hurricane-florence_00000008,2,Minor Damage,0,0,0,0.0
+hurricane-florence_00000008,3,Major Damage,0,0,0,0.0
+hurricane-florence_00000008,4,Destroyed,0,0,0,0.0
+hurricane-harvey_00000440,0,Background,855629,53422,854752,99.89750230532158
+hurricane-harvey_00000440,1,No Damage,70863,4442,71072,100.29493529768709
+hurricane-harvey_00000440,2,Minor Damage,24966,1575,25200,100.93727469358326
+hurricane-harvey_00000440,3,Major Damage,97118,6097,97552,100.44687905434625
+hurricane-harvey_00000440,4,Destroyed,0,0,0,0.0
+hurricane-michael_00000172,0,Background,900943,56365,901840,100.0995623474515
+hurricane-michael_00000172,1,No Damage,97621,6041,96656,99.01148318497044
+hurricane-michael_00000172,2,Minor Damage,44409,2791,44656,100.55619356436758
+hurricane-michael_00000172,3,Major Damage,5603,339,5424,96.8052828841692
+hurricane-michael_00000172,4,Destroyed,0,0,0,0.0
+midwest-flooding_00000444,0,Background,1040556,65034,1040544,99.99884677038044
+midwest-flooding_00000444,1,No Damage,7862,493,7888,100.330704655304
+midwest-flooding_00000444,2,Minor Damage,0,0,0,0.0
+midwest-flooding_00000444,3,Major Damage,158,9,144,91.13924050632912
+midwest-flooding_00000444,4,Destroyed,0,0,0,0.0
+socal-fire_00000079,0,Background,1048576,65536,1048576,100.0
+socal-fire_00000079,1,No Damage,0,0,0,0.0
+socal-fire_00000079,2,Minor Damage,0,0,0,0.0
+socal-fire_00000079,3,Major Damage,0,0,0,0.0
+socal-fire_00000079,4,Destroyed,0,0,0,0.0
+midwest-flooding_00000346,0,Background,1024834,64048,1024768,99.99355993263299
+midwest-flooding_00000346,1,No Damage,0,0,0,0.0
+midwest-flooding_00000346,2,Minor Damage,2840,178,2848,100.28169014084507
+midwest-flooding_00000346,3,Major Damage,16773,1051,16816,100.25636439515888
+midwest-flooding_00000346,4,Destroyed,4129,259,4144,100.36328408815693
+hurricane-matthew_00000232,0,Background,1047866,65491,1047856,99.99904567950483
+hurricane-matthew_00000232,1,No Damage,0,0,0,0.0
+hurricane-matthew_00000232,2,Minor Damage,190,12,192,101.05263157894737
+hurricane-matthew_00000232,3,Major Damage,260,16,256,98.46153846153847
+hurricane-matthew_00000232,4,Destroyed,260,17,272,104.61538461538463
+palu-tsunami_00000102,0,Background,1005409,62855,1005680,100.02695420470673
+palu-tsunami_00000102,1,No Damage,43167,2681,42896,99.37220562003382
+palu-tsunami_00000102,2,Minor Damage,0,0,0,0.0
+palu-tsunami_00000102,3,Major Damage,0,0,0,0.0
+palu-tsunami_00000102,4,Destroyed,0,0,0,0.0
+santa-rosa-wildfire_00000185,0,Background,1001575,62595,1001520,99.99450864887802
+santa-rosa-wildfire_00000185,1,No Damage,47001,2941,47056,100.11701878683432
+santa-rosa-wildfire_00000185,2,Minor Damage,0,0,0,0.0
+santa-rosa-wildfire_00000185,3,Major Damage,0,0,0,0.0
+santa-rosa-wildfire_00000185,4,Destroyed,0,0,0,0.0
+hurricane-florence_00000478,0,Background,1031887,64502,1032032,100.01405192622836
+hurricane-florence_00000478,1,No Damage,15512,961,15376,99.12325941206808
+hurricane-florence_00000478,2,Minor Damage,0,0,0,0.0
+hurricane-florence_00000478,3,Major Damage,1177,73,1168,99.23534409515717
+hurricane-florence_00000478,4,Destroyed,0,0,0,0.0
+socal-fire_00001107,0,Background,1048576,65536,1048576,100.0
+socal-fire_00001107,1,No Damage,0,0,0,0.0
+socal-fire_00001107,2,Minor Damage,0,0,0,0.0
+socal-fire_00001107,3,Major Damage,0,0,0,0.0
+socal-fire_00001107,4,Destroyed,0,0,0,0.0
+socal-fire_00001283,0,Background,1048576,65536,1048576,100.0
+socal-fire_00001283,1,No Damage,0,0,0,0.0
+socal-fire_00001283,2,Minor Damage,0,0,0,0.0
+socal-fire_00001283,3,Major Damage,0,0,0,0.0
+socal-fire_00001283,4,Destroyed,0,0,0,0.0
+hurricane-florence_00000320,0,Background,1040102,65008,1040128,100.00249975483173
+hurricane-florence_00000320,1,No Damage,6245,391,6256,100.17614091273019
+hurricane-florence_00000320,2,Minor Damage,2229,137,2192,98.34006280843428
+hurricane-florence_00000320,3,Major Damage,0,0,0,0.0
+hurricane-florence_00000320,4,Destroyed,0,0,0,0.0
+hurricane-florence_00000146,0,Background,1046557,65406,1046496,99.99417136381487
+hurricane-florence_00000146,1,No Damage,0,0,0,0.0
+hurricane-florence_00000146,2,Minor Damage,0,0,0,0.0
+hurricane-florence_00000146,3,Major Damage,2019,130,2080,103.0212976721149
+hurricane-florence_00000146,4,Destroyed,0,0,0,0.0
+hurricane-harvey_00000439,0,Background,734031,45811,732976,99.85627310018242
+hurricane-harvey_00000439,1,No Damage,7139,461,7376,103.31979268805154
+hurricane-harvey_00000439,2,Minor Damage,88608,5563,89008,100.45142650776452
+hurricane-harvey_00000439,3,Major Damage,218798,13701,219216,100.19104379381896
+hurricane-harvey_00000439,4,Destroyed,0,0,0,0.0
+hurricane-matthew_00000261,0,Background,1047241,65451,1047216,99.9976127749009
+hurricane-matthew_00000261,1,No Damage,138,8,128,92.7536231884058
+hurricane-matthew_00000261,2,Minor Damage,937,60,960,102.45464247598719
+hurricane-matthew_00000261,3,Major Damage,260,17,272,104.61538461538463
+hurricane-matthew_00000261,4,Destroyed,0,0,0,0.0
+socal-fire_00001078,0,Background,1043699,65224,1043584,99.98898149753904
+socal-fire_00001078,1,No Damage,4599,294,4704,102.28310502283105
+socal-fire_00001078,2,Minor Damage,0,0,0,0.0
+socal-fire_00001078,3,Major Damage,0,0,0,0.0
+socal-fire_00001078,4,Destroyed,278,18,288,103.59712230215827
+mexico-earthquake_00000047,0,Background,776810,48580,777280,100.06050385551164
+mexico-earthquake_00000047,1,No Damage,271766,16956,271296,99.82705710059389
+mexico-earthquake_00000047,2,Minor Damage,0,0,0,0.0
+mexico-earthquake_00000047,3,Major Damage,0,0,0,0.0
+mexico-earthquake_00000047,4,Destroyed,0,0,0,0.0
+hurricane-michael_00000104,0,Background,1007074,62924,1006784,99.9712037049909
+hurricane-michael_00000104,1,No Damage,28816,1813,29008,100.66629650194336
+hurricane-michael_00000104,2,Minor Damage,8129,514,8224,101.16865543117235
+hurricane-michael_00000104,3,Major Damage,3894,241,3856,99.02413970210581
+hurricane-michael_00000104,4,Destroyed,663,44,704,106.18401206636501
+socal-fire_00000969,0,Background,1048576,65536,1048576,100.0
+socal-fire_00000969,1,No Damage,0,0,0,0.0
+socal-fire_00000969,2,Minor Damage,0,0,0,0.0
+socal-fire_00000969,3,Major Damage,0,0,0,0.0
+socal-fire_00000969,4,Destroyed,0,0,0,0.0
+midwest-flooding_00000024,0,Background,770341,48203,771248,100.11774006576309
+midwest-flooding_00000024,1,No Damage,278235,17333,277328,99.67401656872788
+midwest-flooding_00000024,2,Minor Damage,0,0,0,0.0
+midwest-flooding_00000024,3,Major Damage,0,0,0,0.0
+midwest-flooding_00000024,4,Destroyed,0,0,0,0.0
+socal-fire_00000237,0,Background,1010535,63172,1010752,100.02147377379309
+socal-fire_00000237,1,No Damage,38041,2364,37824,99.42956284009358
+socal-fire_00000237,2,Minor Damage,0,0,0,0.0
+socal-fire_00000237,3,Major Damage,0,0,0,0.0
+socal-fire_00000237,4,Destroyed,0,0,0,0.0
+hurricane-michael_00000430,0,Background,980994,61312,980992,99.99979612515469
+hurricane-michael_00000430,1,No Damage,8184,506,8096,98.9247311827957
+hurricane-michael_00000430,2,Minor Damage,3777,235,3760,99.54990733386285
+hurricane-michael_00000430,3,Major Damage,55621,3483,55728,100.19237338415348
+hurricane-michael_00000430,4,Destroyed,0,0,0,0.0
+hurricane-harvey_00000016,0,Background,897253,56116,897856,100.06720512497589
+hurricane-harvey_00000016,1,No Damage,151323,9420,150720,99.60151464086755
+hurricane-harvey_00000016,2,Minor Damage,0,0,0,0.0
+hurricane-harvey_00000016,3,Major Damage,0,0,0,0.0
+hurricane-harvey_00000016,4,Destroyed,0,0,0,0.0
+hurricane-matthew_00000066,0,Background,966499,60401,966416,99.99141230358231
+hurricane-matthew_00000066,1,No Damage,13648,855,13680,100.23446658851114
+hurricane-matthew_00000066,2,Minor Damage,67651,4233,67728,100.11381945573605
+hurricane-matthew_00000066,3,Major Damage,778,47,752,96.65809768637533
+hurricane-matthew_00000066,4,Destroyed,0,0,0,0.0
+santa-rosa-wildfire_00000309,0,Background,909150,56810,908960,99.9791013584117
+santa-rosa-wildfire_00000309,1,No Damage,139426,8726,139616,100.13627300503494
+santa-rosa-wildfire_00000309,2,Minor Damage,0,0,0,0.0
+santa-rosa-wildfire_00000309,3,Major Damage,0,0,0,0.0
+santa-rosa-wildfire_00000309,4,Destroyed,0,0,0,0.0
+socal-fire_00000203,0,Background,1048576,65536,1048576,100.0
+socal-fire_00000203,1,No Damage,0,0,0,0.0
+socal-fire_00000203,2,Minor Damage,0,0,0,0.0
+socal-fire_00000203,3,Major Damage,0,0,0,0.0
+socal-fire_00000203,4,Destroyed,0,0,0,0.0
+socal-fire_00000960,0,Background,1013621,63334,1013344,99.97267223153428
+socal-fire_00000960,1,No Damage,34955,2202,35232,100.79244743241311
+socal-fire_00000960,2,Minor Damage,0,0,0,0.0
+socal-fire_00000960,3,Major Damage,0,0,0,0.0
+socal-fire_00000960,4,Destroyed,0,0,0,0.0
+santa-rosa-wildfire_00000101,0,Background,936596,58555,936880,100.03032257237912
+santa-rosa-wildfire_00000101,1,No Damage,111980,6981,111696,99.74638328272906
+santa-rosa-wildfire_00000101,2,Minor Damage,0,0,0,0.0
+santa-rosa-wildfire_00000101,3,Major Damage,0,0,0,0.0
+santa-rosa-wildfire_00000101,4,Destroyed,0,0,0,0.0
+socal-fire_00000767,0,Background,890311,55615,889840,99.9470971379664
+socal-fire_00000767,1,No Damage,158265,9921,158736,100.29760212302152
+socal-fire_00000767,2,Minor Damage,0,0,0,0.0
+socal-fire_00000767,3,Major Damage,0,0,0,0.0
+socal-fire_00000767,4,Destroyed,0,0,0,0.0
+santa-rosa-wildfire_00000251,0,Background,1004053,62751,1004016,99.99631493556616
+santa-rosa-wildfire_00000251,1,No Damage,4469,272,4352,97.38196464533453
+santa-rosa-wildfire_00000251,2,Minor Damage,0,0,0,0.0
+santa-rosa-wildfire_00000251,3,Major Damage,0,0,0,0.0
+santa-rosa-wildfire_00000251,4,Destroyed,40054,2513,40208,100.38448095071652
+mexico-earthquake_00000126,0,Background,699795,43714,699424,99.94698447402453
+mexico-earthquake_00000126,1,No Damage,348781,21822,349152,100.10637047316224
+mexico-earthquake_00000126,2,Minor Damage,0,0,0,0.0
+mexico-earthquake_00000126,3,Major Damage,0,0,0,0.0
+mexico-earthquake_00000126,4,Destroyed,0,0,0,0.0
+socal-fire_00000727,0,Background,1048576,65536,1048576,100.0
+socal-fire_00000727,1,No Damage,0,0,0,0.0
+socal-fire_00000727,2,Minor Damage,0,0,0,0.0
+socal-fire_00000727,3,Major Damage,0,0,0,0.0
+socal-fire_00000727,4,Destroyed,0,0,0,0.0
+socal-fire_00001233,0,Background,1004763,62803,1004848,100.00845970641834
+socal-fire_00001233,1,No Damage,43813,2733,43728,99.8059936548513
+socal-fire_00001233,2,Minor Damage,0,0,0,0.0
+socal-fire_00001233,3,Major Damage,0,0,0,0.0
+socal-fire_00001233,4,Destroyed,0,0,0,0.0
+hurricane-michael_00000458,0,Background,955844,59715,955440,99.95773368876092
+hurricane-michael_00000458,1,No Damage,78735,4949,79184,100.57026735251159
+hurricane-michael_00000458,2,Minor Damage,13997,872,13952,99.67850253625777
+hurricane-michael_00000458,3,Major Damage,0,0,0,0.0
+hurricane-michael_00000458,4,Destroyed,0,0,0,0.0
+mexico-earthquake_00000009,0,Background,724910,45312,724992,100.01131174904472
+mexico-earthquake_00000009,1,No Damage,323666,20224,323584,99.97466524132902
+mexico-earthquake_00000009,2,Minor Damage,0,0,0,0.0
+mexico-earthquake_00000009,3,Major Damage,0,0,0,0.0
+mexico-earthquake_00000009,4,Destroyed,0,0,0,0.0
+guatemala-volcano_00000001,0,Background,1045967,65371,1045936,99.9970362353688
+guatemala-volcano_00000001,1,No Damage,0,0,0,0.0
+guatemala-volcano_00000001,2,Minor Damage,2609,165,2640,101.18819471061708
+guatemala-volcano_00000001,3,Major Damage,0,0,0,0.0
+guatemala-volcano_00000001,4,Destroyed,0,0,0,0.0
+socal-fire_00000464,0,Background,1048576,65536,1048576,100.0
+socal-fire_00000464,1,No Damage,0,0,0,0.0
+socal-fire_00000464,2,Minor Damage,0,0,0,0.0
+socal-fire_00000464,3,Major Damage,0,0,0,0.0
+socal-fire_00000464,4,Destroyed,0,0,0,0.0
+palu-tsunami_00000048,0,Background,968148,60505,968080,99.99297628048605
+palu-tsunami_00000048,1,No Damage,76205,4769,76304,100.1299127353848
+palu-tsunami_00000048,2,Minor Damage,0,0,0,0.0
+palu-tsunami_00000048,3,Major Damage,1587,97,1552,97.79458097038437
+palu-tsunami_00000048,4,Destroyed,2636,165,2640,100.15174506828528
+hurricane-michael_00000543,0,Background,973283,60837,973392,100.01119920927417
+hurricane-michael_00000543,1,No Damage,72816,4542,72672,99.8022412656559
+hurricane-michael_00000543,2,Minor Damage,2477,157,2512,101.41299959628583
+hurricane-michael_00000543,3,Major Damage,0,0,0,0.0
+hurricane-michael_00000543,4,Destroyed,0,0,0,0.0
+hurricane-matthew_00000090,0,Background,1027040,64182,1026912,99.98753699953264
+hurricane-matthew_00000090,1,No Damage,0,0,0,0.0
+hurricane-matthew_00000090,2,Minor Damage,16406,1030,16480,100.45105449225893
+hurricane-matthew_00000090,3,Major Damage,4172,261,4176,100.09587727708534
+hurricane-matthew_00000090,4,Destroyed,958,63,1008,105.21920668058455
+socal-fire_00000955,0,Background,1048576,65536,1048576,100.0
+socal-fire_00000955,1,No Damage,0,0,0,0.0
+socal-fire_00000955,2,Minor Damage,0,0,0,0.0
+socal-fire_00000955,3,Major Damage,0,0,0,0.0
+socal-fire_00000955,4,Destroyed,0,0,0,0.0
+palu-tsunami_00000142,0,Background,1038503,64902,1038432,99.9931632359271
+palu-tsunami_00000142,1,No Damage,4109,257,4112,100.0730104648333
+palu-tsunami_00000142,2,Minor Damage,0,0,0,0.0
+palu-tsunami_00000142,3,Major Damage,310,20,320,103.2258064516129
+palu-tsunami_00000142,4,Destroyed,5654,357,5712,101.02582242660063
+hurricane-matthew_00000211,0,Background,1042521,65151,1042416,99.98992826043792
+hurricane-matthew_00000211,1,No Damage,0,0,0,0.0
+hurricane-matthew_00000211,2,Minor Damage,1546,99,1584,102.45795601552395
+hurricane-matthew_00000211,3,Major Damage,793,52,832,104.91803278688525
+hurricane-matthew_00000211,4,Destroyed,3716,234,3744,100.7534983853606
+hurricane-harvey_00000292,0,Background,914070,57106,913696,99.959084096404
+hurricane-harvey_00000292,1,No Damage,134506,8430,134880,100.27805451057945
+hurricane-harvey_00000292,2,Minor Damage,0,0,0,0.0
+hurricane-harvey_00000292,3,Major Damage,0,0,0,0.0
+hurricane-harvey_00000292,4,Destroyed,0,0,0,0.0
+socal-fire_00000507,0,Background,949022,59315,949040,100.00189668943395
+socal-fire_00000507,1,No Damage,99554,6221,99536,99.98191936034715
+socal-fire_00000507,2,Minor Damage,0,0,0,0.0
+socal-fire_00000507,3,Major Damage,0,0,0,0.0
+socal-fire_00000507,4,Destroyed,0,0,0,0.0
+hurricane-michael_00000514,0,Background,1013274,63335,1013360,100.00848733906129
+hurricane-michael_00000514,1,No Damage,30290,1887,30192,99.67646087817762
+hurricane-michael_00000514,2,Minor Damage,1246,80,1280,102.72873194221508
+hurricane-michael_00000514,3,Major Damage,3766,234,3744,99.41582580987786
+hurricane-michael_00000514,4,Destroyed,0,0,0,0.0
+palu-tsunami_00000020,0,Background,983725,61501,984016,100.02958143790185
+palu-tsunami_00000020,1,No Damage,15502,967,15472,99.80647658366662
+palu-tsunami_00000020,2,Minor Damage,0,0,0,0.0
+palu-tsunami_00000020,3,Major Damage,4368,269,4304,98.53479853479854
+palu-tsunami_00000020,4,Destroyed,44981,2799,44784,99.56203730463974
+mexico-earthquake_00000153,0,Background,807969,50481,807696,99.96621157494904
+mexico-earthquake_00000153,1,No Damage,240607,15055,240880,100.11346303307884
+mexico-earthquake_00000153,2,Minor Damage,0,0,0,0.0
+mexico-earthquake_00000153,3,Major Damage,0,0,0,0.0
+mexico-earthquake_00000153,4,Destroyed,0,0,0,0.0
+palu-tsunami_00000061,0,Background,928715,58045,928720,100.0005383782969
+palu-tsunami_00000061,1,No Damage,119861,7491,119856,99.99582850134739
+palu-tsunami_00000061,2,Minor Damage,0,0,0,0.0
+palu-tsunami_00000061,3,Major Damage,0,0,0,0.0
+palu-tsunami_00000061,4,Destroyed,0,0,0,0.0
+mexico-earthquake_00000041,0,Background,753867,47089,753424,99.94123631887322
+mexico-earthquake_00000041,1,No Damage,294709,18447,295152,100.15031777108945
+mexico-earthquake_00000041,2,Minor Damage,0,0,0,0.0
+mexico-earthquake_00000041,3,Major Damage,0,0,0,0.0
+mexico-earthquake_00000041,4,Destroyed,0,0,0,0.0
+socal-fire_00000169,0,Background,1048576,65536,1048576,100.0
+socal-fire_00000169,1,No Damage,0,0,0,0.0
+socal-fire_00000169,2,Minor Damage,0,0,0,0.0
+socal-fire_00000169,3,Major Damage,0,0,0,0.0
+socal-fire_00000169,4,Destroyed,0,0,0,0.0
+hurricane-michael_00000541,0,Background,1031227,64451,1031216,99.9989333095429
+hurricane-michael_00000541,1,No Damage,10850,677,10832,99.83410138248848
+hurricane-michael_00000541,2,Minor Damage,3070,195,3120,101.62866449511401
+hurricane-michael_00000541,3,Major Damage,3429,213,3408,99.38757655293088
+hurricane-michael_00000541,4,Destroyed,0,0,0,0.0
+hurricane-harvey_00000275,0,Background,1041930,65121,1041936,100.00057585442401
+hurricane-harvey_00000275,1,No Damage,0,0,0,0.0
+hurricane-harvey_00000275,2,Minor Damage,0,0,0,0.0
+hurricane-harvey_00000275,3,Major Damage,6348,397,6352,100.06301197227474
+hurricane-harvey_00000275,4,Destroyed,298,18,288,96.64429530201343
+mexico-earthquake_00000074,0,Background,646777,40413,646608,99.97387043756967
+mexico-earthquake_00000074,1,No Damage,393739,24618,393888,100.03784232702372
+mexico-earthquake_00000074,2,Minor Damage,8060,505,8080,100.24813895781637
+mexico-earthquake_00000074,3,Major Damage,0,0,0,0.0
+mexico-earthquake_00000074,4,Destroyed,0,0,0,0.0
+mexico-earthquake_00000182,0,Background,828902,51818,829088,100.02243932334582
+mexico-earthquake_00000182,1,No Damage,219674,13718,219488,99.91532907854366
+mexico-earthquake_00000182,2,Minor Damage,0,0,0,0.0
+mexico-earthquake_00000182,3,Major Damage,0,0,0,0.0
+mexico-earthquake_00000182,4,Destroyed,0,0,0,0.0
+hurricane-florence_00000461,0,Background,1034904,64679,1034864,99.99613490719912
+hurricane-florence_00000461,1,No Damage,0,0,0,0.0
+hurricane-florence_00000461,2,Minor Damage,0,0,0,0.0
+hurricane-florence_00000461,3,Major Damage,13672,857,13712,100.29256875365711
+hurricane-florence_00000461,4,Destroyed,0,0,0,0.0
+santa-rosa-wildfire_00000027,0,Background,1008140,63002,1008032,99.98928720217431
+santa-rosa-wildfire_00000027,1,No Damage,8512,530,8480,99.62406015037594
+santa-rosa-wildfire_00000027,2,Minor Damage,161,9,144,89.44099378881988
+santa-rosa-wildfire_00000027,3,Major Damage,0,0,0,0.0
+santa-rosa-wildfire_00000027,4,Destroyed,31763,1995,31920,100.49428580423762
+midwest-flooding_00000206,0,Background,1029773,64371,1029936,100.01582873118639
+midwest-flooding_00000206,1,No Damage,14749,912,14592,98.93552105227474
+midwest-flooding_00000206,2,Minor Damage,1862,116,1856,99.67776584317937
+midwest-flooding_00000206,3,Major Damage,2192,137,2192,100.0
+midwest-flooding_00000206,4,Destroyed,0,0,0,0.0
+hurricane-matthew_00000248,0,Background,1042858,65169,1042704,99.98523288884968
+hurricane-matthew_00000248,1,No Damage,2561,166,2656,103.7094884810621
+hurricane-matthew_00000248,2,Minor Damage,1603,105,1680,104.80349344978166
+hurricane-matthew_00000248,3,Major Damage,0,0,0,0.0
+hurricane-matthew_00000248,4,Destroyed,1554,96,1536,98.84169884169884
+socal-fire_00000397,0,Background,1048576,65536,1048576,100.0
+socal-fire_00000397,1,No Damage,0,0,0,0.0
+socal-fire_00000397,2,Minor Damage,0,0,0,0.0
+socal-fire_00000397,3,Major Damage,0,0,0,0.0
+socal-fire_00000397,4,Destroyed,0,0,0,0.0
+socal-fire_00000268,0,Background,1040338,65028,1040448,100.01057348669376
+socal-fire_00000268,1,No Damage,2339,143,2288,97.81958101752886
+socal-fire_00000268,2,Minor Damage,108,7,112,103.7037037037037
+socal-fire_00000268,3,Major Damage,0,0,0,0.0
+socal-fire_00000268,4,Destroyed,5791,358,5728,98.9121049905025
+guatemala-volcano_00000010,0,Background,1048508,65532,1048512,100.00038149446641
+guatemala-volcano_00000010,1,No Damage,0,0,0,0.0
+guatemala-volcano_00000010,2,Minor Damage,0,0,0,0.0
+guatemala-volcano_00000010,3,Major Damage,0,0,0,0.0
+guatemala-volcano_00000010,4,Destroyed,68,4,64,94.11764705882352
+santa-rosa-wildfire_00000058,0,Background,742708,46392,742272,99.94129590633196
+santa-rosa-wildfire_00000058,1,No Damage,234657,14690,235040,100.16321695069826
+santa-rosa-wildfire_00000058,2,Minor Damage,0,0,0,0.0
+santa-rosa-wildfire_00000058,3,Major Damage,0,0,0,0.0
+santa-rosa-wildfire_00000058,4,Destroyed,71211,4454,71264,100.07442670373959
+hurricane-florence_00000309,0,Background,1034563,64675,1034800,100.02290822308551
+hurricane-florence_00000309,1,No Damage,14013,861,13776,98.30871333761507
+hurricane-florence_00000309,2,Minor Damage,0,0,0,0.0
+hurricane-florence_00000309,3,Major Damage,0,0,0,0.0
+hurricane-florence_00000309,4,Destroyed,0,0,0,0.0
+hurricane-michael_00000244,0,Background,1048576,65536,1048576,100.0
+hurricane-michael_00000244,1,No Damage,0,0,0,0.0
+hurricane-michael_00000244,2,Minor Damage,0,0,0,0.0
+hurricane-michael_00000244,3,Major Damage,0,0,0,0.0
+hurricane-michael_00000244,4,Destroyed,0,0,0,0.0
+hurricane-matthew_00000202,0,Background,1044210,65263,1044208,99.99980846764541
+hurricane-matthew_00000202,1,No Damage,0,0,0,0.0
+hurricane-matthew_00000202,2,Minor Damage,386,25,400,103.62694300518133
+hurricane-matthew_00000202,3,Major Damage,1292,80,1280,99.07120743034056
+hurricane-matthew_00000202,4,Destroyed,2688,168,2688,100.0
+midwest-flooding_00000352,0,Background,1031728,64479,1031664,99.99379681466432
+midwest-flooding_00000352,1,No Damage,16596,1042,16672,100.45794167269221
+midwest-flooding_00000352,2,Minor Damage,252,15,240,95.23809523809523
+midwest-flooding_00000352,3,Major Damage,0,0,0,0.0
+midwest-flooding_00000352,4,Destroyed,0,0,0,0.0
+hurricane-harvey_00000221,0,Background,1047445,65464,1047424,99.99799512146222
+hurricane-harvey_00000221,1,No Damage,0,0,0,0.0
+hurricane-harvey_00000221,2,Minor Damage,0,0,0,0.0
+hurricane-harvey_00000221,3,Major Damage,0,0,0,0.0
+hurricane-harvey_00000221,4,Destroyed,1131,72,1152,101.85676392572944
+socal-fire_00000204,0,Background,1047272,65453,1047248,99.99770833174189
+socal-fire_00000204,1,No Damage,0,0,0,0.0
+socal-fire_00000204,2,Minor Damage,0,0,0,0.0
+socal-fire_00000204,3,Major Damage,0,0,0,0.0
+socal-fire_00000204,4,Destroyed,1304,83,1328,101.840490797546
+santa-rosa-wildfire_00000059,0,Background,1028735,64293,1028688,99.9954312821086
+santa-rosa-wildfire_00000059,1,No Damage,19841,1243,19888,100.23688322161182
+santa-rosa-wildfire_00000059,2,Minor Damage,0,0,0,0.0
+santa-rosa-wildfire_00000059,3,Major Damage,0,0,0,0.0
+santa-rosa-wildfire_00000059,4,Destroyed,0,0,0,0.0
+socal-fire_00000927,0,Background,1048576,65536,1048576,100.0
+socal-fire_00000927,1,No Damage,0,0,0,0.0
+socal-fire_00000927,2,Minor Damage,0,0,0,0.0
+socal-fire_00000927,3,Major Damage,0,0,0,0.0
+socal-fire_00000927,4,Destroyed,0,0,0,0.0
+midwest-flooding_00000085,0,Background,1048356,65523,1048368,100.00114464933667
+midwest-flooding_00000085,1,No Damage,149,8,128,85.90604026845638
+midwest-flooding_00000085,2,Minor Damage,71,5,80,112.67605633802818
+midwest-flooding_00000085,3,Major Damage,0,0,0,0.0
+midwest-flooding_00000085,4,Destroyed,0,0,0,0.0
+santa-rosa-wildfire_00000047,0,Background,999219,62469,999504,100.02852227589747
+santa-rosa-wildfire_00000047,1,No Damage,0,0,0,0.0
+santa-rosa-wildfire_00000047,2,Minor Damage,760,47,752,98.94736842105263
+santa-rosa-wildfire_00000047,3,Major Damage,0,0,0,0.0
+santa-rosa-wildfire_00000047,4,Destroyed,48597,3020,48320,99.43000596744656
+hurricane-harvey_00000170,0,Background,801319,50059,800944,99.95320215794209
+hurricane-harvey_00000170,1,No Damage,247257,15477,247632,100.15166405804487
+hurricane-harvey_00000170,2,Minor Damage,0,0,0,0.0
+hurricane-harvey_00000170,3,Major Damage,0,0,0,0.0
+hurricane-harvey_00000170,4,Destroyed,0,0,0,0.0
+hurricane-florence_00000264,0,Background,1044583,65286,1044576,99.99932987613239
+hurricane-florence_00000264,1,No Damage,3147,197,3152,100.1588814744201
+hurricane-florence_00000264,2,Minor Damage,846,53,848,100.23640661938533
+hurricane-florence_00000264,3,Major Damage,0,0,0,0.0
+hurricane-florence_00000264,4,Destroyed,0,0,0,0.0
+socal-fire_00000873,0,Background,1048576,65536,1048576,100.0
+socal-fire_00000873,1,No Damage,0,0,0,0.0
+socal-fire_00000873,2,Minor Damage,0,0,0,0.0
+socal-fire_00000873,3,Major Damage,0,0,0,0.0
+socal-fire_00000873,4,Destroyed,0,0,0,0.0
+socal-fire_00001162,0,Background,1039997,64999,1039984,99.99874999639422
+socal-fire_00001162,1,No Damage,8579,537,8592,100.15153281268212
+socal-fire_00001162,2,Minor Damage,0,0,0,0.0
+socal-fire_00001162,3,Major Damage,0,0,0,0.0
+socal-fire_00001162,4,Destroyed,0,0,0,0.0
+hurricane-michael_00000284,0,Background,927652,57933,926928,99.92195349117988
+hurricane-michael_00000284,1,No Damage,48819,3069,49104,100.58378909850674
+hurricane-michael_00000284,2,Minor Damage,39040,2445,39120,100.20491803278688
+hurricane-michael_00000284,3,Major Damage,33065,2089,33424,101.08574020867987
+hurricane-michael_00000284,4,Destroyed,0,0,0,0.0
+socal-fire_00000810,0,Background,1037230,64829,1037264,100.0032779614936
+socal-fire_00000810,1,No Damage,1300,80,1280,98.46153846153847
+socal-fire_00000810,2,Minor Damage,0,0,0,0.0
+socal-fire_00000810,3,Major Damage,0,0,0,0.0
+socal-fire_00000810,4,Destroyed,10046,627,10032,99.86064105116465
+hurricane-florence_00000168,0,Background,1048576,65536,1048576,100.0
+hurricane-florence_00000168,1,No Damage,0,0,0,0.0
+hurricane-florence_00000168,2,Minor Damage,0,0,0,0.0
+hurricane-florence_00000168,3,Major Damage,0,0,0,0.0
+hurricane-florence_00000168,4,Destroyed,0,0,0,0.0
+mexico-earthquake_00000191,0,Background,791803,49492,791872,100.00871428878142
+mexico-earthquake_00000191,1,No Damage,256773,16044,256704,99.97312801579605
+mexico-earthquake_00000191,2,Minor Damage,0,0,0,0.0
+mexico-earthquake_00000191,3,Major Damage,0,0,0,0.0
+mexico-earthquake_00000191,4,Destroyed,0,0,0,0.0
+socal-fire_00000991,0,Background,1048576,65536,1048576,100.0
+socal-fire_00000991,1,No Damage,0,0,0,0.0
+socal-fire_00000991,2,Minor Damage,0,0,0,0.0
+socal-fire_00000991,3,Major Damage,0,0,0,0.0
+socal-fire_00000991,4,Destroyed,0,0,0,0.0
+palu-tsunami_00000000,0,Background,979974,61256,980096,100.01244930987964
+palu-tsunami_00000000,1,No Damage,65318,4075,65200,99.81934535656328
+palu-tsunami_00000000,2,Minor Damage,0,0,0,0.0
+palu-tsunami_00000000,3,Major Damage,480,31,496,103.33333333333334
+palu-tsunami_00000000,4,Destroyed,2804,174,2784,99.2867332382311
+socal-fire_00000187,0,Background,1048576,65536,1048576,100.0
+socal-fire_00000187,1,No Damage,0,0,0,0.0
+socal-fire_00000187,2,Minor Damage,0,0,0,0.0
+socal-fire_00000187,3,Major Damage,0,0,0,0.0
+socal-fire_00000187,4,Destroyed,0,0,0,0.0
+midwest-flooding_00000126,0,Background,1048576,65536,1048576,100.0
+midwest-flooding_00000126,1,No Damage,0,0,0,0.0
+midwest-flooding_00000126,2,Minor Damage,0,0,0,0.0
+midwest-flooding_00000126,3,Major Damage,0,0,0,0.0
+midwest-flooding_00000126,4,Destroyed,0,0,0,0.0
+hurricane-michael_00000402,0,Background,955856,59740,955840,99.99832610769823
+hurricane-michael_00000402,1,No Damage,61209,3841,61456,100.40353542779657
+hurricane-michael_00000402,2,Minor Damage,21524,1322,21152,98.27169671064858
+hurricane-michael_00000402,3,Major Damage,7450,471,7536,101.15436241610738
+hurricane-michael_00000402,4,Destroyed,2537,162,2592,102.16791486007095
+socal-fire_00001319,0,Background,1048576,65536,1048576,100.0
+socal-fire_00001319,1,No Damage,0,0,0,0.0
+socal-fire_00001319,2,Minor Damage,0,0,0,0.0
+socal-fire_00001319,3,Major Damage,0,0,0,0.0
+socal-fire_00001319,4,Destroyed,0,0,0,0.0
+hurricane-michael_00000392,0,Background,1040305,65020,1040320,100.00144188483185
+hurricane-michael_00000392,1,No Damage,2968,185,2960,99.73045822102425
+hurricane-michael_00000392,2,Minor Damage,5303,331,5296,99.86799924570997
+hurricane-michael_00000392,3,Major Damage,0,0,0,0.0
+hurricane-michael_00000392,4,Destroyed,0,0,0,0.0
+mexico-earthquake_00000168,0,Background,907234,56696,907136,99.98919793570347
+mexico-earthquake_00000168,1,No Damage,141342,8840,141440,100.06933537094423
+mexico-earthquake_00000168,2,Minor Damage,0,0,0,0.0
+mexico-earthquake_00000168,3,Major Damage,0,0,0,0.0
+mexico-earthquake_00000168,4,Destroyed,0,0,0,0.0
+midwest-flooding_00000436,0,Background,1047138,65447,1047152,100.00133697755216
+midwest-flooding_00000436,1,No Damage,0,0,0,0.0
+midwest-flooding_00000436,2,Minor Damage,0,0,0,0.0
+midwest-flooding_00000436,3,Major Damage,0,0,0,0.0
+midwest-flooding_00000436,4,Destroyed,1438,89,1424,99.02642559109874
+hurricane-matthew_00000222,0,Background,1045766,65361,1045776,100.00095623686369
+hurricane-matthew_00000222,1,No Damage,0,0,0,0.0
+hurricane-matthew_00000222,2,Minor Damage,564,34,544,96.45390070921985
+hurricane-matthew_00000222,3,Major Damage,415,27,432,104.09638554216866
+hurricane-matthew_00000222,4,Destroyed,1831,114,1824,99.61769524849808
+hurricane-florence_00000139,0,Background,1044455,65284,1044544,100.00852119047734
+hurricane-florence_00000139,1,No Damage,0,0,0,0.0
+hurricane-florence_00000139,2,Minor Damage,0,0,0,0.0
+hurricane-florence_00000139,3,Major Damage,4121,252,4032,97.84033001698617
+hurricane-florence_00000139,4,Destroyed,0,0,0,0.0
+hurricane-michael_00000029,0,Background,1048576,65536,1048576,100.0
+hurricane-michael_00000029,1,No Damage,0,0,0,0.0
+hurricane-michael_00000029,2,Minor Damage,0,0,0,0.0
+hurricane-michael_00000029,3,Major Damage,0,0,0,0.0
+hurricane-michael_00000029,4,Destroyed,0,0,0,0.0
+hurricane-michael_00000056,0,Background,973563,60842,973472,99.99065289046523
+hurricane-michael_00000056,1,No Damage,52188,3265,52240,100.09963976393041
+hurricane-michael_00000056,2,Minor Damage,16310,1021,16336,100.15941140404661
+hurricane-michael_00000056,3,Major Damage,6515,408,6528,100.19953952417498
+hurricane-michael_00000056,4,Destroyed,0,0,0,0.0
+mexico-earthquake_00000019,0,Background,753358,47088,753408,100.0066369508255
+mexico-earthquake_00000019,1,No Damage,295218,18448,295168,99.98306336334505
+mexico-earthquake_00000019,2,Minor Damage,0,0,0,0.0
+mexico-earthquake_00000019,3,Major Damage,0,0,0,0.0
+mexico-earthquake_00000019,4,Destroyed,0,0,0,0.0
+midwest-flooding_00000117,0,Background,1042310,65141,1042256,99.99481919966229
+midwest-flooding_00000117,1,No Damage,3064,191,3056,99.73890339425587
+midwest-flooding_00000117,2,Minor Damage,198,12,192,96.96969696969697
+midwest-flooding_00000117,3,Major Damage,2837,179,2864,100.95170955234403
+midwest-flooding_00000117,4,Destroyed,167,13,208,124.55089820359282
+santa-rosa-wildfire_00000225,0,Background,842739,52689,843024,100.03381829961589
+santa-rosa-wildfire_00000225,1,No Damage,205837,12847,205552,99.86154092801586
+santa-rosa-wildfire_00000225,2,Minor Damage,0,0,0,0.0
+santa-rosa-wildfire_00000225,3,Major Damage,0,0,0,0.0
+santa-rosa-wildfire_00000225,4,Destroyed,0,0,0,0.0
+hurricane-matthew_00000264,0,Background,1048296,65519,1048304,100.00076314323437
+hurricane-matthew_00000264,1,No Damage,0,0,0,0.0
+hurricane-matthew_00000264,2,Minor Damage,0,0,0,0.0
+hurricane-matthew_00000264,3,Major Damage,0,0,0,0.0
+hurricane-matthew_00000264,4,Destroyed,280,17,272,97.14285714285714
+hurricane-michael_00000025,0,Background,1048576,65536,1048576,100.0
+hurricane-michael_00000025,1,No Damage,0,0,0,0.0
+hurricane-michael_00000025,2,Minor Damage,0,0,0,0.0
+hurricane-michael_00000025,3,Major Damage,0,0,0,0.0
+hurricane-michael_00000025,4,Destroyed,0,0,0,0.0
+santa-rosa-wildfire_00000293,0,Background,1046945,65438,1047008,100.00601750808305
+santa-rosa-wildfire_00000293,1,No Damage,0,0,0,0.0
+santa-rosa-wildfire_00000293,2,Minor Damage,0,0,0,0.0
+santa-rosa-wildfire_00000293,3,Major Damage,0,0,0,0.0
+santa-rosa-wildfire_00000293,4,Destroyed,1631,98,1568,96.13733905579399
+hurricane-florence_00000269,0,Background,1047353,65460,1047360,100.00066835154911
+hurricane-florence_00000269,1,No Damage,0,0,0,0.0
+hurricane-florence_00000269,2,Minor Damage,0,0,0,0.0
+hurricane-florence_00000269,3,Major Damage,1223,76,1216,99.42763695829926
+hurricane-florence_00000269,4,Destroyed,0,0,0,0.0
+midwest-flooding_00000337,0,Background,1041470,65103,1041648,100.01709122682362
+midwest-flooding_00000337,1,No Damage,7106,433,6928,97.49507458485786
+midwest-flooding_00000337,2,Minor Damage,0,0,0,0.0
+midwest-flooding_00000337,3,Major Damage,0,0,0,0.0
+midwest-flooding_00000337,4,Destroyed,0,0,0,0.0
+hurricane-harvey_00000168,0,Background,786331,49143,786288,99.99453156495164
+hurricane-harvey_00000168,1,No Damage,0,0,0,0.0
+hurricane-harvey_00000168,2,Minor Damage,0,0,0,0.0
+hurricane-harvey_00000168,3,Major Damage,262245,16393,262288,100.01639688077944
+hurricane-harvey_00000168,4,Destroyed,0,0,0,0.0
+hurricane-harvey_00000517,0,Background,1034785,64672,1034752,99.99681093173945
+hurricane-harvey_00000517,1,No Damage,0,0,0,0.0
+hurricane-harvey_00000517,2,Minor Damage,0,0,0,0.0
+hurricane-harvey_00000517,3,Major Damage,13791,864,13824,100.23928649118992
+hurricane-harvey_00000517,4,Destroyed,0,0,0,0.0
+socal-fire_00001179,0,Background,1048576,65536,1048576,100.0
+socal-fire_00001179,1,No Damage,0,0,0,0.0
+socal-fire_00001179,2,Minor Damage,0,0,0,0.0
+socal-fire_00001179,3,Major Damage,0,0,0,0.0
+socal-fire_00001179,4,Destroyed,0,0,0,0.0
+hurricane-michael_00000204,0,Background,960399,60028,960448,100.00510204612874
+hurricane-michael_00000204,1,No Damage,9550,583,9328,97.67539267015707
+hurricane-michael_00000204,2,Minor Damage,66570,4172,66752,100.27339642481599
+hurricane-michael_00000204,3,Major Damage,8736,543,8688,99.45054945054946
+hurricane-michael_00000204,4,Destroyed,3321,210,3360,101.1743450767841
+palu-tsunami_00000084,0,Background,499009,31126,498016,99.80100559308549
+palu-tsunami_00000084,1,No Damage,549567,34410,550560,100.1806877050478
+palu-tsunami_00000084,2,Minor Damage,0,0,0,0.0
+palu-tsunami_00000084,3,Major Damage,0,0,0,0.0
+palu-tsunami_00000084,4,Destroyed,0,0,0,0.0
+midwest-flooding_00000003,0,Background,781829,48858,781728,99.9870815741038
+midwest-flooding_00000003,1,No Damage,263661,16484,263744,100.03147981688608
+midwest-flooding_00000003,2,Minor Damage,3086,194,3104,100.58327932598834
+midwest-flooding_00000003,3,Major Damage,0,0,0,0.0
+midwest-flooding_00000003,4,Destroyed,0,0,0,0.0
+hurricane-matthew_00000134,0,Background,1027604,64221,1027536,99.99338266491762
+hurricane-matthew_00000134,1,No Damage,7160,446,7136,99.66480446927373
+hurricane-matthew_00000134,2,Minor Damage,10678,671,10736,100.54317287881626
+hurricane-matthew_00000134,3,Major Damage,2916,185,2960,101.50891632373114
+hurricane-matthew_00000134,4,Destroyed,218,13,208,95.41284403669725
+hurricane-florence_00000147,0,Background,1045046,65312,1044992,99.99483276334247
+hurricane-florence_00000147,1,No Damage,0,0,0,0.0
+hurricane-florence_00000147,2,Minor Damage,0,0,0,0.0
+hurricane-florence_00000147,3,Major Damage,0,0,0,0.0
+hurricane-florence_00000147,4,Destroyed,3530,224,3584,101.52974504249292
+palu-tsunami_00000087,0,Background,576934,35997,575952,99.82978988931143
+palu-tsunami_00000087,1,No Damage,471374,29521,472336,100.20408423035636
+palu-tsunami_00000087,2,Minor Damage,0,0,0,0.0
+palu-tsunami_00000087,3,Major Damage,0,0,0,0.0
+palu-tsunami_00000087,4,Destroyed,268,18,288,107.46268656716418
+hurricane-matthew_00000119,0,Background,1048344,65520,1048320,99.99771067512191
+hurricane-matthew_00000119,1,No Damage,0,0,0,0.0
+hurricane-matthew_00000119,2,Minor Damage,0,0,0,0.0
+hurricane-matthew_00000119,3,Major Damage,0,0,0,0.0
+hurricane-matthew_00000119,4,Destroyed,232,16,256,110.34482758620689
+hurricane-matthew_00000009,0,Background,1043519,65219,1043504,99.9985625561202
+hurricane-matthew_00000009,1,No Damage,464,33,528,113.79310344827587
+hurricane-matthew_00000009,2,Minor Damage,4429,273,4368,98.62271393090991
+hurricane-matthew_00000009,3,Major Damage,0,0,0,0.0
+hurricane-matthew_00000009,4,Destroyed,164,11,176,107.31707317073172
+hurricane-michael_00000122,0,Background,1046394,65392,1046272,99.9883409117407
+hurricane-michael_00000122,1,No Damage,1215,78,1248,102.71604938271605
+hurricane-michael_00000122,2,Minor Damage,0,0,0,0.0
+hurricane-michael_00000122,3,Major Damage,0,0,0,0.0
+hurricane-michael_00000122,4,Destroyed,967,66,1056,109.2037228541882
+hurricane-harvey_00000491,0,Background,776838,48528,776448,99.94979648266434
+hurricane-harvey_00000491,1,No Damage,0,0,0,0.0
+hurricane-harvey_00000491,2,Minor Damage,85964,5376,86016,100.06049043785772
+hurricane-harvey_00000491,3,Major Damage,185560,11622,185952,100.21125242509162
+hurricane-harvey_00000491,4,Destroyed,214,10,160,74.76635514018692
+socal-fire_00000965,0,Background,934853,58456,935296,100.04738712931338
+socal-fire_00000965,1,No Damage,113723,7080,113280,99.61045698759266
+socal-fire_00000965,2,Minor Damage,0,0,0,0.0
+socal-fire_00000965,3,Major Damage,0,0,0,0.0
+socal-fire_00000965,4,Destroyed,0,0,0,0.0
+socal-fire_00000540,0,Background,1048576,65536,1048576,100.0
+socal-fire_00000540,1,No Damage,0,0,0,0.0
+socal-fire_00000540,2,Minor Damage,0,0,0,0.0
+socal-fire_00000540,3,Major Damage,0,0,0,0.0
+socal-fire_00000540,4,Destroyed,0,0,0,0.0
+midwest-flooding_00000144,0,Background,1042550,65159,1042544,99.99942448803415
+midwest-flooding_00000144,1,No Damage,318,20,320,100.62893081761007
+midwest-flooding_00000144,2,Minor Damage,0,0,0,0.0
+midwest-flooding_00000144,3,Major Damage,5708,357,5712,100.07007708479327
+midwest-flooding_00000144,4,Destroyed,0,0,0,0.0
+hurricane-harvey_00000134,0,Background,753079,46999,751984,99.85459692807794
+hurricane-harvey_00000134,1,No Damage,276931,17374,277984,100.38023912093625
+hurricane-harvey_00000134,2,Minor Damage,18566,1163,18608,100.22621997199181
+hurricane-harvey_00000134,3,Major Damage,0,0,0,0.0
+hurricane-harvey_00000134,4,Destroyed,0,0,0,0.0
+hurricane-michael_00000211,0,Background,913574,57081,913296,99.96957006219529
+hurricane-michael_00000211,1,No Damage,26790,1686,26976,100.69428891377379
+hurricane-michael_00000211,2,Minor Damage,80699,5052,80832,100.16480997286212
+hurricane-michael_00000211,3,Major Damage,15783,986,15776,99.95564848254452
+hurricane-michael_00000211,4,Destroyed,11730,731,11696,99.71014492753623
+hurricane-matthew_00000347,0,Background,1031508,64458,1031328,99.98254982026315
+hurricane-matthew_00000347,1,No Damage,2912,188,3008,103.29670329670331
+hurricane-matthew_00000347,2,Minor Damage,10058,627,10032,99.74149930403658
+hurricane-matthew_00000347,3,Major Damage,2553,164,2624,102.7810419114767
+hurricane-matthew_00000347,4,Destroyed,1545,99,1584,102.52427184466019
+midwest-flooding_00000168,0,Background,1048056,65504,1048064,100.00076331799063
+midwest-flooding_00000168,1,No Damage,0,0,0,0.0
+midwest-flooding_00000168,2,Minor Damage,0,0,0,0.0
+midwest-flooding_00000168,3,Major Damage,0,0,0,0.0
+midwest-flooding_00000168,4,Destroyed,520,32,512,98.46153846153847
+hurricane-florence_00000277,0,Background,1041127,65067,1041072,99.99471726311968
+hurricane-florence_00000277,1,No Damage,7449,469,7504,100.7383541414955
+hurricane-florence_00000277,2,Minor Damage,0,0,0,0.0
+hurricane-florence_00000277,3,Major Damage,0,0,0,0.0
+hurricane-florence_00000277,4,Destroyed,0,0,0,0.0
+midwest-flooding_00000209,0,Background,1048576,65536,1048576,100.0
+midwest-flooding_00000209,1,No Damage,0,0,0,0.0
+midwest-flooding_00000209,2,Minor Damage,0,0,0,0.0
+midwest-flooding_00000209,3,Major Damage,0,0,0,0.0
+midwest-flooding_00000209,4,Destroyed,0,0,0,0.0
+mexico-earthquake_00000035,0,Background,826709,51643,826288,99.94907518848834
+mexico-earthquake_00000035,1,No Damage,221867,13893,222288,100.18975332068311
+mexico-earthquake_00000035,2,Minor Damage,0,0,0,0.0
+mexico-earthquake_00000035,3,Major Damage,0,0,0,0.0
+mexico-earthquake_00000035,4,Destroyed,0,0,0,0.0
+hurricane-florence_00000293,0,Background,1013895,63359,1013744,99.98510693908146
+hurricane-florence_00000293,1,No Damage,34681,2177,34832,100.43539690320348
+hurricane-florence_00000293,2,Minor Damage,0,0,0,0.0
+hurricane-florence_00000293,3,Major Damage,0,0,0,0.0
+hurricane-florence_00000293,4,Destroyed,0,0,0,0.0
+hurricane-harvey_00000299,0,Background,1048435,65526,1048416,99.99818777511244
+hurricane-harvey_00000299,1,No Damage,0,0,0,0.0
+hurricane-harvey_00000299,2,Minor Damage,0,0,0,0.0
+hurricane-harvey_00000299,3,Major Damage,141,10,160,113.47517730496455
+hurricane-harvey_00000299,4,Destroyed,0,0,0,0.0
+santa-rosa-wildfire_00000017,0,Background,1046827,65427,1046832,100.00047763384016
+santa-rosa-wildfire_00000017,1,No Damage,77,6,96,124.67532467532467
+santa-rosa-wildfire_00000017,2,Minor Damage,0,0,0,0.0
+santa-rosa-wildfire_00000017,3,Major Damage,0,0,0,0.0
+santa-rosa-wildfire_00000017,4,Destroyed,1672,103,1648,98.56459330143541
+hurricane-harvey_00000443,0,Background,681018,42555,680880,99.97973621842594
+hurricane-harvey_00000443,1,No Damage,251634,15736,251776,100.05643116589968
+hurricane-harvey_00000443,2,Minor Damage,115924,7245,115920,99.99654946344157
+hurricane-harvey_00000443,3,Major Damage,0,0,0,0.0
+hurricane-harvey_00000443,4,Destroyed,0,0,0,0.0
+socal-fire_00000496,0,Background,971776,60729,971664,99.98847471022128
+socal-fire_00000496,1,No Damage,76800,4807,76912,100.14583333333333
+socal-fire_00000496,2,Minor Damage,0,0,0,0.0
+socal-fire_00000496,3,Major Damage,0,0,0,0.0
+socal-fire_00000496,4,Destroyed,0,0,0,0.0
+socal-fire_00000692,0,Background,988167,61774,988384,100.02195985091589
+socal-fire_00000692,1,No Damage,46698,2904,46464,99.49890787614031
+socal-fire_00000692,2,Minor Damage,0,0,0,0.0
+socal-fire_00000692,3,Major Damage,0,0,0,0.0
+socal-fire_00000692,4,Destroyed,13711,858,13728,100.12398803880096
+midwest-flooding_00000236,0,Background,1039108,64950,1039200,100.00885374763739
+midwest-flooding_00000236,1,No Damage,8457,523,8368,98.94761735840133
+midwest-flooding_00000236,2,Minor Damage,1011,63,1008,99.70326409495549
+midwest-flooding_00000236,3,Major Damage,0,0,0,0.0
+midwest-flooding_00000236,4,Destroyed,0,0,0,0.0
+hurricane-florence_00000245,0,Background,1043880,65249,1043984,100.00996283097675
+hurricane-florence_00000245,1,No Damage,562,34,544,96.79715302491103
+hurricane-florence_00000245,2,Minor Damage,4134,253,4048,97.91969037252056
+hurricane-florence_00000245,3,Major Damage,0,0,0,0.0
+hurricane-florence_00000245,4,Destroyed,0,0,0,0.0
+socal-fire_00000445,0,Background,1048576,65536,1048576,100.0
+socal-fire_00000445,1,No Damage,0,0,0,0.0
+socal-fire_00000445,2,Minor Damage,0,0,0,0.0
+socal-fire_00000445,3,Major Damage,0,0,0,0.0
+socal-fire_00000445,4,Destroyed,0,0,0,0.0
+hurricane-harvey_00000451,0,Background,752885,47014,752224,99.91220438712419
+hurricane-harvey_00000451,1,No Damage,43886,2734,43744,99.67643439821356
+hurricane-harvey_00000451,2,Minor Damage,64029,3995,63920,99.82976463789845
+hurricane-harvey_00000451,3,Major Damage,187776,11793,188688,100.48568507157465
+hurricane-harvey_00000451,4,Destroyed,0,0,0,0.0
+socal-fire_00000979,0,Background,1048576,65536,1048576,100.0
+socal-fire_00000979,1,No Damage,0,0,0,0.0
+socal-fire_00000979,2,Minor Damage,0,0,0,0.0
+socal-fire_00000979,3,Major Damage,0,0,0,0.0
+socal-fire_00000979,4,Destroyed,0,0,0,0.0
+socal-fire_00001291,0,Background,1045908,65368,1045888,99.9980877859238
+socal-fire_00001291,1,No Damage,994,62,992,99.79879275653923
+socal-fire_00001291,2,Minor Damage,0,0,0,0.0
+socal-fire_00001291,3,Major Damage,0,0,0,0.0
+socal-fire_00001291,4,Destroyed,1674,106,1696,101.3142174432497
+hurricane-florence_00000042,0,Background,1037443,64845,1037520,100.00742209451508
+hurricane-florence_00000042,1,No Damage,11133,691,11056,99.30836252582412
+hurricane-florence_00000042,2,Minor Damage,0,0,0,0.0
+hurricane-florence_00000042,3,Major Damage,0,0,0,0.0
+hurricane-florence_00000042,4,Destroyed,0,0,0,0.0
+socal-fire_00000547,0,Background,1048576,65536,1048576,100.0
+socal-fire_00000547,1,No Damage,0,0,0,0.0
+socal-fire_00000547,2,Minor Damage,0,0,0,0.0
+socal-fire_00000547,3,Major Damage,0,0,0,0.0
+socal-fire_00000547,4,Destroyed,0,0,0,0.0
+santa-rosa-wildfire_00000003,0,Background,1008320,63027,1008432,100.0111075848937
+santa-rosa-wildfire_00000003,1,No Damage,40256,2509,40144,99.72178060413354
+santa-rosa-wildfire_00000003,2,Minor Damage,0,0,0,0.0
+santa-rosa-wildfire_00000003,3,Major Damage,0,0,0,0.0
+santa-rosa-wildfire_00000003,4,Destroyed,0,0,0,0.0
+socal-fire_00000489,0,Background,1042650,65170,1042720,100.00671366230279
+socal-fire_00000489,1,No Damage,5286,326,5216,98.67574725690503
+socal-fire_00000489,2,Minor Damage,0,0,0,0.0
+socal-fire_00000489,3,Major Damage,0,0,0,0.0
+socal-fire_00000489,4,Destroyed,640,40,640,100.0
+santa-rosa-wildfire_00000097,0,Background,869328,54325,869200,99.98527598328825
+santa-rosa-wildfire_00000097,1,No Damage,173512,10853,173648,100.07838074600028
+santa-rosa-wildfire_00000097,2,Minor Damage,0,0,0,0.0
+santa-rosa-wildfire_00000097,3,Major Damage,0,0,0,0.0
+santa-rosa-wildfire_00000097,4,Destroyed,5736,358,5728,99.86052998605301
+socal-fire_00001245,0,Background,966446,60403,966448,100.000206943792
+socal-fire_00001245,1,No Damage,36728,2292,36672,99.8475277717273
+socal-fire_00001245,2,Minor Damage,0,0,0,0.0
+socal-fire_00001245,3,Major Damage,0,0,0,0.0
+socal-fire_00001245,4,Destroyed,45402,2841,45456,100.11893749174045
+hurricane-michael_00000287,0,Background,928477,58018,928288,99.97964408380606
+hurricane-michael_00000287,1,No Damage,40770,2525,40400,99.09246995339711
+hurricane-michael_00000287,2,Minor Damage,35393,2238,35808,101.17254824400305
+hurricane-michael_00000287,3,Major Damage,43936,2755,44080,100.32774945375091
+hurricane-michael_00000287,4,Destroyed,0,0,0,0.0
+hurricane-harvey_00000323,0,Background,1048168,65512,1048192,100.00228970928325
+hurricane-harvey_00000323,1,No Damage,0,0,0,0.0
+hurricane-harvey_00000323,2,Minor Damage,0,0,0,0.0
+hurricane-harvey_00000323,3,Major Damage,408,24,384,94.11764705882352
+hurricane-harvey_00000323,4,Destroyed,0,0,0,0.0
+midwest-flooding_00000018,0,Background,871327,54444,871104,99.97440685299549
+midwest-flooding_00000018,1,No Damage,171690,10749,171984,100.17123886073738
+midwest-flooding_00000018,2,Minor Damage,5559,343,5488,98.72279186904119
+midwest-flooding_00000018,3,Major Damage,0,0,0,0.0
+midwest-flooding_00000018,4,Destroyed,0,0,0,0.0
+guatemala-volcano_00000024,0,Background,1021893,63871,1021936,100.00420787694992
+guatemala-volcano_00000024,1,No Damage,26683,1665,26640,99.83884870516808
+guatemala-volcano_00000024,2,Minor Damage,0,0,0,0.0
+guatemala-volcano_00000024,3,Major Damage,0,0,0,0.0
+guatemala-volcano_00000024,4,Destroyed,0,0,0,0.0
+hurricane-florence_00000308,0,Background,1033657,64610,1033760,100.0099646207591
+hurricane-florence_00000308,1,No Damage,13636,849,13584,99.61865649750659
+hurricane-florence_00000308,2,Minor Damage,1283,77,1232,96.024941543258
+hurricane-florence_00000308,3,Major Damage,0,0,0,0.0
+hurricane-florence_00000308,4,Destroyed,0,0,0,0.0
+hurricane-michael_00000377,0,Background,939703,58735,939760,100.00606574630496
+hurricane-michael_00000377,1,No Damage,88038,5486,87776,99.70240123582998
+hurricane-michael_00000377,2,Minor Damage,17447,1094,17504,100.3267037313005
+hurricane-michael_00000377,3,Major Damage,3388,221,3536,104.36835891381347
+hurricane-michael_00000377,4,Destroyed,0,0,0,0.0
+socal-fire_00001012,0,Background,1048576,65536,1048576,100.0
+socal-fire_00001012,1,No Damage,0,0,0,0.0
+socal-fire_00001012,2,Minor Damage,0,0,0,0.0
+socal-fire_00001012,3,Major Damage,0,0,0,0.0
+socal-fire_00001012,4,Destroyed,0,0,0,0.0
+hurricane-harvey_00000061,0,Background,1032503,64528,1032448,99.99467313896425
+hurricane-harvey_00000061,1,No Damage,16073,1008,16128,100.34218876376532
+hurricane-harvey_00000061,2,Minor Damage,0,0,0,0.0
+hurricane-harvey_00000061,3,Major Damage,0,0,0,0.0
+hurricane-harvey_00000061,4,Destroyed,0,0,0,0.0
+hurricane-florence_00000347,0,Background,986407,61639,986224,99.98144782022025
+hurricane-florence_00000347,1,No Damage,62169,3897,62352,100.29435892486609
+hurricane-florence_00000347,2,Minor Damage,0,0,0,0.0
+hurricane-florence_00000347,3,Major Damage,0,0,0,0.0
+hurricane-florence_00000347,4,Destroyed,0,0,0,0.0
+hurricane-michael_00000220,0,Background,898789,56171,898736,99.99410317660764
+hurricane-michael_00000220,1,No Damage,103534,6466,103456,99.92466242973322
+hurricane-michael_00000220,2,Minor Damage,36472,2288,36608,100.37288879140162
+hurricane-michael_00000220,3,Major Damage,9781,611,9776,99.94888048256824
+hurricane-michael_00000220,4,Destroyed,0,0,0,0.0
+socal-fire_00001129,0,Background,1048576,65536,1048576,100.0
+socal-fire_00001129,1,No Damage,0,0,0,0.0
+socal-fire_00001129,2,Minor Damage,0,0,0,0.0
+socal-fire_00001129,3,Major Damage,0,0,0,0.0
+socal-fire_00001129,4,Destroyed,0,0,0,0.0
+socal-fire_00000156,0,Background,963990,60262,964192,100.02095457421758
+socal-fire_00000156,1,No Damage,84586,5274,84384,99.76118979500154
+socal-fire_00000156,2,Minor Damage,0,0,0,0.0
+socal-fire_00000156,3,Major Damage,0,0,0,0.0
+socal-fire_00000156,4,Destroyed,0,0,0,0.0
+hurricane-michael_00000300,0,Background,1002141,62626,1002016,99.9875267053239
+hurricane-michael_00000300,1,No Damage,6419,405,6480,100.95030378563638
+hurricane-michael_00000300,2,Minor Damage,7804,481,7696,98.61609431060995
+hurricane-michael_00000300,3,Major Damage,22019,1398,22368,101.58499477723784
+hurricane-michael_00000300,4,Destroyed,10193,626,10016,98.26351417639556
+hurricane-matthew_00000295,0,Background,1047466,65461,1047376,99.99140783567199
+hurricane-matthew_00000295,1,No Damage,1110,75,1200,108.10810810810811
+hurricane-matthew_00000295,2,Minor Damage,0,0,0,0.0
+hurricane-matthew_00000295,3,Major Damage,0,0,0,0.0
+hurricane-matthew_00000295,4,Destroyed,0,0,0,0.0
+midwest-flooding_00000073,0,Background,1048576,65536,1048576,100.0
+midwest-flooding_00000073,1,No Damage,0,0,0,0.0
+midwest-flooding_00000073,2,Minor Damage,0,0,0,0.0
+midwest-flooding_00000073,3,Major Damage,0,0,0,0.0
+midwest-flooding_00000073,4,Destroyed,0,0,0,0.0
+hurricane-matthew_00000353,0,Background,1036802,64801,1036816,100.00135030603722
+hurricane-matthew_00000353,1,No Damage,10192,638,10208,100.15698587127157
+hurricane-matthew_00000353,2,Minor Damage,1156,72,1152,99.65397923875432
+hurricane-matthew_00000353,3,Major Damage,145,10,160,110.34482758620689
+hurricane-matthew_00000353,4,Destroyed,281,15,240,85.40925266903915
+hurricane-michael_00000415,0,Background,1006375,62868,1005888,99.95160849583903
+hurricane-michael_00000415,1,No Damage,24073,1524,24384,101.29190379263076
+hurricane-michael_00000415,2,Minor Damage,9839,618,9888,100.49801809126944
+hurricane-michael_00000415,3,Major Damage,8289,526,8416,101.53215104355169
+hurricane-michael_00000415,4,Destroyed,0,0,0,0.0
+hurricane-michael_00000345,0,Background,1030137,64379,1030064,99.99291356392402
+hurricane-michael_00000345,1,No Damage,13414,844,13504,100.67094080811091
+hurricane-michael_00000345,2,Minor Damage,3681,230,3680,99.97283346916599
+hurricane-michael_00000345,3,Major Damage,1344,83,1328,98.80952380952381
+hurricane-michael_00000345,4,Destroyed,0,0,0,0.0
+socal-fire_00001353,0,Background,1034527,64663,1034608,100.00782966515132
+socal-fire_00001353,1,No Damage,14049,873,13968,99.42344650864831
+socal-fire_00001353,2,Minor Damage,0,0,0,0.0
+socal-fire_00001353,3,Major Damage,0,0,0,0.0
+socal-fire_00001353,4,Destroyed,0,0,0,0.0
+socal-fire_00001185,0,Background,1040187,65009,1040144,99.99586612791738
+socal-fire_00001185,1,No Damage,8128,510,8160,100.39370078740157
+socal-fire_00001185,2,Minor Damage,0,0,0,0.0
+socal-fire_00001185,3,Major Damage,0,0,0,0.0
+socal-fire_00001185,4,Destroyed,261,17,272,104.21455938697318
+hurricane-harvey_00000159,0,Background,676811,42235,675760,99.8447129257651
+hurricane-harvey_00000159,1,No Damage,73883,4565,73040,98.8590068080614
+hurricane-harvey_00000159,2,Minor Damage,215680,13575,217200,100.70474777448071
+hurricane-harvey_00000159,3,Major Damage,82202,5161,82576,100.45497676455561
+hurricane-harvey_00000159,4,Destroyed,0,0,0,0.0
+hurricane-harvey_00000220,0,Background,705025,44105,705680,100.09290450693238
+hurricane-harvey_00000220,1,No Damage,343551,21431,342896,99.8093441730631
+hurricane-harvey_00000220,2,Minor Damage,0,0,0,0.0
+hurricane-harvey_00000220,3,Major Damage,0,0,0,0.0
+hurricane-harvey_00000220,4,Destroyed,0,0,0,0.0
+socal-fire_00001341,0,Background,964022,60246,963936,99.9910790417646
+socal-fire_00001341,1,No Damage,84554,5290,84640,100.1017101497268
+socal-fire_00001341,2,Minor Damage,0,0,0,0.0
+socal-fire_00001341,3,Major Damage,0,0,0,0.0
+socal-fire_00001341,4,Destroyed,0,0,0,0.0
+hurricane-harvey_00000348,0,Background,956878,59806,956896,100.00188111755104
+hurricane-harvey_00000348,1,No Damage,91698,5730,91680,99.98037034613623
+hurricane-harvey_00000348,2,Minor Damage,0,0,0,0.0
+hurricane-harvey_00000348,3,Major Damage,0,0,0,0.0
+hurricane-harvey_00000348,4,Destroyed,0,0,0,0.0
+hurricane-harvey_00000138,0,Background,859135,53716,859456,100.03736316178482
+hurricane-harvey_00000138,1,No Damage,0,0,0,0.0
+hurricane-harvey_00000138,2,Minor Damage,167328,10446,167136,99.88525530694206
+hurricane-harvey_00000138,3,Major Damage,22113,1374,21984,99.41663274996608
+hurricane-harvey_00000138,4,Destroyed,0,0,0,0.0
+hurricane-michael_00000537,0,Background,990033,61852,989632,99.9594962996183
+hurricane-michael_00000537,1,No Damage,58543,3684,58944,100.6849666057428
+hurricane-michael_00000537,2,Minor Damage,0,0,0,0.0
+hurricane-michael_00000537,3,Major Damage,0,0,0,0.0
+hurricane-michael_00000537,4,Destroyed,0,0,0,0.0
+socal-fire_00000508,0,Background,1048576,65536,1048576,100.0
+socal-fire_00000508,1,No Damage,0,0,0,0.0
+socal-fire_00000508,2,Minor Damage,0,0,0,0.0
+socal-fire_00000508,3,Major Damage,0,0,0,0.0
+socal-fire_00000508,4,Destroyed,0,0,0,0.0
+hurricane-florence_00000027,0,Background,1047949,65498,1047968,100.00181306533047
+hurricane-florence_00000027,1,No Damage,627,38,608,96.96969696969697
+hurricane-florence_00000027,2,Minor Damage,0,0,0,0.0
+hurricane-florence_00000027,3,Major Damage,0,0,0,0.0
+hurricane-florence_00000027,4,Destroyed,0,0,0,0.0
+socal-fire_00000335,0,Background,1048576,65536,1048576,100.0
+socal-fire_00000335,1,No Damage,0,0,0,0.0
+socal-fire_00000335,2,Minor Damage,0,0,0,0.0
+socal-fire_00000335,3,Major Damage,0,0,0,0.0
+socal-fire_00000335,4,Destroyed,0,0,0,0.0
+mexico-earthquake_00000002,0,Background,691902,43225,691600,99.95635220016707
+mexico-earthquake_00000002,1,No Damage,356674,22311,356976,100.08467115629398
+mexico-earthquake_00000002,2,Minor Damage,0,0,0,0.0
+mexico-earthquake_00000002,3,Major Damage,0,0,0,0.0
+mexico-earthquake_00000002,4,Destroyed,0,0,0,0.0
+socal-fire_00000429,0,Background,1048508,65532,1048512,100.00038149446641
+socal-fire_00000429,1,No Damage,0,0,0,0.0
+socal-fire_00000429,2,Minor Damage,0,0,0,0.0
+socal-fire_00000429,3,Major Damage,0,0,0,0.0
+socal-fire_00000429,4,Destroyed,68,4,64,94.11764705882352
+socal-fire_00001083,0,Background,1048576,65536,1048576,100.0
+socal-fire_00001083,1,No Damage,0,0,0,0.0
+socal-fire_00001083,2,Minor Damage,0,0,0,0.0
+socal-fire_00001083,3,Major Damage,0,0,0,0.0
+socal-fire_00001083,4,Destroyed,0,0,0,0.0
+hurricane-harvey_00000508,0,Background,816194,50947,815152,99.87233427346929
+hurricane-harvey_00000508,1,No Damage,47122,2984,47744,101.31997792962947
+hurricane-harvey_00000508,2,Minor Damage,79493,4987,79792,100.37613374762557
+hurricane-harvey_00000508,3,Major Damage,105767,6618,105888,100.1144024128509
+hurricane-harvey_00000508,4,Destroyed,0,0,0,0.0
+hurricane-michael_00000442,0,Background,1025708,64088,1025408,99.97075190990029
+hurricane-michael_00000442,1,No Damage,11699,731,11696,99.97435678263099
+hurricane-michael_00000442,2,Minor Damage,572,42,672,117.48251748251748
+hurricane-michael_00000442,3,Major Damage,10054,640,10240,101.85000994629003
+hurricane-michael_00000442,4,Destroyed,543,35,560,103.13075506445672
+midwest-flooding_00000237,0,Background,989772,61869,989904,100.01333640474776
+midwest-flooding_00000237,1,No Damage,56620,3531,56496,99.78099611444719
+midwest-flooding_00000237,2,Minor Damage,2184,136,2176,99.63369963369964
+midwest-flooding_00000237,3,Major Damage,0,0,0,0.0
+midwest-flooding_00000237,4,Destroyed,0,0,0,0.0
+hurricane-michael_00000174,0,Background,1034136,64639,1034224,100.00850951905747
+hurricane-michael_00000174,1,No Damage,8310,514,8224,98.96510228640193
+hurricane-michael_00000174,2,Minor Damage,3888,237,3792,97.53086419753086
+hurricane-michael_00000174,3,Major Damage,2242,146,2336,104.19268510258696
+hurricane-michael_00000174,4,Destroyed,0,0,0,0.0
+hurricane-florence_00000454,0,Background,1036236,64774,1036384,100.01428246075218
+hurricane-florence_00000454,1,No Damage,0,0,0,0.0
+hurricane-florence_00000454,2,Minor Damage,2548,156,2496,97.95918367346938
+hurricane-florence_00000454,3,Major Damage,9792,606,9696,99.01960784313727
+hurricane-florence_00000454,4,Destroyed,0,0,0,0.0
+midwest-flooding_00000113,0,Background,1027698,64233,1027728,100.00291914550772
+midwest-flooding_00000113,1,No Damage,20878,1303,20848,99.85630807548615
+midwest-flooding_00000113,2,Minor Damage,0,0,0,0.0
+midwest-flooding_00000113,3,Major Damage,0,0,0,0.0
+midwest-flooding_00000113,4,Destroyed,0,0,0,0.0
+hurricane-harvey_00000335,0,Background,1031348,64466,1031456,100.01047173214084
+hurricane-harvey_00000335,1,No Damage,0,0,0,0.0
+hurricane-harvey_00000335,2,Minor Damage,15157,942,15072,99.43920300851093
+hurricane-harvey_00000335,3,Major Damage,2071,128,2048,98.88942539835827
+hurricane-harvey_00000335,4,Destroyed,0,0,0,0.0
+socal-fire_00000951,0,Background,1048576,65536,1048576,100.0
+socal-fire_00000951,1,No Damage,0,0,0,0.0
+socal-fire_00000951,2,Minor Damage,0,0,0,0.0
+socal-fire_00000951,3,Major Damage,0,0,0,0.0
+socal-fire_00000951,4,Destroyed,0,0,0,0.0
+socal-fire_00000160,0,Background,1048576,65536,1048576,100.0
+socal-fire_00000160,1,No Damage,0,0,0,0.0
+socal-fire_00000160,2,Minor Damage,0,0,0,0.0
+socal-fire_00000160,3,Major Damage,0,0,0,0.0
+socal-fire_00000160,4,Destroyed,0,0,0,0.0
+hurricane-matthew_00000369,0,Background,1044800,65298,1044768,99.9969372128637
+hurricane-matthew_00000369,1,No Damage,0,0,0,0.0
+hurricane-matthew_00000369,2,Minor Damage,1070,69,1104,103.17757009345794
+hurricane-matthew_00000369,3,Major Damage,1368,85,1360,99.41520467836257
+hurricane-matthew_00000369,4,Destroyed,1338,84,1344,100.44843049327355
+socal-fire_00000389,0,Background,1034965,64672,1034752,99.97941959389931
+socal-fire_00000389,1,No Damage,8422,543,8688,103.15839468059845
+socal-fire_00000389,2,Minor Damage,0,0,0,0.0
+socal-fire_00000389,3,Major Damage,0,0,0,0.0
+socal-fire_00000389,4,Destroyed,5189,321,5136,98.97860859510503
+hurricane-florence_00000482,0,Background,1047707,65481,1047696,99.99895008814488
+hurricane-florence_00000482,1,No Damage,0,0,0,0.0
+hurricane-florence_00000482,2,Minor Damage,0,0,0,0.0
+hurricane-florence_00000482,3,Major Damage,869,55,880,101.26582278481013
+hurricane-florence_00000482,4,Destroyed,0,0,0,0.0
+hurricane-harvey_00000113,0,Background,1047766,65485,1047760,99.99942735305403
+hurricane-harvey_00000113,1,No Damage,0,0,0,0.0
+hurricane-harvey_00000113,2,Minor Damage,371,25,400,107.81671159029649
+hurricane-harvey_00000113,3,Major Damage,439,26,416,94.76082004555809
+hurricane-harvey_00000113,4,Destroyed,0,0,0,0.0
+socal-fire_00000564,0,Background,1048576,65536,1048576,100.0
+socal-fire_00000564,1,No Damage,0,0,0,0.0
+socal-fire_00000564,2,Minor Damage,0,0,0,0.0
+socal-fire_00000564,3,Major Damage,0,0,0,0.0
+socal-fire_00000564,4,Destroyed,0,0,0,0.0
+santa-rosa-wildfire_00000209,0,Background,1027225,64201,1027216,99.99912385309938
+santa-rosa-wildfire_00000209,1,No Damage,478,30,480,100.418410041841
+santa-rosa-wildfire_00000209,2,Minor Damage,2312,148,2368,102.42214532871972
+santa-rosa-wildfire_00000209,3,Major Damage,0,0,0,0.0
+santa-rosa-wildfire_00000209,4,Destroyed,18561,1157,18512,99.73600560314638
+hurricane-florence_00000037,0,Background,1040126,65006,1040096,99.9971157340553
+hurricane-florence_00000037,1,No Damage,8450,530,8480,100.35502958579883
+hurricane-florence_00000037,2,Minor Damage,0,0,0,0.0
+hurricane-florence_00000037,3,Major Damage,0,0,0,0.0
+hurricane-florence_00000037,4,Destroyed,0,0,0,0.0
+hurricane-florence_00000477,0,Background,1040120,65008,1040128,100.00076914202208
+hurricane-florence_00000477,1,No Damage,7170,450,7200,100.418410041841
+hurricane-florence_00000477,2,Minor Damage,1286,78,1248,97.04510108864697
+hurricane-florence_00000477,3,Major Damage,0,0,0,0.0
+hurricane-florence_00000477,4,Destroyed,0,0,0,0.0
+socal-fire_00000880,0,Background,929935,58160,930560,100.06720899847838
+socal-fire_00000880,1,No Damage,118641,7376,118016,99.4732006641886
+socal-fire_00000880,2,Minor Damage,0,0,0,0.0
+socal-fire_00000880,3,Major Damage,0,0,0,0.0
+socal-fire_00000880,4,Destroyed,0,0,0,0.0
+santa-rosa-wildfire_00000199,0,Background,849693,53080,849280,99.95139420943799
+santa-rosa-wildfire_00000199,1,No Damage,198883,12456,199296,100.20765977987058
+santa-rosa-wildfire_00000199,2,Minor Damage,0,0,0,0.0
+santa-rosa-wildfire_00000199,3,Major Damage,0,0,0,0.0
+santa-rosa-wildfire_00000199,4,Destroyed,0,0,0,0.0
+hurricane-michael_00000539,0,Background,972321,60758,972128,99.98015058812881
+hurricane-michael_00000539,1,No Damage,73598,4604,73664,100.0896763499008
+hurricane-michael_00000539,2,Minor Damage,0,0,0,0.0
+hurricane-michael_00000539,3,Major Damage,2657,174,2784,104.7798268724125
+hurricane-michael_00000539,4,Destroyed,0,0,0,0.0
+hurricane-harvey_00000325,0,Background,1039840,64986,1039776,99.99384520695492
+hurricane-harvey_00000325,1,No Damage,0,0,0,0.0
+hurricane-harvey_00000325,2,Minor Damage,0,0,0,0.0
+hurricane-harvey_00000325,3,Major Damage,8325,524,8384,100.70870870870871
+hurricane-harvey_00000325,4,Destroyed,411,26,416,101.21654501216545
+midwest-flooding_00000418,0,Background,1046750,65423,1046768,100.00171960831143
+midwest-flooding_00000418,1,No Damage,1749,109,1744,99.71412235563179
+midwest-flooding_00000418,2,Minor Damage,77,4,64,83.11688311688312
+midwest-flooding_00000418,3,Major Damage,0,0,0,0.0
+midwest-flooding_00000418,4,Destroyed,0,0,0,0.0
+hurricane-michael_00000306,0,Background,930855,58170,930720,99.98549720418325
+hurricane-michael_00000306,1,No Damage,44749,2806,44896,100.32849896087063
+hurricane-michael_00000306,2,Minor Damage,58629,3668,58688,100.10063279264527
+hurricane-michael_00000306,3,Major Damage,7542,473,7568,100.34473614425883
+hurricane-michael_00000306,4,Destroyed,6801,419,6704,98.57373915600647
+hurricane-michael_00000137,0,Background,962674,60180,962880,100.02139872895705
+hurricane-michael_00000137,1,No Damage,54482,3399,54384,99.82012407767704
+hurricane-michael_00000137,2,Minor Damage,20314,1266,20256,99.71448262282169
+hurricane-michael_00000137,3,Major Damage,11106,691,11056,99.54979290473618
+hurricane-michael_00000137,4,Destroyed,0,0,0,0.0
+mexico-earthquake_00000075,0,Background,827426,51702,827232,99.97655379453873
+mexico-earthquake_00000075,1,No Damage,219145,13707,219312,100.07620525223027
+mexico-earthquake_00000075,2,Minor Damage,2005,127,2032,101.34663341645884
+mexico-earthquake_00000075,3,Major Damage,0,0,0,0.0
+mexico-earthquake_00000075,4,Destroyed,0,0,0,0.0
+hurricane-matthew_00000302,0,Background,959716,60000,960000,100.02959208765927
+hurricane-matthew_00000302,1,No Damage,36543,2270,36320,99.38976000875681
+hurricane-matthew_00000302,2,Minor Damage,26222,1633,26128,99.64152238578293
+hurricane-matthew_00000302,3,Major Damage,24404,1527,24432,100.11473528929685
+hurricane-matthew_00000302,4,Destroyed,1691,106,1696,100.29568302779421
+hurricane-michael_00000283,0,Background,967036,60436,966976,99.99379547400511
+hurricane-michael_00000283,1,No Damage,36762,2295,36720,99.88575159131712
+hurricane-michael_00000283,2,Minor Damage,22422,1413,22608,100.82954241370084
+hurricane-michael_00000283,3,Major Damage,15620,971,15536,99.46222791293214
+hurricane-michael_00000283,4,Destroyed,6736,421,6736,100.0
+mexico-earthquake_00000088,0,Background,714483,44661,714576,100.01301640486898
+mexico-earthquake_00000088,1,No Damage,332103,20750,332000,99.9689855255749
+mexico-earthquake_00000088,2,Minor Damage,823,51,816,99.1494532199271
+mexico-earthquake_00000088,3,Major Damage,1167,74,1184,101.45672664952872
+mexico-earthquake_00000088,4,Destroyed,0,0,0,0.0
+socal-fire_00000286,0,Background,943981,59000,944000,100.00201275237531
+socal-fire_00000286,1,No Damage,104595,6536,104576,99.98183469573115
+socal-fire_00000286,2,Minor Damage,0,0,0,0.0
+socal-fire_00000286,3,Major Damage,0,0,0,0.0
+socal-fire_00000286,4,Destroyed,0,0,0,0.0
+socal-fire_00000579,0,Background,1047521,65469,1047504,99.99837712084053
+socal-fire_00000579,1,No Damage,1055,67,1072,101.61137440758294
+socal-fire_00000579,2,Minor Damage,0,0,0,0.0
+socal-fire_00000579,3,Major Damage,0,0,0,0.0
+socal-fire_00000579,4,Destroyed,0,0,0,0.0
+socal-fire_00001229,0,Background,1048576,65536,1048576,100.0
+socal-fire_00001229,1,No Damage,0,0,0,0.0
+socal-fire_00001229,2,Minor Damage,0,0,0,0.0
+socal-fire_00001229,3,Major Damage,0,0,0,0.0
+socal-fire_00001229,4,Destroyed,0,0,0,0.0
+palu-tsunami_00000133,0,Background,1001257,62585,1001360,100.01028706915407
+palu-tsunami_00000133,1,No Damage,46758,2914,46624,99.71341802472304
+palu-tsunami_00000133,2,Minor Damage,0,0,0,0.0
+palu-tsunami_00000133,3,Major Damage,0,0,0,0.0
+palu-tsunami_00000133,4,Destroyed,561,37,592,105.52584670231728
+hurricane-florence_00000542,0,Background,1048576,65536,1048576,100.0
+hurricane-florence_00000542,1,No Damage,0,0,0,0.0
+hurricane-florence_00000542,2,Minor Damage,0,0,0,0.0
+hurricane-florence_00000542,3,Major Damage,0,0,0,0.0
+hurricane-florence_00000542,4,Destroyed,0,0,0,0.0
+hurricane-florence_00000275,0,Background,1048576,65536,1048576,100.0
+hurricane-florence_00000275,1,No Damage,0,0,0,0.0
+hurricane-florence_00000275,2,Minor Damage,0,0,0,0.0
+hurricane-florence_00000275,3,Major Damage,0,0,0,0.0
+hurricane-florence_00000275,4,Destroyed,0,0,0,0.0
+socal-fire_00000798,0,Background,974007,60903,974448,100.04527688199367
+socal-fire_00000798,1,No Damage,74569,4633,74128,99.40860142954847
+socal-fire_00000798,2,Minor Damage,0,0,0,0.0
+socal-fire_00000798,3,Major Damage,0,0,0,0.0
+socal-fire_00000798,4,Destroyed,0,0,0,0.0
+socal-fire_00000668,0,Background,901051,56326,901216,100.01831194904618
+socal-fire_00000668,1,No Damage,147525,9210,147360,99.88815455007625
+socal-fire_00000668,2,Minor Damage,0,0,0,0.0
+socal-fire_00000668,3,Major Damage,0,0,0,0.0
+socal-fire_00000668,4,Destroyed,0,0,0,0.0
+hurricane-michael_00000188,0,Background,997624,62325,997200,99.95749901766598
+hurricane-michael_00000188,1,No Damage,1740,110,1760,101.14942528735634
+hurricane-michael_00000188,2,Minor Damage,32102,2028,32448,101.07781446638839
+hurricane-michael_00000188,3,Major Damage,16904,1060,16960,100.33128253667772
+hurricane-michael_00000188,4,Destroyed,206,13,208,100.97087378640776
+socal-fire_00000602,0,Background,1048576,65536,1048576,100.0
+socal-fire_00000602,1,No Damage,0,0,0,0.0
+socal-fire_00000602,2,Minor Damage,0,0,0,0.0
+socal-fire_00000602,3,Major Damage,0,0,0,0.0
+socal-fire_00000602,4,Destroyed,0,0,0,0.0
+hurricane-harvey_00000249,0,Background,915977,57255,916080,100.01124482383293
+hurricane-harvey_00000249,1,No Damage,132599,8281,132496,99.92232218945844
+hurricane-harvey_00000249,2,Minor Damage,0,0,0,0.0
+hurricane-harvey_00000249,3,Major Damage,0,0,0,0.0
+hurricane-harvey_00000249,4,Destroyed,0,0,0,0.0
+palu-tsunami_00000026,0,Background,995032,62187,994992,99.995980028783
+palu-tsunami_00000026,1,No Damage,0,0,0,0.0
+palu-tsunami_00000026,2,Minor Damage,0,0,0,0.0
+palu-tsunami_00000026,3,Major Damage,8150,509,8144,99.92638036809815
+palu-tsunami_00000026,4,Destroyed,45394,2840,45440,100.10133497819096
+hurricane-michael_00000109,0,Background,954272,59627,954032,99.97484993796319
+hurricane-michael_00000109,1,No Damage,78896,4948,79168,100.34475765564794
+hurricane-michael_00000109,2,Minor Damage,15408,961,15376,99.79231568016614
+hurricane-michael_00000109,3,Major Damage,0,0,0,0.0
+hurricane-michael_00000109,4,Destroyed,0,0,0,0.0
+hurricane-florence_00000451,0,Background,1034872,64666,1034656,99.97912785349298
+hurricane-florence_00000451,1,No Damage,8309,534,8544,102.82825851486339
+hurricane-florence_00000451,2,Minor Damage,1578,100,1600,101.39416983523448
+hurricane-florence_00000451,3,Major Damage,3817,236,3776,98.9258580036678
+hurricane-florence_00000451,4,Destroyed,0,0,0,0.0
+socal-fire_00000807,0,Background,1048576,65536,1048576,100.0
+socal-fire_00000807,1,No Damage,0,0,0,0.0
+socal-fire_00000807,2,Minor Damage,0,0,0,0.0
+socal-fire_00000807,3,Major Damage,0,0,0,0.0
+socal-fire_00000807,4,Destroyed,0,0,0,0.0
+hurricane-florence_00000453,0,Background,1044637,65297,1044752,100.01100860873203
+hurricane-florence_00000453,1,No Damage,0,0,0,0.0
+hurricane-florence_00000453,2,Minor Damage,0,0,0,0.0
+hurricane-florence_00000453,3,Major Damage,3939,239,3824,97.08047727849709
+hurricane-florence_00000453,4,Destroyed,0,0,0,0.0
+hurricane-matthew_00000176,0,Background,1044088,65255,1044080,99.99923378106061
+hurricane-matthew_00000176,1,No Damage,0,0,0,0.0
+hurricane-matthew_00000176,2,Minor Damage,923,62,992,107.47562296858071
+hurricane-matthew_00000176,3,Major Damage,771,50,800,103.76134889753568
+hurricane-matthew_00000176,4,Destroyed,2794,169,2704,96.77881173944166
+hurricane-florence_00000529,0,Background,1030892,64434,1030944,100.00504417533553
+hurricane-florence_00000529,1,No Damage,14033,876,14016,99.87885697997577
+hurricane-florence_00000529,2,Minor Damage,0,0,0,0.0
+hurricane-florence_00000529,3,Major Damage,3651,226,3616,99.04135853190907
+hurricane-florence_00000529,4,Destroyed,0,0,0,0.0
+socal-fire_00000175,0,Background,1048576,65536,1048576,100.0
+socal-fire_00000175,1,No Damage,0,0,0,0.0
+socal-fire_00000175,2,Minor Damage,0,0,0,0.0
+socal-fire_00000175,3,Major Damage,0,0,0,0.0
+socal-fire_00000175,4,Destroyed,0,0,0,0.0
+hurricane-florence_00000387,0,Background,987581,61708,987328,99.97438184817246
+hurricane-florence_00000387,1,No Damage,60995,3828,61248,100.41478809738503
+hurricane-florence_00000387,2,Minor Damage,0,0,0,0.0
+hurricane-florence_00000387,3,Major Damage,0,0,0,0.0
+hurricane-florence_00000387,4,Destroyed,0,0,0,0.0
+hurricane-harvey_00000506,0,Background,945964,59119,945904,99.9936572639128
+hurricane-harvey_00000506,1,No Damage,0,0,0,0.0
+hurricane-harvey_00000506,2,Minor Damage,0,0,0,0.0
+hurricane-harvey_00000506,3,Major Damage,102612,6417,102672,100.05847269325226
+hurricane-harvey_00000506,4,Destroyed,0,0,0,0.0
+socal-fire_00000349,0,Background,1048576,65536,1048576,100.0
+socal-fire_00000349,1,No Damage,0,0,0,0.0
+socal-fire_00000349,2,Minor Damage,0,0,0,0.0
+socal-fire_00000349,3,Major Damage,0,0,0,0.0
+socal-fire_00000349,4,Destroyed,0,0,0,0.0
+socal-fire_00000126,0,Background,977645,61098,977568,99.99212393046555
+socal-fire_00000126,1,No Damage,70931,4438,71008,100.10855620250668
+socal-fire_00000126,2,Minor Damage,0,0,0,0.0
+socal-fire_00000126,3,Major Damage,0,0,0,0.0
+socal-fire_00000126,4,Destroyed,0,0,0,0.0
+santa-rosa-wildfire_00000334,0,Background,1048576,65536,1048576,100.0
+santa-rosa-wildfire_00000334,1,No Damage,0,0,0,0.0
+santa-rosa-wildfire_00000334,2,Minor Damage,0,0,0,0.0
+santa-rosa-wildfire_00000334,3,Major Damage,0,0,0,0.0
+santa-rosa-wildfire_00000334,4,Destroyed,0,0,0,0.0
+socal-fire_00000705,0,Background,1048576,65536,1048576,100.0
+socal-fire_00000705,1,No Damage,0,0,0,0.0
+socal-fire_00000705,2,Minor Damage,0,0,0,0.0
+socal-fire_00000705,3,Major Damage,0,0,0,0.0
+socal-fire_00000705,4,Destroyed,0,0,0,0.0
+hurricane-florence_00000344,0,Background,1042146,65147,1042352,100.01976690406143
+hurricane-florence_00000344,1,No Damage,2695,165,2640,97.95918367346938
+hurricane-florence_00000344,2,Minor Damage,3285,197,3152,95.95129375951294
+hurricane-florence_00000344,3,Major Damage,450,27,432,96.0
+hurricane-florence_00000344,4,Destroyed,0,0,0,0.0
+hurricane-florence_00000389,0,Background,1031366,64452,1031232,99.98700752206298
+hurricane-florence_00000389,1,No Damage,0,0,0,0.0
+hurricane-florence_00000389,2,Minor Damage,0,0,0,0.0
+hurricane-florence_00000389,3,Major Damage,17210,1084,17344,100.77861708309122
+hurricane-florence_00000389,4,Destroyed,0,0,0,0.0
+mexico-earthquake_00000072,0,Background,983214,61443,983088,99.9871848854878
+mexico-earthquake_00000072,1,No Damage,65362,4093,65488,100.19277255897923
+mexico-earthquake_00000072,2,Minor Damage,0,0,0,0.0
+mexico-earthquake_00000072,3,Major Damage,0,0,0,0.0
+mexico-earthquake_00000072,4,Destroyed,0,0,0,0.0
+hurricane-florence_00000408,0,Background,994200,62136,994176,99.997585998793
+hurricane-florence_00000408,1,No Damage,44771,2796,44736,99.92182439525585
+hurricane-florence_00000408,2,Minor Damage,2508,158,2528,100.79744816586921
+hurricane-florence_00000408,3,Major Damage,7097,446,7136,100.5495279695646
+hurricane-florence_00000408,4,Destroyed,0,0,0,0.0
+socal-fire_00000420,0,Background,1048483,65532,1048512,100.00276590083006
+socal-fire_00000420,1,No Damage,0,0,0,0.0
+socal-fire_00000420,2,Minor Damage,0,0,0,0.0
+socal-fire_00000420,3,Major Damage,0,0,0,0.0
+socal-fire_00000420,4,Destroyed,93,4,64,68.81720430107528
+socal-fire_00000669,0,Background,1036346,64769,1036304,99.99594729945404
+socal-fire_00000669,1,No Damage,12230,767,12272,100.34341782502042
+socal-fire_00000669,2,Minor Damage,0,0,0,0.0
+socal-fire_00000669,3,Major Damage,0,0,0,0.0
+socal-fire_00000669,4,Destroyed,0,0,0,0.0
+hurricane-florence_00000395,0,Background,1031121,64445,1031120,99.9999030181715
+hurricane-florence_00000395,1,No Damage,0,0,0,0.0
+hurricane-florence_00000395,2,Minor Damage,0,0,0,0.0
+hurricane-florence_00000395,3,Major Damage,17455,1091,17456,100.00572901747351
+hurricane-florence_00000395,4,Destroyed,0,0,0,0.0
+hurricane-matthew_00000400,0,Background,1026728,64172,1026752,100.00233752269345
+hurricane-matthew_00000400,1,No Damage,0,0,0,0.0
+hurricane-matthew_00000400,2,Minor Damage,0,0,0,0.0
+hurricane-matthew_00000400,3,Major Damage,5476,340,5440,99.34258582907232
+hurricane-matthew_00000400,4,Destroyed,16372,1024,16384,100.07329587099927
+hurricane-michael_00000519,0,Background,900292,56217,899472,99.90891843979509
+hurricane-michael_00000519,1,No Damage,115271,7241,115856,100.5074997180557
+hurricane-michael_00000519,2,Minor Damage,19061,1205,19280,101.1489428676355
+hurricane-michael_00000519,3,Major Damage,10346,646,10336,99.9033442876474
+hurricane-michael_00000519,4,Destroyed,3606,227,3632,100.7210205213533
+hurricane-matthew_00000200,0,Background,1045413,65336,1045376,99.99646072891765
+hurricane-matthew_00000200,1,No Damage,0,0,0,0.0
+hurricane-matthew_00000200,2,Minor Damage,146,9,144,98.63013698630137
+hurricane-matthew_00000200,3,Major Damage,408,25,400,98.0392156862745
+hurricane-matthew_00000200,4,Destroyed,2609,166,2656,101.80145649674203
+hurricane-harvey_00000492,0,Background,773589,48275,772400,99.84630081348107
+hurricane-harvey_00000492,1,No Damage,191010,12012,192192,100.6188157688079
+hurricane-harvey_00000492,2,Minor Damage,55502,3480,55680,100.32070916363374
+hurricane-harvey_00000492,3,Major Damage,28475,1769,28304,99.39947322212467
+hurricane-harvey_00000492,4,Destroyed,0,0,0,0.0
+socal-fire_00000028,0,Background,1008994,63060,1008960,99.99663030701868
+socal-fire_00000028,1,No Damage,39582,2476,39616,100.08589763023596
+socal-fire_00000028,2,Minor Damage,0,0,0,0.0
+socal-fire_00000028,3,Major Damage,0,0,0,0.0
+socal-fire_00000028,4,Destroyed,0,0,0,0.0
+socal-fire_00000516,0,Background,1046504,65404,1046464,99.99617774991782
+socal-fire_00000516,1,No Damage,0,0,0,0.0
+socal-fire_00000516,2,Minor Damage,0,0,0,0.0
+socal-fire_00000516,3,Major Damage,0,0,0,0.0
+socal-fire_00000516,4,Destroyed,2072,132,2112,101.93050193050193
+palu-tsunami_00000164,0,Background,912876,57069,913104,100.02497600988525
+palu-tsunami_00000164,1,No Damage,103019,6439,103024,100.00485347363109
+palu-tsunami_00000164,2,Minor Damage,0,0,0,0.0
+palu-tsunami_00000164,3,Major Damage,18989,1180,18880,99.4259834641108
+palu-tsunami_00000164,4,Destroyed,13692,848,13568,99.09436167104879
+hurricane-michael_00000443,0,Background,893313,55855,893680,100.04108302465093
+hurricane-michael_00000443,1,No Damage,114228,7100,113600,99.45022236229296
+hurricane-michael_00000443,2,Minor Damage,34353,2145,34320,99.90393852065321
+hurricane-michael_00000443,3,Major Damage,6032,393,6288,104.24403183023874
+hurricane-michael_00000443,4,Destroyed,650,43,688,105.84615384615385
+santa-rosa-wildfire_00000182,0,Background,1035036,64690,1035040,100.00038645998785
+santa-rosa-wildfire_00000182,1,No Damage,13540,846,13536,99.97045790251107
+santa-rosa-wildfire_00000182,2,Minor Damage,0,0,0,0.0
+santa-rosa-wildfire_00000182,3,Major Damage,0,0,0,0.0
+santa-rosa-wildfire_00000182,4,Destroyed,0,0,0,0.0
