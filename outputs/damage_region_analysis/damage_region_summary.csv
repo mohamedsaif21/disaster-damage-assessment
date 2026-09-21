@@ -1,0 +1,4 @@
+class_id,class_name,samples_with_class,total_pixels,percentage_of_all_pixels,total_regions,average_largest_region,maximum_region,average_region_size,average_median_region,regions_1px_or_less,regions_5px_or_less,regions_10px_or_less,regions_25px_or_less,regions_50px_or_less
+2,Minor Damage,98,1959372,0.6697500905682964,1284,4434.234693877551,76903,1950.2820621564483,1658.9489795918366,0,0,0,0,0
+3,Major Damage,98,1931695,0.660289572985796,1195,3618.6020408163267,40139,1742.0962499758052,1576.280612244898,0,0,0,0,1
+4,Destroyed,85,1358194,0.46425617723909335,1242,2223.5176470588235,21769,830.1065675169903,700.1588235294117,0,0,0,1,11
