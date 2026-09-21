@@ -9,7 +9,9 @@ from torch.utils.data import DataLoader
 # Project imports
 # ---------------------------------------------------------
 
-PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PROJECT_ROOT = os.path.dirname(
+    os.path.dirname(os.path.abspath(__file__))
+)
 if PROJECT_ROOT not in sys.path:
     sys.path.append(PROJECT_ROOT)
 
@@ -30,8 +32,19 @@ LEARNING_RATE = 1e-4
 NUM_CLASSES = 5
 IMAGE_SIZE = 256
 
-TRAIN_CSV = os.path.join(PROJECT_ROOT, "Datasets", "xBD", "splits", "train.csv")
-VAL_CSV = os.path.join(PROJECT_ROOT, "Datasets", "xBD", "splits", "val.csv")
+DATASET_ROOT = r"D:\Projects\Datasets\xBD"
+
+TRAIN_CSV = os.path.join(
+    DATASET_ROOT,
+    "splits",
+    "train.csv"
+)
+
+VAL_CSV = os.path.join(
+    DATASET_ROOT,
+    "splits",
+    "val.csv"
+)
 
 CHECKPOINT_DIR = os.path.join(PROJECT_ROOT, "ai", "checkpoints")
 BEST_MODEL_PATH = os.path.join(
@@ -324,11 +337,15 @@ def main():
     print("Loading datasets...")
 
     train_dataset = XBDDataset(
-        csv_file=TRAIN_CSV
+        dataset_root=DATASET_ROOT,
+        split_file=TRAIN_CSV,
+        image_size=IMAGE_SIZE
     )
 
     val_dataset = XBDDataset(
-        csv_file=VAL_CSV
+        dataset_root=DATASET_ROOT,
+        split_file=VAL_CSV,
+        image_size=IMAGE_SIZE
     )
 
     print(f"Training samples  : {len(train_dataset)}")
