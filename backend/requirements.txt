@@ -1,2 +1,8 @@
 fastapi
-uvicorn
+uvicorn[standard]
+python-multipart
+pillow
+numpy
+torch
+torchvision
+pydantic
