@@ -21,13 +21,20 @@ class ClassStatistics(BaseModel):
     percentage: float
 
 
+class DamageClasses(BaseModel):
+    background: ClassStatistics
+    no_damage: ClassStatistics
+    minor_damage: ClassStatistics
+    major_damage: ClassStatistics
+    destroyed: ClassStatistics
+
+
 class Statistics(BaseModel):
     total_pixels: int
     damage_pixels: int
     damage_percentage: float
     damage_level: str
-
-    classes: dict[str, ClassStatistics]
+    classes: DamageClasses
 
 
 class ModelInfo(BaseModel):
