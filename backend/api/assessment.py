@@ -1,5 +1,5 @@
 import io
-
+from backend.models.assessment import AssessmentResponse
 from fastapi import APIRouter, UploadFile, File, HTTPException
 from PIL import Image, UnidentifiedImageError
 
@@ -289,7 +289,10 @@ async def upload_assessment_images(
 # ANALYZE ENDPOINT
 # ============================================================
 
-@router.post("/analyze")
+@router.post(
+    "/analyze",
+    response_model=AssessmentResponse
+)
 async def analyze_assessment_images(
     before_image: UploadFile = File(...),
     after_image: UploadFile = File(...)
