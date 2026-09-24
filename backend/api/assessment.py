@@ -402,5 +402,11 @@ async def analyze_assessment_images(
                 )
             )
         },
-        "statistics": statistics
+        "statistics": statistics,
+        "model": {
+            "name": "Change-Aware U-Net",
+            "input_channels": 9,
+            "output_classes": 5,
+            "checkpoint": "best_model_change_aware.pth"
+        }
     }
