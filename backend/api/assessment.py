@@ -3,12 +3,9 @@ from backend.models.assessment import AssessmentResponse
 from fastapi import APIRouter, UploadFile, File, HTTPException
 from PIL import Image, UnidentifiedImageError
 
-from backend.services.preprocessing import (
-    prepare_model_input
-)
-
-from backend.services.model_service import (
-    damage_model
+from backend.services.assessment_service import (
+    run_assessment,
+    _image_metadata
 )
 
 
@@ -185,26 +182,6 @@ async def validate_image(
 
 
 # ============================================================
-# IMAGE METADATA HELPER
-# ============================================================
-
-def _image_metadata(info: dict) -> dict:
-    """
-    Strip the raw image bytes from validated
-    image metadata for public responses.
-    """
-
-    return {
-        "filename": info["filename"],
-        "content_type": info["content_type"],
-        "format": info["format"],
-        "width": info["width"],
-        "height": info["height"],
-        "size_bytes": info["size_bytes"]
-    }
-
-
-# ============================================================
 # UPLOAD ENDPOINT
 # ============================================================
 
@@ -347,66 +324,10 @@ async def analyze_assessment_images(
         )
 
     # --------------------------------------------------------
-    # PREPROCESS
-    # [1, 9, 256, 256]
+    # RUN ASSESSMENT SERVICE
     # --------------------------------------------------------
 
-    input_tensor = prepare_model_input(
-        before_info["bytes"],
-        after_info["bytes"]
+    return run_assessment(
+        before_info,
+        after_info
     )
-
-    # --------------------------------------------------------
-    # INFERENCE
-    # --------------------------------------------------------
-
-    prediction_mask = damage_model.predict(
-        input_tensor
-    )
-
-    # --------------------------------------------------------
-    # STATISTICS
-    # --------------------------------------------------------
-
-    statistics = (
-        damage_model.calculate_statistics(
-            prediction_mask
-        )
-    )
-
-    # --------------------------------------------------------
-    # RESPONSE
-    # --------------------------------------------------------
-
-    return {
-        "status": "success",
-        "message": (
-            "Disaster damage assessment "
-            "completed successfully."
-        ),
-        "before_image": _image_metadata(
-            before_info
-        ),
-        "after_image": _image_metadata(
-            after_info
-        ),
-        "prediction": {
-            "mask_shape": list(
-                prediction_mask.shape
-            ),
-            "predicted_classes": sorted(
-                set(
-                    prediction_mask
-                    .flatten()
-                    .tolist()
-                )
-            )
-        },
-        "statistics": statistics,
-        "model": {
-            "name": "Change-Aware U-Net",
-            "input_channels": 9,
-            "output_classes": 5,
-            "checkpoint": "best_model_change_aware.pth"
-        }
-    }
