@@ -14,7 +14,8 @@ from backend.services.storage_service import (
     STORAGE_BUCKET,
     upload_assessment_image,
     delete_assessment_image,
-    get_assessment_image_path
+    get_assessment_image_path,
+    _storage_bucket
 )
 
 
@@ -412,15 +413,37 @@ def main():
         print(f"     objects under test prefix : {objects}")
         print()
 
+        # Since Step 8.2 the analyze flow also stores the
+        # before/after bytes under the same prefix, so the
+        # no-duplicate guarantee is asserted against the mask
+        # objects specifically rather than the whole prefix.
+
+        mask_name = f"{assessment_id}/prediction-mask.png"
+
+        mask_objects = [
+            name for name in objects
+            if name.endswith("prediction-mask.png")
+        ]
+
         check(
-            "exactly one object stored (no duplicates)",
-            len(objects) == 1,
-            f"got {len(objects)}"
+            "exactly one mask object stored (no duplicates)",
+            len(mask_objects) == 1,
+            f"got {len(mask_objects)}"
         )
         check(
-            "the object is the prediction mask",
-            len(objects) == 1
-            and objects[0].endswith("prediction-mask.png")
+            "the single mask object is the expected mask",
+            len(mask_objects) == 1
+            and mask_objects[0] == mask_name,
+            str(mask_objects)
+        )
+        check(
+            "before/after objects share the same canonical prefix",
+            sorted(objects) == [
+                f"{assessment_id}/after.png",
+                f"{assessment_id}/before.png",
+                mask_name,
+            ],
+            str(sorted(objects))
         )
 
         # -----------------------------------------------------
@@ -490,18 +513,51 @@ def main():
             assessment_id, "before", "image/png"
         )
 
-        upload_assessment_image(
-            assessment_id=assessment_id,
-            image_type="before",
-            image_bytes=before_bytes,
-            content_type="image/png"
+        # Since Step 8.2 the analyze flow already stored
+        # before/after.png under this prefix, so uploading the
+        # same path again must be refused rather than
+        # silently overwriting the stored bytes.
+
+        # storage3 download() takes a bucket-relative path,
+        # while probe_path is bucket-qualified.
+
+        probe_relative = probe_path.split("/", 1)[1]
+
+        original_before_bytes = _storage_bucket().download(
+            probe_relative
+        )[1]
+
+        refused = False
+
+        try:
+            upload_assessment_image(
+                assessment_id=assessment_id,
+                image_type="before",
+                image_bytes=before_bytes,
+                content_type="image/png"
+            )
+        except Exception:
+            refused = True
+
+        check(
+            "re-uploading an existing before.png is refused",
+            refused,
+            "upsert=False rejected the duplicate"
+        )
+
+        check(
+            "stored before.png bytes were not overwritten",
+            _storage_bucket().download(probe_relative)[1]
+            == original_before_bytes,
+            "stored bytes unchanged"
         )
 
         after_upload = bucket_objects(assessment_id)
 
         check(
-            "before.png uploaded alongside the mask",
-            len(after_upload) == 2,
+            "before.png present alongside the mask",
+            len(after_upload) == 3
+            and probe_relative in after_upload,
             f"got {after_upload}"
         )
 
@@ -511,9 +567,14 @@ def main():
 
         check(
             "before.png deleted, mask retained",
-            len(after_delete) == 1
-            and after_delete[0].endswith(
-                "prediction-mask.png"
+            len(after_delete) == 2
+            and any(
+                name.endswith("prediction-mask.png")
+                for name in after_delete
+            )
+            and not any(
+                name.endswith("before.png")
+                for name in after_delete
             ),
             f"got {after_delete}"
         )
