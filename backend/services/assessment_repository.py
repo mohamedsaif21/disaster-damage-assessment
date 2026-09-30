@@ -128,6 +128,97 @@ def get_assessment_by_id(
 
 
 # ============================================================
+# ASSET PATHS
+# ============================================================
+
+ASSET_COLUMNS = (
+    "id, "
+    "user_id, "
+    "report_storage_path, "
+    "assessment_images(image_type, storage_path), "
+    "assessment_predictions(mask_storage_path)"
+)
+
+
+def get_assessment_asset_paths(
+    assessment_id: str
+) -> Optional[Dict[str, Any]]:
+    """
+    Return the stored private Storage paths for one
+    assessment without loading its statistics.
+
+    Only the columns required to build asset links are
+    selected. A missing path stays None so the caller can
+    report an absent asset as null instead of inventing a
+    URL.
+
+    Returns None when the id is not a valid UUID or when no
+    assessment matches.
+    """
+
+    try:
+        uuid.UUID(str(assessment_id))
+    except (ValueError, AttributeError, TypeError):
+        return None
+
+    supabase = get_supabase()
+
+    response = (
+        supabase
+        .table("assessments")
+        .select(ASSET_COLUMNS)
+        .eq("id", assessment_id)
+        .limit(1)
+        .execute()
+    )
+
+    if not response.data:
+        return None
+
+    assessment = response.data[0]
+
+    images = assessment.get("assessment_images") or []
+
+    if isinstance(images, dict):
+        images = [images]
+
+    storage_paths: Dict[str, str] = {}
+
+    for image in images:
+        if not isinstance(image, dict):
+            continue
+
+        image_type = image.get("image_type")
+        storage_path = image.get("storage_path")
+
+        if image_type in ("before", "after") and storage_path:
+            storage_paths[image_type] = storage_path
+
+    prediction = assessment.get("assessment_predictions")
+
+    if isinstance(prediction, list):
+        prediction = prediction[0] if prediction else None
+
+    mask_storage_path = None
+
+    if isinstance(prediction, dict):
+        mask_storage_path = prediction.get(
+            "mask_storage_path"
+        )
+
+    return {
+        "id": assessment.get("id"),
+        "user_id": assessment.get("user_id"),
+        "report_storage_path": assessment.get(
+            "report_storage_path"
+        ),
+        "before_storage_path": storage_paths.get("before"),
+        "after_storage_path": storage_paths.get("after"),
+        "mask_storage_path": mask_storage_path,
+    }
+
+
+# ============================================================
 # PERSISTENCE
 # ============================================================
 
