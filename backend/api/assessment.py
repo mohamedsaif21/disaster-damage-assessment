@@ -1,11 +1,20 @@
 import io
-from backend.models.assessment import AssessmentResponse
-from fastapi import APIRouter, UploadFile, File, HTTPException
+from backend.models.assessment import (
+    AssessmentResponse,
+    AssessmentHistoryResponse,
+    AssessmentDetail
+)
+from fastapi import APIRouter, UploadFile, File, HTTPException, Query
 from PIL import Image, UnidentifiedImageError
 
 from backend.services.assessment_service import (
     run_assessment,
     _image_metadata
+)
+
+from backend.services.assessment_repository import (
+    get_assessment_history,
+    get_assessment_by_id
 )
 
 
@@ -331,3 +340,94 @@ async def analyze_assessment_images(
         before_info,
         after_info
     )
+
+
+# ============================================================
+# RETRIEVAL ENDPOINTS
+#
+# GET /history is declared before GET /{assessment_id} so the
+# literal "history" segment is matched first instead of being
+# captured by the assessment_id path parameter.
+# ============================================================
+
+# ============================================================
+# HISTORY ENDPOINT
+# ============================================================
+
+@router.get(
+    "/history",
+    response_model=AssessmentHistoryResponse
+)
+async def get_assessment_history_endpoint(
+    limit: int | None = Query(
+        default=None,
+        ge=1,
+        le=100,
+        description=(
+            "Maximum number of assessments to "
+            "return, newest first."
+        )
+    )
+):
+    """
+    Return assessment history, newest first.
+
+    Authentication does not exist yet, and every current
+    assessment row has user_id = NULL, so this always reads
+    the unowned assessments. No user_id is accepted from
+    the client, because at this stage that would not be a
+    real access control mechanism.
+    """
+
+    assessments = get_assessment_history(
+        user_id=None,
+        limit=limit
+    )
+
+    return {
+        "status": "success",
+        "count": len(assessments),
+        "limit": limit,
+        "assessments": assessments
+    }
+
+
+# ============================================================
+# SINGLE ASSESSMENT ENDPOINT
+# ============================================================
+
+@router.get(
+    "/{assessment_id}",
+    response_model=AssessmentDetail
+)
+async def get_assessment_detail_endpoint(
+    assessment_id: str
+):
+    """
+    Return one complete assessment with its model,
+    before and after image metadata, prediction metadata
+    and all five class statistics.
+
+    The id is taken as a plain string on purpose: a
+    malformed UUID is reported as 404 by the repository
+    rather than rejected as 422 by path validation.
+    """
+
+    assessment = get_assessment_by_id(
+        assessment_id
+    )
+
+    if assessment is None:
+        raise HTTPException(
+            status_code=404,
+            detail={
+                "message": (
+                    "Assessment was not found."
+                ),
+                "assessment_id": (
+                    assessment_id
+                )
+            }
+        )
+
+    return assessment
