@@ -21,6 +21,14 @@ from backend.services.assessment_repository import (
     add_class_statistics
 )
 
+from backend.services.prediction_mask_service import (
+    prediction_mask_to_png
+)
+
+from backend.services.storage_service import (
+    upload_prediction_mask
+)
+
 
 # ============================================================
 # CONFIGURATION
@@ -69,7 +77,8 @@ def run_assessment(
     2. Run Change-Aware U-Net inference.
     3. Calculate damage statistics.
     4. Persist the assessment to Supabase.
-    5. Build the assessment result response.
+    5. Store the prediction mask as a lossless PNG.
+    6. Build the assessment result response.
     """
 
     # --------------------------------------------------------
@@ -172,11 +181,24 @@ def run_assessment(
         )
     )
 
+    # Convert the class-ID mask into a lossless PNG
+    # and store it in the private assessments bucket
+
+    prediction_mask_png = prediction_mask_to_png(
+        prediction_mask
+    )
+
+    mask_storage_path = upload_prediction_mask(
+        assessment_id=assessment_id,
+        mask_bytes=prediction_mask_png
+    )
+
     add_prediction(
         assessment_id=assessment_id,
         mask_width=mask_width,
         mask_height=mask_height,
-        predicted_classes=predicted_classes
+        predicted_classes=predicted_classes,
+        mask_storage_path=mask_storage_path
     )
 
     # Save the five damage-class statistics
