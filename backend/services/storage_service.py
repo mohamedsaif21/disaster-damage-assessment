@@ -30,6 +30,18 @@ PREDICTION_MASK_FILENAME = "prediction-mask.png"
 
 PREDICTION_MASK_CONTENT_TYPE = "image/png"
 
+REPORT_FILENAME = "report.pdf"
+
+REPORT_CONTENT_TYPE = "application/pdf"
+
+# The project has a small total storage budget, so a
+# report that exceeds this limit is rejected instead of
+# being stored.
+
+MAX_REPORT_SIZE = 2 * 1024 * 1024  # 2 MB
+
+PDF_MAGIC = b"%PDF-"
+
 
 # ============================================================
 # INTERNAL HELPERS
@@ -270,6 +282,88 @@ def upload_prediction_mask(
         storage_path,
         mask_bytes,
         PREDICTION_MASK_CONTENT_TYPE
+    )
+
+
+# ============================================================
+# PDF REPORT
+# ============================================================
+
+def _validate_report_bytes(pdf_bytes: bytes) -> None:
+    """
+    Reject payloads that are not compact PDFs.
+
+    Guards the storage budget by refusing oversized
+    reports before they are sent to Supabase.
+    """
+
+    if not pdf_bytes or not isinstance(
+        pdf_bytes, bytes
+    ):
+        raise ValueError(
+            "report_bytes must be non-empty bytes."
+        )
+
+    if not pdf_bytes.startswith(PDF_MAGIC):
+        raise ValueError(
+            "report_bytes must start with the "
+            "%PDF- header."
+        )
+
+    if len(pdf_bytes) > MAX_REPORT_SIZE:
+        size_mb = len(pdf_bytes) / (1024 * 1024)
+
+        raise ValueError(
+            f"Report is {size_mb:.2f} MB, which exceeds "
+            f"the {MAX_REPORT_SIZE // (1024 * 1024)} MB "
+            "storage limit."
+        )
+
+
+def get_assessment_report_path(
+    assessment_id: str
+) -> str:
+    """
+    Return the private storage path for an assessment
+    PDF report.
+    """
+
+    if not assessment_id or not isinstance(
+        assessment_id, str
+    ):
+        raise ValueError(
+            "assessment_id must be a non-empty string."
+        )
+
+    return (
+        f"{STORAGE_BUCKET}/"
+        f"{assessment_id}/"
+        f"{REPORT_FILENAME}"
+    )
+
+
+def upload_assessment_report(
+    assessment_id: str,
+    pdf_bytes: bytes
+) -> str:
+    """
+    Upload an assessment PDF report to the private
+    assessments bucket and return its storage path.
+
+    The upload uses upsert=False, so an existing report
+    is never overwritten and no duplicate PDF is created.
+    """
+
+    storage_path = get_assessment_report_path(
+        assessment_id
+    )
+
+    _validate_report_bytes(pdf_bytes)
+
+    return _upload_bytes(
+        storage_path,
+        pdf_bytes,
+        REPORT_CONTENT_TYPE
     )
 
 
