@@ -26,7 +26,9 @@ from backend.services.prediction_mask_service import (
 )
 
 from backend.services.storage_service import (
-    upload_prediction_mask
+    upload_prediction_mask,
+    upload_assessment_image,
+    delete_assessment_image
 )
 
 
@@ -60,6 +62,36 @@ def _image_metadata(info: dict) -> dict:
 
 
 # ============================================================
+# STORAGE CLEANUP
+# ============================================================
+
+def _discard_uploaded_objects(
+    storage_paths: list
+) -> None:
+    """
+    Best-effort removal of objects uploaded by a pipeline
+    run that then failed.
+
+    Each path is removed independently so one failure cannot
+    strand the rest, and no cleanup error is allowed to mask
+    the original failure that triggered the rollback.
+    """
+
+    for storage_path in storage_paths:
+        if not storage_path:
+            continue
+
+        try:
+            delete_assessment_image(storage_path)
+        except Exception:
+            # Reported in the report as a known limitation:
+            # a Storage outage during rollback can leave an
+            # orphan. Surfacing this would replace the real
+            # cause of the failure with a secondary error.
+            pass
+
+
+# ============================================================
 # ASSESSMENT PIPELINE
 # ============================================================
 
@@ -77,8 +109,15 @@ def run_assessment(
     2. Run Change-Aware U-Net inference.
     3. Calculate damage statistics.
     4. Persist the assessment to Supabase.
-    5. Store the prediction mask as a lossless PNG.
-    6. Build the assessment result response.
+    5. Upload the before image, after image and prediction
+       mask to the private assessments bucket.
+    6. Record every stored path in the database.
+    7. Build the assessment result response.
+
+    The three objects are uploaded before their paths are
+    written, so the database never records a path for a file
+    that failed to upload. If a later step fails, the objects
+    already uploaded are removed again.
     """
 
     # --------------------------------------------------------
@@ -125,7 +164,10 @@ def run_assessment(
             f"for checkpoint: {CHECKPOINT}"
         )
 
-    # Create the main assessment record
+    # Create the main assessment record.
+    #
+    # The id is required before anything can be stored,
+    # because every Storage path is namespaced by it.
 
     assessment = create_assessment(
         user_id=None,
@@ -139,89 +181,143 @@ def run_assessment(
 
     assessment_id = assessment["id"]
 
-    # Save before image metadata
+    # Every path uploaded by this run, so a later failure can
+    # remove them again instead of leaving orphans behind.
 
-    add_assessment_image(
-        assessment_id=assessment_id,
-        image_type="before",
-        filename=before_info["filename"],
-        storage_path=None,
-        content_type=before_info["content_type"],
-        image_format=before_info["format"],
-        width=before_info["width"],
-        height=before_info["height"],
-        size_bytes=before_info["size_bytes"]
-    )
+    uploaded_paths: list = []
 
-    # Save after image metadata
+    try:
+        # ----------------------------------------------------
+        # STORAGE
+        #
+        # The bucket is private and every upload uses
+        # upsert=False, so no existing object is overwritten
+        # and no duplicate is created.
+        # ----------------------------------------------------
 
-    add_assessment_image(
-        assessment_id=assessment_id,
-        image_type="after",
-        filename=after_info["filename"],
-        storage_path=None,
-        content_type=after_info["content_type"],
-        image_format=after_info["format"],
-        width=after_info["width"],
-        height=after_info["height"],
-        size_bytes=after_info["size_bytes"]
-    )
-
-    # Save prediction metadata
-
-    mask_height, mask_width = (
-        prediction_mask.shape
-    )
-
-    predicted_classes = sorted(
-        set(
-            prediction_mask
-            .flatten()
-            .tolist()
+        before_storage_path = upload_assessment_image(
+            assessment_id=assessment_id,
+            image_type="before",
+            image_bytes=before_info["bytes"],
+            content_type=before_info["content_type"]
         )
-    )
 
-    # Convert the class-ID mask into a lossless PNG
-    # and store it in the private assessments bucket
+        uploaded_paths.append(before_storage_path)
 
-    prediction_mask_png = prediction_mask_to_png(
-        prediction_mask
-    )
+        after_storage_path = upload_assessment_image(
+            assessment_id=assessment_id,
+            image_type="after",
+            image_bytes=after_info["bytes"],
+            content_type=after_info["content_type"]
+        )
 
-    mask_storage_path = upload_prediction_mask(
-        assessment_id=assessment_id,
-        mask_bytes=prediction_mask_png
-    )
+        uploaded_paths.append(after_storage_path)
 
-    add_prediction(
-        assessment_id=assessment_id,
-        mask_width=mask_width,
-        mask_height=mask_height,
-        predicted_classes=predicted_classes,
-        mask_storage_path=mask_storage_path
-    )
+        # Convert the class-ID mask into a lossless PNG
+        # and store it in the private assessments bucket
 
-    # Save the five damage-class statistics
+        prediction_mask_png = prediction_mask_to_png(
+            prediction_mask
+        )
 
-    add_class_statistics(
-        assessment_id=assessment_id,
-        statistics={
-            class_id: {
-                "class_name": class_name,
-                "pixels": statistics[
-                    "classes"
-                ][class_name]["pixels"],
-                "percentage": statistics[
-                    "classes"
-                ][class_name]["percentage"]
+        mask_storage_path = upload_prediction_mask(
+            assessment_id=assessment_id,
+            mask_bytes=prediction_mask_png
+        )
+
+        uploaded_paths.append(mask_storage_path)
+
+        # ----------------------------------------------------
+        # DATABASE
+        #
+        # Paths are recorded only after every upload
+        # succeeded.
+        # ----------------------------------------------------
+
+        # Save before image metadata
+
+        add_assessment_image(
+            assessment_id=assessment_id,
+            image_type="before",
+            filename=before_info["filename"],
+            storage_path=before_storage_path,
+            content_type=before_info["content_type"],
+            image_format=before_info["format"],
+            width=before_info["width"],
+            height=before_info["height"],
+            size_bytes=before_info["size_bytes"]
+        )
+
+        # Save after image metadata
+
+        add_assessment_image(
+            assessment_id=assessment_id,
+            image_type="after",
+            filename=after_info["filename"],
+            storage_path=after_storage_path,
+            content_type=after_info["content_type"],
+            image_format=after_info["format"],
+            width=after_info["width"],
+            height=after_info["height"],
+            size_bytes=after_info["size_bytes"]
+        )
+
+        # Save prediction metadata
+
+        mask_height, mask_width = (
+            prediction_mask.shape
+        )
+
+        predicted_classes = sorted(
+            set(
+                prediction_mask
+                .flatten()
+                .tolist()
+            )
+        )
+
+        add_prediction(
+            assessment_id=assessment_id,
+            mask_width=mask_width,
+            mask_height=mask_height,
+            predicted_classes=predicted_classes,
+            mask_storage_path=mask_storage_path
+        )
+
+        # Save the five damage-class statistics
+
+        add_class_statistics(
+            assessment_id=assessment_id,
+            statistics={
+                class_id: {
+                    "class_name": class_name,
+                    "pixels": statistics[
+                        "classes"
+                    ][class_name]["pixels"],
+                    "percentage": statistics[
+                        "classes"
+                    ][class_name]["percentage"]
+                }
+                for class_id, class_name
+                in CLASS_NAMES.items()
             }
-            for class_id, class_name
-            in CLASS_NAMES.items()
-        }
-    )
+        )
+
+    except Exception:
+        # Undo the Storage writes so a failed run does not
+        # leave unreferenced objects in the bucket.
+
+        _discard_uploaded_objects(uploaded_paths)
+
+        raise
 
     # --------------------------------------------------------
     # RESPONSE
+    #
+    # Storage paths stay out of this response. The client
+    # requests signed links separately through
+    # GET /api/assessment/{assessment_id}/assets, so no
+    # Week 4 response field changes.
     # --------------------------------------------------------
 
     return {
