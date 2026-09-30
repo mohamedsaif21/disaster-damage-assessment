@@ -148,3 +148,32 @@ class AssessmentDetail(BaseModel):
     assessment_images: List[AssessmentImageRecord]
     assessment_predictions: Optional[AssessmentPredictionRecord]
     assessment_class_statistics: List[AssessmentClassStatistic]
+
+
+# ============================================================
+# ASSET RESPONSE MODEL
+#
+# A dedicated model is used on purpose: no signed URL is
+# added to AssessmentResponse, AssessmentDetail or any other
+# existing model, so clients of the Week 4 endpoints see no
+# change at all.
+#
+# Every URL is a temporary Supabase signed link into the
+# private `assessments` bucket. expires_in reports the
+# lifetime in seconds actually applied, so a client knows a
+# link must be re-requested rather than cached. An asset
+# that does not exist is null; it is never omitted and never
+# replaced by a placeholder URL.
+# ============================================================
+
+class AssessmentAssetsResponse(BaseModel):
+    assessment_id: str
+    before_image_url: Optional[str]
+    after_image_url: Optional[str]
+    prediction_mask_url: Optional[str]
+    report_url: Optional[str]
+
+    # Signed-URL lifetime in seconds. The links stop working
+    # once this many seconds have passed.
+
+    expires_in: int
