@@ -2,7 +2,8 @@ import io
 from backend.models.assessment import (
     AssessmentResponse,
     AssessmentHistoryResponse,
-    AssessmentDetail
+    AssessmentDetail,
+    AssessmentAssetsResponse
 )
 from fastapi import APIRouter, UploadFile, File, HTTPException, Query
 from PIL import Image, UnidentifiedImageError
@@ -15,6 +16,13 @@ from backend.services.assessment_service import (
 from backend.services.assessment_repository import (
     get_assessment_history,
     get_assessment_by_id
+)
+
+from backend.services.asset_service import (
+    get_assessment_assets,
+    resolve_auth_mode,
+    AssetAssessmentNotFound,
+    AssetAccessDenied,
 )
 
 
@@ -431,3 +439,84 @@ async def get_assessment_detail_endpoint(
         )
 
     return assessment
+
+
+# ============================================================
+# ASSET ENDPOINT
+#
+# This route has two path segments, so it can never be
+# captured by GET /{assessment_id} above.
+# ============================================================
+
+@router.get(
+    "/{assessment_id}/assets",
+    response_model=AssessmentAssetsResponse
+)
+async def get_assessment_assets_endpoint(
+    assessment_id: str
+):
+    """
+    Return short-lived signed URLs for one assessment's
+    private assets: before image, after image, prediction
+    mask and PDF report.
+
+    The `assessments` bucket stays private. FastAPI reads the
+    storage paths from the database and signs them, so the
+    client can never ask for an arbitrary object and never
+    receives a permanent public URL. Supabase credentials
+    are not exposed.
+
+    An asset that was never stored, or whose object is gone,
+    is returned as null.
+
+    Authorization status: authentication is not connected to
+    the backend yet, so this endpoint runs in development mode
+    and may only read assessments that have no owner
+    (user_id IS NULL), the same scope GET /history uses. Once
+    Supabase Auth is connected, the verified user id is passed
+    in instead and the endpoint returns 403 for an assessment
+    owned by a different user. The asset code is unchanged by
+    that switch.
+    """
+
+    # No authenticated caller is available yet. This is the
+    # single seam where a verified Supabase user id replaces
+    # the development-mode value.
+
+    request_user_id = None
+
+    try:
+        return get_assessment_assets(
+            assessment_id=assessment_id,
+            request_user_id=request_user_id
+        )
+
+    except AssetAssessmentNotFound:
+        raise HTTPException(
+            status_code=404,
+            detail={
+                "message": (
+                    "Assessment was not found."
+                ),
+                "assessment_id": (
+                    assessment_id
+                )
+            }
+        )
+
+    except AssetAccessDenied:
+        raise HTTPException(
+            status_code=403,
+            detail={
+                "message": (
+                    "You do not have access to "
+                    "this assessment."
+                ),
+                "assessment_id": (
+                    assessment_id
+                ),
+                "auth_mode": resolve_auth_mode(
+                    request_user_id
+                )
+            }
+        )
