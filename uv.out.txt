@@ -1,0 +1,8 @@
+Loading damage assessment model...
+Device: cpu
+Checkpoint: D:\Projects\DDA\disaster-damage-assessment\ai\checkpoints\best_model_change_aware.pth
+Model loaded successfully.
+Checkpoint epoch: 3
+Validation loss: 0.4699871812547956
+INFO:     127.0.0.1:62405 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62405 - "GET / HTTP/1.1" 200 OK
