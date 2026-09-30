@@ -368,6 +368,139 @@ def upload_assessment_report(
 
 
 # ============================================================
+# SIGNED URL ACCESS
+# ============================================================
+
+# The assessments bucket is private, so the browser can
+# never load an object directly. FastAPI mints a short-lived
+# signed URL on request instead, so a leaked link stops
+# working within minutes.
+
+DEFAULT_SIGNED_URL_TTL = 300  # 5 minutes
+
+# A caller may ask for less time than the default but can
+# never extend a link beyond this ceiling.
+
+MAX_SIGNED_URL_TTL = 900  # 15 minutes
+
+
+def _validate_signed_url_ttl(
+    expires_in: int
+) -> int:
+    """
+    Clamp a requested signed-URL lifetime to the
+    maximum allowed short-lived window.
+    """
+
+    if isinstance(expires_in, bool) or not isinstance(
+        expires_in, int
+    ):
+        raise ValueError(
+            "expires_in must be an integer number of "
+            "seconds."
+        )
+
+    if expires_in <= 0:
+        raise ValueError(
+            "expires_in must be positive."
+        )
+
+    return min(expires_in, MAX_SIGNED_URL_TTL)
+
+
+def create_signed_asset_url(
+    storage_path: str,
+    expires_in: int = DEFAULT_SIGNED_URL_TTL
+) -> str:
+    """
+    Return a short-lived signed URL for one object in the
+    private assessments bucket.
+
+    The caller must already have decided that the object
+    exists; this function only signs the path it is given
+    and never inspects or returns a permanent public URL.
+
+    Raises ValueError for an invalid path or lifetime and
+    RuntimeError if Supabase refuses to sign the object.
+    """
+
+    relative_path = _bucket_relative_path(
+        storage_path
+    )
+
+    ttl = _validate_signed_url_ttl(expires_in)
+
+    bucket = _storage_bucket()
+
+    try:
+        signed = bucket.create_signed_url(
+            relative_path,
+            expires_in=ttl
+        )
+    except Exception as error:
+        raise RuntimeError(
+            f"Failed to create a signed URL for "
+            f"{relative_path}: {error}"
+        ) from error
+
+    # storage3 returns a mapping, but tolerate a plain
+    # string or an object exposing the same attributes so
+    # a client upgrade cannot silently break delivery.
+
+    url = None
+
+    if isinstance(signed, str):
+        url = signed
+    elif isinstance(signed, dict):
+        url = (
+            signed.get("signedURL")
+            or signed.get("signed_url")
+        )
+    else:
+        url = (
+            getattr(signed, "signedURL", None)
+            or getattr(signed, "signed_url", None)
+        )
+
+    if not url or not isinstance(url, str):
+        raise RuntimeError(
+            "Supabase returned no signed URL for "
+            f"{relative_path}."
+        )
+
+    return url
+
+
+def asset_object_exists(
+    storage_path: str
+) -> bool:
+    """
+    Report whether one private object is still present in
+    the assessments bucket.
+
+    A missing object returns False so a stale database path
+    cannot produce a signed link that never resolves. A real
+    Storage failure is raised instead of being reported as
+    "missing", so an outage is never mistaken for an absent
+    asset.
+    """
+
+    relative_path = _bucket_relative_path(
+        storage_path
+    )
+
+    bucket = _storage_bucket()
+
+    try:
+        return bool(bucket.exists(relative_path))
+    except Exception as error:
+        raise RuntimeError(
+            f"Failed to check assessment object "
+            f"{relative_path}: {error}"
+        ) from error
+
+
+# ============================================================
 # DELETE
 # ============================================================
 
