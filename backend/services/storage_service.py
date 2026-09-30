@@ -26,6 +26,10 @@ ALLOWED_CONTENT_TYPES = {
     "image/jpeg": "jpg"
 }
 
+PREDICTION_MASK_FILENAME = "prediction-mask.png"
+
+PREDICTION_MASK_CONTENT_TYPE = "image/png"
+
 
 # ============================================================
 # INTERNAL HELPERS
@@ -151,6 +155,43 @@ def get_assessment_image_path(
 # UPLOAD
 # ============================================================
 
+def _upload_bytes(
+    storage_path: str,
+    data: bytes,
+    content_type: str
+) -> str:
+    """
+    Upload raw bytes into the private assessments
+    bucket at storage_path, without overwriting an
+    existing object.
+    """
+
+    relative_path = _bucket_relative_path(
+        storage_path
+    )
+
+    bucket = _storage_bucket()
+
+    try:
+        bucket.upload(
+            relative_path,
+            data,
+            file_options=FileOptions(
+                upsert="false",
+                **{
+                    "content-type": content_type
+                }
+            )
+        )
+    except Exception as error:
+        raise RuntimeError(
+            f"Failed to upload assessment image to "
+            f"{storage_path}: {error}"
+        ) from error
+
+    return storage_path
+
+
 def upload_assessment_image(
     assessment_id: str,
     image_type: str,
@@ -176,30 +217,60 @@ def upload_assessment_image(
 
     _validate_image_bytes(image_bytes)
 
-    relative_path = _bucket_relative_path(
-        storage_path
+    return _upload_bytes(
+        storage_path,
+        image_bytes,
+        content_type
     )
 
-    bucket = _storage_bucket()
 
-    try:
-        bucket.upload(
-            relative_path,
-            image_bytes,
-            file_options=FileOptions(
-                upsert="false",
-                **{
-                    "content-type": content_type
-                }
-            )
+# ============================================================
+# PREDICTION MASK
+# ============================================================
+
+def get_prediction_mask_path(
+    assessment_id: str
+) -> str:
+    """
+    Return the private storage path for an
+    assessment prediction mask.
+    """
+
+    if not assessment_id or not isinstance(
+        assessment_id, str
+    ):
+        raise ValueError(
+            "assessment_id must be a non-empty string."
         )
-    except Exception as error:
-        raise RuntimeError(
-            f"Failed to upload assessment image to "
-            f"{storage_path}: {error}"
-        ) from error
 
-    return storage_path
+    return (
+        f"{STORAGE_BUCKET}/"
+        f"{assessment_id}/"
+        f"{PREDICTION_MASK_FILENAME}"
+    )
+
+
+def upload_prediction_mask(
+    assessment_id: str,
+    mask_bytes: bytes
+) -> str:
+    """
+    Upload a lossless prediction-mask PNG to the
+    private assessments bucket and return its
+    storage path.
+    """
+
+    storage_path = get_prediction_mask_path(
+        assessment_id
+    )
+
+    _validate_image_bytes(mask_bytes)
+
+    return _upload_bytes(
+        storage_path,
+        mask_bytes,
+        PREDICTION_MASK_CONTENT_TYPE
+    )
 
 
 # ============================================================
