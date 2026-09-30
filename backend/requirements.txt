@@ -8,3 +8,5 @@ torchvision
 pydantic
 supabase
 python-dotenv
+reportlab
+pypdf
