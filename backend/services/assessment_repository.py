@@ -292,3 +292,42 @@ def add_class_statistics(
         )
 
     return response.data
+
+
+def set_report_storage_path(
+    assessment_id: str,
+    report_storage_path: str
+) -> Dict[str, Any]:
+    """
+    Store the private storage path of the generated
+    PDF report on the assessment row.
+
+    Returns the updated assessment record.
+    """
+
+    if not report_storage_path or not isinstance(
+        report_storage_path, str
+    ):
+        raise ValueError(
+            "report_storage_path must be a non-empty "
+            "string."
+        )
+
+    supabase = get_supabase()
+
+    response = (
+        supabase
+        .table("assessments")
+        .update(
+            {"report_storage_path": report_storage_path}
+        )
+        .eq("id", assessment_id)
+        .execute()
+    )
+
+    if not response.data:
+        raise RuntimeError(
+            "Failed to store the report storage path."
+        )
+
+    return response.data[0]
