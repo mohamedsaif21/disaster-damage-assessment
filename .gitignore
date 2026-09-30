@@ -9,7 +9,8 @@ backend/venv/
 # Environment variables
 .env
 .env.*
-!.env.example
+.env.example
+backend/.env.example
 
 # Jupyter
 .ipynb_checkpoints/
@@ -34,3 +35,4 @@ Thumbs.db
 # IDE
 .vscode/
 .idea/
+
