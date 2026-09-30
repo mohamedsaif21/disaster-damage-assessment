@@ -117,7 +117,7 @@ def restore_state(snapshot: dict) -> None:
     report_storage_path value.
     """
 
-    current = all_bucket_objects()
+    current = set(all_bucket_objects())
     original = set(snapshot["objects"])
 
     for name in current - original:
@@ -157,6 +157,25 @@ def extract_text(pdf_bytes: bytes) -> str:
     )
 
 
+def embedded(value) -> dict:
+    """
+    Normalize an embedded PostgREST resource.
+
+    Depending on the relationship the Supabase client
+    returns either a single dictionary or a list with
+    one dictionary, so accept both shapes.
+    """
+
+    if isinstance(value, dict):
+        return value
+
+    if isinstance(value, (list, tuple)) and value:
+        if isinstance(value[0], dict):
+            return value[0]
+
+    return {}
+
+
 # ============================================================
 # TEST
 # ============================================================
@@ -185,14 +204,17 @@ def main():
         )
 
         loaded = assessment is not None
+        images = assessment.get("assessment_images") or []
+        stats = assessment.get("assessment_class_statistics") or []
+        predictions = embedded(
+            assessment.get("assessment_predictions")
+        )
+
         detail = (
             f"id {assessment['id']}, "
-            f"{len(assessment.get('assessment_images') or [])} "
-            f"images, "
-            f"{len(assessment.get('assessment_predictions') or [])} "
-            f"prediction(s), "
-            f"{len(assessment.get('assessment_class_statistics') or [])} "
-            f"class rows"
+            f"{len(images)} images, "
+            f"{1 if predictions else 0} prediction(s), "
+            f"{len(stats)} class rows"
             if loaded
             else "get_assessment_by_id returned None"
         )
@@ -302,8 +324,8 @@ def main():
 
         check(
             "content type is application/pdf",
-            info.get("mimetype") == "application/pdf",
-            str(info.get("mimetype")),
+            info.get("content_type") == "application/pdf",
+            str(info.get("content_type")),
             failures
         )
 
@@ -371,9 +393,9 @@ def main():
             failures
         )
 
-        model = (
-            assessment.get("assessment_models") or [{}]
-        )[0]
+        model = embedded(
+            assessment.get("assessment_models")
+        )
 
         check(
             "report contains the model name",
