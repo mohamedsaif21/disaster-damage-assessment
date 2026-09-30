@@ -1,7 +1,135 @@
-from typing import Any, Dict, List
+import uuid
+from typing import Any, Dict, List, Optional
 
 from backend.services.supabase_service import get_supabase
 
+
+# ============================================================
+# RETRIEVAL
+# ============================================================
+
+HISTORY_COLUMNS = (
+    "id, "
+    "user_id, "
+    "model_id, "
+    "status, "
+    "damage_level, "
+    "damage_percentage, "
+    "total_pixels, "
+    "damage_pixels, "
+    "created_at, "
+    "updated_at"
+)
+
+HISTORY_MODEL_EMBED = (
+    "assessment_models("
+    "id, "
+    "name, "
+    "architecture, "
+    "checkpoint, "
+    "input_channels, "
+    "output_classes, "
+    "epoch, "
+    "validation_loss"
+    ")"
+)
+
+DETAIL_COLUMNS = f"*, {HISTORY_MODEL_EMBED}"
+
+DETAIL_EMBEDS = (
+    ", "
+    "assessment_images(*), "
+    "assessment_predictions(*), "
+    "assessment_class_statistics(*)"
+)
+
+
+def get_assessment_history(
+    user_id: str | None,
+    limit: int | None = None,
+) -> List[Dict[str, Any]]:
+    """
+    Return the assessments belonging to a user,
+    newest first, with the related model included.
+
+    A null user_id selects assessments that were
+    created without an owner. An empty result is
+    returned as an empty list.
+    """
+
+    supabase = get_supabase()
+
+    query = supabase.table("assessments").select(
+        f"{HISTORY_COLUMNS}, {HISTORY_MODEL_EMBED}"
+    )
+
+    if user_id is None:
+        query = query.is_("user_id", "null")
+    else:
+        query = query.eq("user_id", user_id)
+
+    query = query.order("created_at", desc=True)
+
+    if limit is not None:
+        query = query.limit(limit)
+
+    response = query.execute()
+
+    return response.data or []
+
+
+def get_assessment_by_id(
+    assessment_id: str
+) -> Optional[Dict[str, Any]]:
+    """
+    Return one complete assessment with its model,
+    before/after image metadata, prediction metadata
+    and all five class statistics.
+
+    Returns None when the id is not a valid UUID or
+    when no assessment matches.
+
+    Embedded child rows are ordered here because
+    PostgREST cannot sort an embedded resource.
+    """
+
+    try:
+        uuid.UUID(str(assessment_id))
+    except (ValueError, AttributeError, TypeError):
+        return None
+
+    supabase = get_supabase()
+
+    response = (
+        supabase
+        .table("assessments")
+        .select(f"{DETAIL_COLUMNS}{DETAIL_EMBEDS}")
+        .eq("id", assessment_id)
+        .limit(1)
+        .execute()
+    )
+
+    if not response.data:
+        return None
+
+    assessment = response.data[0]
+
+    assessment["assessment_images"] = sorted(
+        assessment.get("assessment_images") or [],
+        key=lambda image: image["image_type"]
+    )
+
+    assessment["assessment_class_statistics"] = sorted(
+        assessment.get("assessment_class_statistics") or [],
+        key=lambda statistic: statistic["class_id"]
+    )
+
+    return assessment
+
+
+# ============================================================
+# PERSISTENCE
+# ============================================================
 
 def create_assessment(
     user_id: str | None,
