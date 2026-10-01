@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.117.2",
     "axios": "^1.19.0",
     "leaflet": "^1.9.4",
     "lucide-react": "^1.31.0",
