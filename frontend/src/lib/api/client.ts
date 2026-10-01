@@ -5,12 +5,19 @@
  * directly, so base URL, defaults and error normalization live
  * in exactly one place.
  *
- * No authentication is attached yet: that is a later step. The
- * frontend never holds Supabase credentials, and signed asset
- * URLs are produced by the backend.
+ * The current Supabase access token is attached centrally as
+ * `Authorization: Bearer <token>`. Individual API functions never
+ * set the header themselves. Only public Supabase configuration
+ * is read here; the frontend never holds service-role
+ * credentials, and signed asset URLs are produced by the backend.
  */
 
 import axios, { type AxiosInstance } from "axios";
+
+import {
+  getSupabaseClient,
+  isSupabaseConfigured,
+} from "../supabase/client";
 
 // ============================================================
 // BASE URL
@@ -116,6 +123,51 @@ export const apiClient: AxiosInstance = axios.create({
 // Content-Type is deliberately not set globally: Axios derives
 // application/json for plain objects and multipart/form-data
 // (with its boundary) for FormData uploads.
+
+// ============================================================
+// AUTHENTICATION
+// ============================================================
+
+/**
+ * Read the current Supabase access token, or null when there is
+ * no session or Supabase is not configured.
+ *
+ * Concurrent callers share one in-flight lookup so a burst of
+ * requests cannot trigger repeated session reads. No manual
+ * refresh is performed: supabase-js refreshes an expired token
+ * internally, so there is no refresh loop here.
+ */
+let inFlightToken: Promise<string | null> | null = null;
+
+async function getAccessToken(): Promise<string | null> {
+  if (!isSupabaseConfigured) {
+    return null;
+  }
+
+  if (!inFlightToken) {
+    inFlightToken = getSupabaseClient()
+      .auth.getSession()
+      .then(({ data }) => data.session?.access_token ?? null)
+      .catch(() => null)
+      .finally(() => {
+        inFlightToken = null;
+      });
+  }
+
+  return inFlightToken;
+}
+
+apiClient.interceptors.request.use(async (config) => {
+  const token = await getAccessToken();
+
+  // A public endpoint such as /health still works: no token
+  // means no Authorization header at all, never a fake one.
+  if (token) {
+    config.headers.set("Authorization", `Bearer ${token}`);
+  }
+
+  return config;
+});
 
 apiClient.interceptors.response.use(
   (response) => response,
