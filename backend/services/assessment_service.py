@@ -31,6 +31,10 @@ from backend.services.storage_service import (
     delete_assessment_image
 )
 
+from backend.services.auth_service import (
+    ensure_user_profile
+)
+
 
 # ============================================================
 # CONFIGURATION
@@ -97,7 +101,9 @@ def _discard_uploaded_objects(
 
 def run_assessment(
     before_info: dict,
-    after_info: dict
+    after_info: dict,
+    user_id: str,
+    user_email: str | None = None,
 ) -> dict:
     """
     Run the full assessment pipeline on validated
@@ -164,13 +170,23 @@ def run_assessment(
             f"for checkpoint: {CHECKPOINT}"
         )
 
-    # Create the main assessment record.
+    # Create the main assessment record, owned by the
+    # verified authenticated user.
     #
-    # The id is required before anything can be stored,
-    # because every Storage path is namespaced by it.
+    # assessments.user_id references public.users.id, so the
+    # profile row is ensured first. The id is derived from the
+    # verified token and is never supplied by the client.
+    #
+    # The assessment id is required before anything can be
+    # stored, because every Storage path is namespaced by it.
+
+    ensure_user_profile(
+        user_id=user_id,
+        email=user_email,
+    )
 
     assessment = create_assessment(
-        user_id=None,
+        user_id=user_id,
         model_id=model_record["id"],
         status="completed",
         damage_level=statistics["damage_level"],
