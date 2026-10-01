@@ -1,0 +1,210 @@
+/**
+ * TypeScript contracts for the FastAPI assessment API.
+ *
+ * These mirror the Pydantic models in
+ * backend/models/assessment.py and the raw responses returned
+ * by backend/api/assessment.py. Field names, nullability and
+ * nesting are copied exactly from the backend; nothing is
+ * invented here.
+ */
+
+// ============================================================
+// SHARED
+// ============================================================
+
+export interface ImageInfo {
+  filename: string;
+  content_type: string;
+  format: string;
+  width: number;
+  height: number;
+  size_bytes: number;
+}
+
+export interface ImageDimensions {
+  width: number;
+  height: number;
+}
+
+// ============================================================
+// HEALTH
+// ============================================================
+
+export interface HealthResponse {
+  status: string;
+}
+
+// ============================================================
+// POST /api/assessment/upload
+//
+// The endpoint has no response_model, so this matches the raw
+// dict it returns.
+// ============================================================
+
+export interface AssessmentUploadResponse {
+  status: string;
+  message: string;
+  before_image: ImageInfo;
+  after_image: ImageInfo;
+  dimensions: ImageDimensions;
+}
+
+// ============================================================
+// POST /api/assessment/analyze
+// -> AssessmentResponse
+// ============================================================
+
+export interface PredictionInfo {
+  mask_shape: number[];
+  predicted_classes: number[];
+}
+
+export interface ClassStatistics {
+  pixels: number;
+  percentage: number;
+}
+
+export interface DamageClasses {
+  background: ClassStatistics;
+  no_damage: ClassStatistics;
+  minor_damage: ClassStatistics;
+  major_damage: ClassStatistics;
+  destroyed: ClassStatistics;
+}
+
+export interface Statistics {
+  total_pixels: number;
+  damage_pixels: number;
+  damage_percentage: number;
+  damage_level: string;
+  classes: DamageClasses;
+}
+
+export interface ModelInfo {
+  name: string;
+  input_channels: number;
+  output_classes: number;
+  checkpoint: string;
+}
+
+export interface AssessmentResponse {
+  status: string;
+  message: string;
+  before_image: ImageInfo;
+  after_image: ImageInfo;
+  prediction: PredictionInfo;
+  statistics: Statistics;
+  model: ModelInfo;
+}
+
+// ============================================================
+// GET /api/assessment/history
+// -> AssessmentHistoryResponse
+// ============================================================
+
+export interface RegisteredModelInfo {
+  id: string;
+  name: string;
+  architecture: string;
+  checkpoint: string;
+  input_channels: number;
+  output_classes: number;
+  epoch: number | null;
+  validation_loss: number | null;
+}
+
+export interface AssessmentHistoryItem {
+  id: string;
+  user_id: string | null;
+  model_id: string | null;
+  status: string | null;
+  damage_level: string | null;
+  damage_percentage: number;
+  total_pixels: number | null;
+  damage_pixels: number | null;
+  created_at: string;
+  updated_at: string;
+  assessment_models: RegisteredModelInfo | null;
+}
+
+export interface AssessmentHistoryResponse {
+  status: string;
+  count: number;
+  limit: number | null;
+  assessments: AssessmentHistoryItem[];
+}
+
+// ============================================================
+// GET /api/assessment/{assessment_id}
+// -> AssessmentDetail
+// ============================================================
+
+export interface AssessmentImageRecord {
+  id: string;
+  assessment_id: string;
+  image_type: string;
+  filename: string | null;
+  storage_path: string | null;
+  content_type: string | null;
+  format: string | null;
+  width: number | null;
+  height: number | null;
+  size_bytes: number | null;
+  created_at: string;
+}
+
+export interface AssessmentPredictionRecord {
+  id: string;
+  assessment_id: string;
+  mask_width: number;
+  mask_height: number;
+  predicted_classes: number[];
+  mask_storage_path: string | null;
+  created_at: string;
+}
+
+export interface AssessmentClassStatistic {
+  id: string;
+  assessment_id: string;
+  class_id: number;
+  class_name: string;
+  pixel_count: number;
+  percentage: number;
+  created_at: string;
+}
+
+export interface AssessmentDetail {
+  id: string;
+  user_id: string | null;
+  model_id: string | null;
+  status: string | null;
+  damage_level: string | null;
+  damage_percentage: number;
+  total_pixels: number | null;
+  damage_pixels: number | null;
+  created_at: string;
+  updated_at: string;
+  assessment_models: RegisteredModelInfo | null;
+  assessment_images: AssessmentImageRecord[];
+  assessment_predictions: AssessmentPredictionRecord | null;
+  assessment_class_statistics: AssessmentClassStatistic[];
+}
+
+// ============================================================
+// GET /api/assessment/{assessment_id}/assets
+// -> AssessmentAssetsResponse
+//
+// Every URL is a short-lived Supabase signed link into the
+// private `assessments` bucket, generated by the backend. A
+// missing asset is null, never a placeholder URL. expires_in
+// is the signed-URL lifetime in seconds.
+// ============================================================
+
+export interface AssessmentAssetsResponse {
+  assessment_id: string;
+  before_image_url: string | null;
+  after_image_url: string | null;
+  prediction_mask_url: string | null;
+  report_url: string | null;
+  expires_in: number;
+}
