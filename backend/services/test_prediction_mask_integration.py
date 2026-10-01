@@ -1,6 +1,7 @@
 import glob
 import io
 import os
+import uuid
 
 import numpy as np
 from PIL import Image
@@ -16,6 +17,10 @@ from backend.services.storage_service import (
     delete_assessment_image,
     get_assessment_image_path,
     _storage_bucket
+)
+from backend.services.auth_service import (
+    AuthenticatedUser,
+    get_current_user,
 )
 
 
@@ -226,6 +231,7 @@ def main():
     print()
 
     assessment_id = None
+    caller_user_id = None
 
     try:
         # -----------------------------------------------------
@@ -259,6 +265,26 @@ def main():
         # -----------------------------------------------------
 
         print("[2] POST /api/assessment/analyze")
+
+        # /analyze is authenticated now. A real Supabase Auth
+        # user is created and installed as the verified caller
+        # so the ownership path production uses is exercised
+        # instead of bypassed.
+
+        caller_email = f"step711-{uuid.uuid4()}@example.invalid"
+
+        caller_user_id = supabase.auth.admin.create_user({
+            "email": caller_email,
+            "password": uuid.uuid4().hex + "Aa1!",
+            "email_confirm": True,
+        }).user.id
+
+        app.dependency_overrides[get_current_user] = (
+            lambda: AuthenticatedUser(
+                user_id=caller_user_id,
+                email=caller_email,
+            )
+        )
 
         with TestClient(app) as client:
             response = client.post(
@@ -592,6 +618,20 @@ def main():
             print(f"     purged assessment {assessment_id}")
         else:
             print("     no assessment was created")
+
+        app.dependency_overrides.pop(get_current_user, None)
+
+        if caller_user_id:
+            try:
+                supabase.table("users").delete().eq(
+                    "id", caller_user_id
+                ).execute()
+                supabase.auth.admin.delete_user(
+                    caller_user_id
+                )
+                print("     removed test caller user")
+            except Exception as error:
+                print(f"     note: caller cleanup: {error}")
 
         after_state = snapshot_state()
 

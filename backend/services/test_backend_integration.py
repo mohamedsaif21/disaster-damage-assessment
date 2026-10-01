@@ -26,6 +26,10 @@ load_dotenv("backend/.env")
 
 from backend.main import app
 from backend.services.supabase_service import get_supabase
+from backend.services.auth_service import (
+    AuthenticatedUser,
+    get_current_user,
+)
 
 
 STORAGE_BUCKET = "assessments"
@@ -248,6 +252,7 @@ def cleanup_assessment(assessment_id: str) -> None:
 def main():
     failures = []
     created_id = None
+    caller_user_id = None
 
     print("=" * 66)
     print("STEP 7.13 BACKEND INTEGRATION TEST")
@@ -335,6 +340,26 @@ def main():
         f"missing = "
         f"{sorted(expected_routes - routes) or 'none'}",
         failures
+    )
+
+    # Every /api/assessment route requires a verified Supabase
+    # user now. A real Auth user is created and installed as
+    # the authenticated caller so the full lifecycle runs
+    # through the same ownership path production uses.
+
+    caller_email = f"step713-{uuid.uuid4()}@example.invalid"
+
+    caller_user_id = get_supabase().auth.admin.create_user({
+        "email": caller_email,
+        "password": uuid.uuid4().hex + "Aa1!",
+        "email_confirm": True,
+    }).user.id
+
+    app.dependency_overrides[get_current_user] = (
+        lambda: AuthenticatedUser(
+            user_id=caller_user_id,
+            email=caller_email,
+        )
     )
 
     client = TestClient(app)
@@ -1377,6 +1402,20 @@ def main():
     if created_id:
         cleanup_assessment(created_id)
         print(f"     removed assessment {created_id}")
+
+    app.dependency_overrides.pop(get_current_user, None)
+
+    if caller_user_id:
+        try:
+            get_supabase().table("users").delete().eq(
+                "id", caller_user_id
+            ).execute()
+            get_supabase().auth.admin.delete_user(
+                caller_user_id
+            )
+            print("     removed authenticated test caller")
+        except Exception as error:
+            print(f"     note: caller cleanup: {error}")
 
     remaining = all_objects()
 

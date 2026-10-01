@@ -5,12 +5,35 @@ from backend.services.assessment_repository import (
     add_prediction,
     add_class_statistics,
 )
+from backend.services.supabase_service import get_supabase
 
 
 CHECKPOINT = "best_model_change_aware.pth"
 
 
-def main():
+def cleanup_assessment(assessment_id: str) -> None:
+    """
+    Remove the throwaway assessment this test creates, so it
+    always leaves the database exactly as it found it.
+    """
+
+    supabase = get_supabase()
+
+    for table in (
+        "assessment_class_statistics",
+        "assessment_predictions",
+        "assessment_images",
+    ):
+        supabase.table(table).delete().eq(
+            "assessment_id", assessment_id
+        ).execute()
+
+    supabase.table("assessments").delete().eq(
+        "id", assessment_id
+    ).execute()
+
+
+def _run():
     # ---------------------------------------------------------
     # 1. Get the registered model
     # ---------------------------------------------------------
@@ -155,6 +178,19 @@ def main():
     print()
     print("Assessment ID:", assessment_id)
     print("Model ID:", model_id)
+
+    return assessment_id
+
+
+def main():
+    assessment_id = None
+
+    try:
+        assessment_id = _run()
+    finally:
+        if assessment_id:
+            cleanup_assessment(assessment_id)
+            print(f"Removed throwaway assessment {assessment_id}")
 
 
 if __name__ == "__main__":
