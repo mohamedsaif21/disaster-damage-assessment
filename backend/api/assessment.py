@@ -5,8 +5,20 @@ from backend.models.assessment import (
     AssessmentDetail,
     AssessmentAssetsResponse
 )
-from fastapi import APIRouter, UploadFile, File, HTTPException, Query
+from fastapi import (
+    APIRouter,
+    UploadFile,
+    File,
+    HTTPException,
+    Query,
+    Depends
+)
 from PIL import Image, UnidentifiedImageError
+
+from backend.services.auth_service import (
+    AuthenticatedUser,
+    get_current_user,
+)
 
 from backend.services.assessment_service import (
     run_assessment,
@@ -205,8 +217,13 @@ async def validate_image(
 @router.post("/upload")
 async def upload_assessment_images(
     before_image: UploadFile = File(...),
-    after_image: UploadFile = File(...)
+    after_image: UploadFile = File(...),
+    current_user: AuthenticatedUser = Depends(get_current_user)
 ):
+
+    # The verified caller is required even though this
+    # endpoint does not persist anything yet. Every
+    # /api/assessment route is authenticated.
 
     # --------------------------------------------------------
     # VALIDATE BEFORE IMAGE
@@ -289,7 +306,8 @@ async def upload_assessment_images(
 )
 async def analyze_assessment_images(
     before_image: UploadFile = File(...),
-    after_image: UploadFile = File(...)
+    after_image: UploadFile = File(...),
+    current_user: AuthenticatedUser = Depends(get_current_user)
 ):
 
     # --------------------------------------------------------
@@ -346,7 +364,9 @@ async def analyze_assessment_images(
 
     return run_assessment(
         before_info,
-        after_info
+        after_info,
+        user_id=current_user.user_id,
+        user_email=current_user.email,
     )
 
 
@@ -375,20 +395,19 @@ async def get_assessment_history_endpoint(
             "Maximum number of assessments to "
             "return, newest first."
         )
-    )
+    ),
+    current_user: AuthenticatedUser = Depends(get_current_user)
 ):
     """
-    Return assessment history, newest first.
+    Return the authenticated user's assessment history,
+    newest first.
 
-    Authentication does not exist yet, and every current
-    assessment row has user_id = NULL, so this always reads
-    the unowned assessments. No user_id is accepted from
-    the client, because at this stage that would not be a
-    real access control mechanism.
+    Only rows owned by the verified caller are returned. No
+    user_id is accepted from the client.
     """
 
     assessments = get_assessment_history(
-        user_id=None,
+        user_id=current_user.user_id,
         limit=limit
     )
 
@@ -409,7 +428,8 @@ async def get_assessment_history_endpoint(
     response_model=AssessmentDetail
 )
 async def get_assessment_detail_endpoint(
-    assessment_id: str
+    assessment_id: str,
+    current_user: AuthenticatedUser = Depends(get_current_user)
 ):
     """
     Return one complete assessment with its model,
@@ -419,6 +439,10 @@ async def get_assessment_detail_endpoint(
     The id is taken as a plain string on purpose: a
     malformed UUID is reported as 404 by the repository
     rather than rejected as 422 by path validation.
+
+    Ownership is enforced after the row is read so an unknown
+    id stays 404 while an assessment owned by another user is
+    403, matching the asset endpoint.
     """
 
     assessment = get_assessment_by_id(
@@ -431,6 +455,20 @@ async def get_assessment_detail_endpoint(
             detail={
                 "message": (
                     "Assessment was not found."
+                ),
+                "assessment_id": (
+                    assessment_id
+                )
+            }
+        )
+
+    if assessment.get("user_id") != current_user.user_id:
+        raise HTTPException(
+            status_code=403,
+            detail={
+                "message": (
+                    "You do not have access to "
+                    "this assessment."
                 ),
                 "assessment_id": (
                     assessment_id
@@ -453,7 +491,8 @@ async def get_assessment_detail_endpoint(
     response_model=AssessmentAssetsResponse
 )
 async def get_assessment_assets_endpoint(
-    assessment_id: str
+    assessment_id: str,
+    current_user: AuthenticatedUser = Depends(get_current_user)
 ):
     """
     Return short-lived signed URLs for one assessment's
@@ -469,21 +508,17 @@ async def get_assessment_assets_endpoint(
     An asset that was never stored, or whose object is gone,
     is returned as null.
 
-    Authorization status: authentication is not connected to
-    the backend yet, so this endpoint runs in development mode
-    and may only read assessments that have no owner
-    (user_id IS NULL), the same scope GET /history uses. Once
-    Supabase Auth is connected, the verified user id is passed
-    in instead and the endpoint returns 403 for an assessment
-    owned by a different user. The asset code is unchanged by
-    that switch.
+    Authorization: the verified Supabase user id is passed in,
+    so the endpoint returns 403 for an assessment owned by a
+    different user and 404 for an unknown id. Signed URLs are
+    only ever generated after that ownership check.
     """
 
-    # No authenticated caller is available yet. This is the
-    # single seam where a verified Supabase user id replaces
-    # the development-mode value.
+    # The verified id is the only value trusted as the
+    # requester. It is never read from the query string, body
+    # or an arbitrary header.
 
-    request_user_id = None
+    request_user_id = current_user.user_id
 
     try:
         return get_assessment_assets(
