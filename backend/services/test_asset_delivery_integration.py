@@ -62,6 +62,10 @@ from backend.services.asset_service import (
     AssetAssessmentNotFound,
     AssetAccessDenied,
 )
+from backend.services.auth_service import (
+    AuthenticatedUser,
+    get_current_user,
+)
 
 
 XBD_DIR = os.getenv(
@@ -285,20 +289,21 @@ def restore_state(snapshot, state):
         if leftovers:
             bucket().remove(leftovers)
 
-    owner_user_id = state.get("owner")
+    for key in ("caller", "owner"):
+        user_id = state.get(key)
 
-    if owner_user_id:
+        if not user_id:
+            continue
+
         get_supabase().table("users").delete().eq(
-            "id", owner_user_id
+            "id", user_id
         ).execute()
 
         try:
-            get_supabase().auth.admin.delete_user(
-                owner_user_id
-            )
+            get_supabase().auth.admin.delete_user(user_id)
         except Exception as error:
             print(
-                f"     note: auth user {owner_user_id} "
+                f"     note: auth user {user_id} "
                 f"could not be removed ({error})"
             )
 
@@ -386,23 +391,26 @@ def verify_restored(snapshot, failures, state):
         failures
     )
 
-    owner_user_id = state.get("owner")
+    for key in ("caller", "owner"):
+        user_id = state.get(key)
 
-    if owner_user_id:
+        if not user_id:
+            continue
+
         try:
             gone = get_supabase().auth.admin.get_user_by_id(
-                owner_user_id
+                user_id
             ).user
 
             check(
-                "no test Supabase Auth user remains",
+                f"no test Supabase Auth user remains ({key})",
                 not gone,
                 "auth user deleted",
                 failures
             )
         except Exception:
             check(
-                "no test Supabase Auth user remains",
+                f"no test Supabase Auth user remains ({key})",
                 True,
                 "auth user already absent",
                 failures
@@ -835,30 +843,37 @@ def run_checks(client, snapshot, failures, state):
 
     stale = client.get(
         f"/api/assessment/{RETAINED_ASSESSMENT_ID}/assets"
-    ).json()
+    )
 
     check(
-        "retained assessment reports every asset as null",
-        stale["before_image_url"] is None
-        and stale["after_image_url"] is None
-        and stale["prediction_mask_url"] is None
-        and stale["report_url"] is None,
-        str({k: v for k, v in stale.items() if k != "expires_in"}),
+        "unowned retained assessment is refused for an "
+        "authenticated caller",
+        stale.status_code == 403,
+        f"HTTP {stale.status_code}",
+        failures
+    )
+
+    check(
+        "the retained-assessment refusal leaks no signed URL",
+        "token=" not in stale.text,
+        "no token in the 403 body",
         failures
     )
 
     # A database path whose object is gone must also come back
     # null rather than as a link that can never resolve.
     #
-    # A throwaway assessment is used so the retained Week 4 row
-    # is never modified.
+    # The throwaway assessment is owned by the authenticated
+    # caller so the ownership check passes and the missing
+    # object is what produces the null. The retained Week 4
+    # row is never modified.
 
     ghost_id = str(uuid.uuid4())
     state["ghost"] = ghost_id
 
     get_supabase().table("assessments").insert({
         "id": ghost_id,
-        "user_id": None,
+        "user_id": state["caller"],
         "model_id": first_model_id(),
         "status": "completed",
         "damage_level": "NONE",
@@ -1100,7 +1115,7 @@ def run_checks(client, snapshot, failures, state):
     )
 
     check(
-        "owned assessment is refused in development mode",
+        "owned assessment is refused for a different user",
         denied.status_code == 403,
         f"HTTP {denied.status_code}",
         failures
@@ -1245,6 +1260,28 @@ def main():
         failures
     )
 
+    # Every protected route now requires a verified Supabase
+    # user. A real Auth user is created once and installed as
+    # the authenticated caller, so the test exercises the same
+    # ownership path production uses instead of a bypass.
+
+    caller_email = f"step84-{uuid.uuid4()}@example.invalid"
+
+    caller_user_id = get_supabase().auth.admin.create_user({
+        "email": caller_email,
+        "password": uuid.uuid4().hex + "Aa1!",
+        "email_confirm": True,
+    }).user.id
+
+    state["caller"] = caller_user_id
+
+    app.dependency_overrides[get_current_user] = (
+        lambda: AuthenticatedUser(
+            user_id=caller_user_id,
+            email=caller_email,
+        )
+    )
+
     try:
         run_checks(client, snapshot, failures, state)
     except Exception as error:
@@ -1256,6 +1293,8 @@ def main():
         print("\n" + "-" * 66)
         print("15. STATE RESTORED")
         print("-" * 66)
+
+        app.dependency_overrides.pop(get_current_user, None)
 
         try:
             restore_state(snapshot, state)
