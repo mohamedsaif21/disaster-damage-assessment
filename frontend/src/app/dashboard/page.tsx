@@ -1,24 +1,11 @@
-import { Card } from "@/components/ui/Card";
+import { DashboardView } from "@/components/dashboard/DashboardView";
 
+/**
+ * Dashboard route.
+ *
+ * The application shell (sidebar and header) is provided by the
+ * root layout, so this page only renders the dashboard content.
+ */
 export default function DashboardPage() {
-  return (
-    <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-semibold tracking-tight text-slate-900">
-          Dashboard
-        </h2>
-        <p className="mt-1 text-sm text-slate-600">
-          Dashboard metrics, trends, and assessment summaries will be
-          implemented in the next step.
-        </p>
-      </div>
-
-      <Card className="p-6">
-        <p className="text-sm text-slate-600">
-          Application shell is in place. No assessment data is requested at this
-          stage.
-        </p>
-      </Card>
-    </div>
-  );
+  return <DashboardView />;
 }
