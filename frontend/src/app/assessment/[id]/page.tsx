@@ -10,10 +10,16 @@ import { Card, CardContent } from "@/components/ui/Card";
  * performs no request: the detail view, its assets and its
  * statistics are not part of this step.
  */
-export default async function AssessmentDetailPage(
-  props: PageProps<"/assessment/[id]">,
-) {
-  const { id } = await props.params;
+interface AssessmentDetailPageProps {
+  params: Promise<{
+    id: string;
+  }>;
+}
+
+export default async function AssessmentDetailPage({
+  params,
+}: AssessmentDetailPageProps) {
+  const { id } = await params;
 
   return (
     <div className="space-y-6">
