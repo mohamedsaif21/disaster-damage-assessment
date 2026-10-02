@@ -46,6 +46,10 @@ const STATUS_HINTS: Record<AssessmentFormStatus, string> = {
   submitting: "Running the assessment. This can take a moment.",
 };
 
+const VALIDATING_HINT =
+  "Checking the selected images. The analysis unlocks once " +
+  "validation finishes.";
+
 export type AssessmentValidationState = Record<
   AssessmentImageSlot,
   boolean
@@ -175,7 +179,9 @@ export function AssessmentForm({
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-xs text-slate-500" aria-live="polite">
-          {STATUS_HINTS[status]}
+          {isValidating && !isSubmitting
+            ? VALIDATING_HINT
+            : STATUS_HINTS[status]}
         </p>
 
         <div className="flex shrink-0 items-center gap-2">
