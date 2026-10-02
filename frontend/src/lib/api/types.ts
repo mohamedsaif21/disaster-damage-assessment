@@ -88,6 +88,10 @@ export interface ModelInfo {
 }
 
 export interface AssessmentResponse {
+  // Id of the assessment the backend just persisted. It is generated
+  // for the verified caller and is never supplied by the client, and
+  // it matches the `id` field of AssessmentDetail.
+  id: string;
   status: string;
   message: string;
   before_image: ImageInfo;
