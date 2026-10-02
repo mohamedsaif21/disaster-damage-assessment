@@ -92,6 +92,44 @@ export function formatStatus(value: string | null | undefined): string {
   return formatDamageLevel(value);
 }
 
+const byteUnits = ["B", "KB", "MB", "GB"] as const;
+
+/**
+ * Format a byte count as a readable file size.
+ *
+ * Used for local file metadata in the browser, so the value is the
+ * size of the selected File rather than a backend field. An invalid
+ * size becomes an em dash instead of "NaN B".
+ */
+export function formatBytes(value: number): string {
+  if (!Number.isFinite(value) || value < 0) {
+    return EM_DASH;
+  }
+
+  let size = value;
+  let unit = 0;
+
+  while (size >= 1024 && unit < byteUnits.length - 1) {
+    size /= 1024;
+    unit += 1;
+  }
+
+  const digits = unit === 0 || size >= 10 ? 0 : 1;
+
+  return `${size.toFixed(digits)} ${byteUnits[unit]}`;
+}
+
+/**
+ * Present pixel dimensions for display, for example
+ * "1,920 × 1,080".
+ */
+export function formatPixelDimensions(
+  width: number,
+  height: number,
+): string {
+  return `${integerFormatter.format(width)} \u00d7 ${integerFormatter.format(height)}`;
+}
+
 /**
  * Shorten an assessment UUID for a compact row label. The full id
  * stays available to assistive technology through the title text.
