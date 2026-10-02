@@ -10,7 +10,7 @@
  * analyze workflow be added later without restructuring the form.
  */
 
-import { ArrowDown, Info, Layers } from "lucide-react";
+import { ArrowDown, CircleAlert, Info, Layers } from "lucide-react";
 
 import { AssessmentValidationMessage } from "./AssessmentValidationMessage";
 import { ImageUploadCard } from "./ImageUploadCard";
@@ -20,6 +20,7 @@ import type {
   ValidatedImage,
 } from "@/lib/assessment/imageValidation";
 import type { AssessmentImageSlot } from "./ImageUploadCard";
+import { cn } from "@/lib/utils";
 
 /**
  * Derived state of the form.
@@ -28,7 +29,7 @@ import type { AssessmentImageSlot } from "./ImageUploadCard";
  * - `incomplete`: exactly one of the two images is selected.
  * - `invalid`: a validation rule is violated.
  * - `ready`: both images are present and valid.
- * - `submitting`: the action is in progress.
+ * - `submitting`: the analysis request is in progress.
  */
 export type AssessmentFormStatus =
   | "empty"
@@ -42,13 +43,25 @@ const STATUS_HINTS: Record<AssessmentFormStatus, string> = {
   incomplete: "Select the remaining image to enable the analysis.",
   invalid: "Resolve the validation messages above to enable the analysis.",
   ready: "Both images passed client-side validation.",
-  submitting: "Preparing the analysis request\u2026",
+  submitting: "Running the assessment. This can take a moment.",
 };
 
 export type AssessmentValidationState = Record<
   AssessmentImageSlot,
   boolean
 >;
+
+/**
+ * A single message shown under the image grid.
+ *
+ * `error` is announced assertively because it reports a failed
+ * request; `info` is only ever polite. Both carry an icon and text,
+ * so severity is never communicated by colour alone.
+ */
+export interface AssessmentMessage {
+  text: string;
+  severity: "info" | "error";
+}
 
 export interface AssessmentFormProps {
   before: ValidatedImage | null;
@@ -60,7 +73,7 @@ export interface AssessmentFormProps {
   pairIssue: ImageValidationIssue | null;
   validating: AssessmentValidationState;
   status: AssessmentFormStatus;
-  notice: string | null;
+  message: AssessmentMessage | null;
   onSelect: (slot: AssessmentImageSlot, file: File) => void;
   onRemove: (slot: AssessmentImageSlot) => void;
   onClear: () => void;
@@ -77,15 +90,16 @@ export function AssessmentForm({
   pairIssue,
   validating,
   status,
-  notice,
+  message,
   onSelect,
   onRemove,
   onClear,
   onSubmit,
 }: AssessmentFormProps) {
   const isSubmitting = status === "submitting";
+  const isValidating = validating.before || validating.after;
   const hasSelection = before !== null || after !== null;
-  const canSubmit = status === "ready" && !isSubmitting;
+  const canSubmit = status === "ready" && !isValidating;
 
   return (
     <form
@@ -126,17 +140,36 @@ export function AssessmentForm({
 
       {pairIssue && <AssessmentValidationMessage issue={pairIssue} />}
 
-      {notice && (
+      {message && (
         <div
-          role="status"
-          className="flex items-start gap-2 rounded-md border border-slate-200 bg-white px-3 py-2"
+          role={message.severity === "error" ? "alert" : "status"}
+          className={cn(
+            "flex items-start gap-2 rounded-md border px-3 py-2",
+            message.severity === "error"
+              ? "border-amber-200 bg-amber-50"
+              : "border-slate-200 bg-white",
+          )}
         >
-          <Info
-            aria-hidden="true"
-            className="mt-0.5 h-4 w-4 shrink-0 text-slate-500"
-          />
+          {message.severity === "error" ? (
+            <CircleAlert
+              aria-hidden="true"
+              className="mt-0.5 h-4 w-4 shrink-0 text-amber-700"
+            />
+          ) : (
+            <Info
+              aria-hidden="true"
+              className="mt-0.5 h-4 w-4 shrink-0 text-slate-500"
+            />
+          )}
 
-          <p className="text-xs leading-5 text-slate-700">{notice}</p>
+          <p
+            className={cn(
+              "text-xs leading-5",
+              message.severity === "error" ? "text-amber-900" : "text-slate-700",
+            )}
+          >
+            {message.text}
+          </p>
         </div>
       )}
 
