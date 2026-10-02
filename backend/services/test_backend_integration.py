@@ -571,7 +571,7 @@ def main():
         check(
             "analyze contract unchanged",
             set(analyze.keys()) == {
-                "status", "message", "before_image",
+                "id", "status", "message", "before_image",
                 "after_image", "prediction", "statistics",
                 "model",
             },
