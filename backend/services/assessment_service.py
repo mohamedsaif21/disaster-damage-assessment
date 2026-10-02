@@ -337,6 +337,7 @@ def run_assessment(
     # --------------------------------------------------------
 
     return {
+        "id": assessment_id,
         "status": "success",
         "message": (
             "Disaster damage assessment "
