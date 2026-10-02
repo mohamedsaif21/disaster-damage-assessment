@@ -9,25 +9,32 @@
  *
  * The view owns everything stateful: the two selected images, their
  * local preview URLs, the validation outcome for each slot, the
- * cross-slot dimension rule and the derived form status. Nothing is
- * uploaded. Previews are browser object URLs, created only after a
- * file has been validated and revoked again as soon as the file is
- * replaced, removed, cleared, or the view unmounts.
+ * cross-slot dimension rule, the derived form status and the single
+ * message shown after an attempt. Previews are browser object URLs,
+ * created only after a file has been validated and revoked again as
+ * soon as the file is replaced, removed, cleared, or the view
+ * unmounts.
  *
- * No `user_id` is ever read or sent, no Supabase table is queried
- * and no token is handled here; the shared API client attaches
- * authentication when a request is eventually dispatched.
+ * Submitting hands both validated files to the shared analyze
+ * wrapper and, on success, navigates to the assessment the backend
+ * just persisted. No `user_id` is ever read or sent, no Supabase
+ * table is queried and no token is handled here; the shared API
+ * client attaches authentication.
  */
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 
 import {
   AssessmentForm,
   type AssessmentFormStatus,
+  type AssessmentMessage,
   type AssessmentValidationState,
 } from "./AssessmentForm";
 import type { AssessmentImageSlot } from "./ImageUploadCard";
 import { Card, CardContent } from "@/components/ui/Card";
+import { analyzeAssessment } from "@/lib/api/assessment";
+import { toAnalysisErrorMessage } from "@/lib/assessment/analysisErrors";
 import {
   validateImageDimensions,
   validateImageFile,
@@ -63,25 +70,18 @@ const NOT_VALIDATING: AssessmentValidationState = {
   after: false,
 };
 
-/**
- * Shown after the action is activated. The analysis is not
- * dispatched yet, so the form reports readiness instead of
- * pretending a result exists.
- */
-const ANALYSIS_NOT_DISPATCHED_NOTICE =
-  "Both images are ready. Running the damage assessment is not enabled " +
-  "in this build yet, so nothing has been submitted.";
-
 // ============================================================
 // VIEW
 // ============================================================
 
 export function NewAssessmentView() {
+  const router = useRouter();
+
   const [slots, setSlots] = useState<AssessmentSlots>(INITIAL_SLOTS);
   const [validating, setValidating] =
     useState<AssessmentValidationState>(NOT_VALIDATING);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [notice, setNotice] = useState<string | null>(null);
+  const [message, setMessage] = useState<AssessmentMessage | null>(null);
 
   /**
    * Per-slot validation run counter.
@@ -95,6 +95,16 @@ export function NewAssessmentView() {
     before: 0,
     after: 0,
   });
+
+  /**
+   * Whether a request is in flight right now.
+   *
+   * `isSubmitting` is state, so it only reaches the next render. The
+   * ref changes synchronously and therefore closes the window in
+   * which a second activation could still read a stale `false` and
+   * create a second assessment for the same pair of images.
+   */
+  const requestInFlightRef = useRef(false);
 
   /**
    * Every object URL this view has created and not yet revoked.
@@ -170,7 +180,7 @@ export function NewAssessmentView() {
       runIdsRef.current[slot] += 1;
       const runId = runIdsRef.current[slot];
 
-      setNotice(null);
+      setMessage(null);
       setValidating((current) => ({ ...current, [slot]: true }));
 
       void validateImageFile(file).then((result) => {
@@ -226,20 +236,20 @@ export function NewAssessmentView() {
 
   const handleRemove = useCallback(
     (slot: AssessmentImageSlot) => {
-      setNotice(null);
+      setMessage(null);
       resetSlot(slot);
     },
     [resetSlot],
   );
 
   const handleClear = useCallback(() => {
-    setNotice(null);
+    setMessage(null);
     resetSlot("before");
     resetSlot("after");
   }, [resetSlot]);
 
-  const handleSubmit = useCallback(() => {
-    if (isSubmitting || !before || !after) {
+  const handleSubmit = useCallback(async () => {
+    if (requestInFlightRef.current || !before || !after) {
       return;
     }
 
@@ -247,29 +257,44 @@ export function NewAssessmentView() {
       return;
     }
 
-    setIsSubmitting(true);
-    setNotice(null);
+    // A validation may still be settling against the previous file
+    // in a slot that already holds a valid image, so the pair is
+    // never submitted while any slot is mid-check.
+    if (validating.before || validating.after) {
+      return;
+    }
 
-    // Dispatch point for the assessment workflow: the next step
-    // awaits analyzeAssessment(before.file, after.file) from
-    // @/lib/api/assessment here. That function posts the existing
-    // before_image and after_image multipart fields through the
-    // shared Axios client, which attaches the Supabase access token
-    // and never sends a user id.
-    void Promise.resolve()
-      .then(() => {
-        setNotice(ANALYSIS_NOT_DISPATCHED_NOTICE);
-      })
-      .finally(() => {
-        setIsSubmitting(false);
+    requestInFlightRef.current = true;
+    setIsSubmitting(true);
+    setMessage(null);
+
+    try {
+      // The wrapper posts the existing before_image and after_image
+      // multipart fields through the shared Axios client, which
+      // attaches the Supabase access token. No user id is sent.
+      const assessment = await analyzeAssessment(before.file, after.file);
+
+      // Both images stay selected and their previews stay intact
+      // while navigating, so an unsubscribed promise from a double
+      // activation cannot land on a discarded component.
+      router.push(`/assessment/${encodeURIComponent(assessment.id)}`);
+    } catch (error) {
+      setMessage({
+        text: toAnalysisErrorMessage(error),
+        severity: "error",
       });
+      setIsSubmitting(false);
+      requestInFlightRef.current = false;
+    }
   }, [
-    isSubmitting,
     before,
     after,
     slots.before.issue,
     slots.after.issue,
     pairIssue,
+    validating.before,
+    validating.after,
+    router,
   ]);
 
   return (
@@ -297,11 +322,13 @@ export function NewAssessmentView() {
             pairIssue={pairIssue}
             validating={validating}
             status={status}
-            notice={notice}
+            message={message}
             onSelect={handleSelect}
             onRemove={handleRemove}
             onClear={handleClear}
-            onSubmit={handleSubmit}
+            onSubmit={() => {
+              void handleSubmit();
+            }}
           />
         </CardContent>
       </Card>
