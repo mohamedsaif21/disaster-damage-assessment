@@ -149,21 +149,7 @@ export function AssessmentImages({ detail, assets }: AssessmentImagesProps) {
     {
       key: "before",
       label: "Before Disaster",
-      icon: (
-        <svg
-          aria-hidden="true"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="h-4 w-4"
-        >
-          <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z" />
-          <circle cx="12" cy="13" r="3" />
-        </svg>
-      ),
+      icon: <Camera aria-hidden="true" className="h-4 w-4" />,
       url: assets?.before_image_url ?? null,
       alt: "Before disaster image of the assessed area",
       caption: imageCaption(beforeRecord),
@@ -174,21 +160,7 @@ export function AssessmentImages({ detail, assets }: AssessmentImagesProps) {
     {
       key: "after",
       label: "After Disaster",
-      icon: (
-        <svg
-          aria-hidden="true"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="h-4 w-4"
-        >
-          <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
-          <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
-        </svg>
-      ),
+      icon: <Siren aria-hidden="true" className="h-4 w-4" />,
       url: assets?.after_image_url ?? null,
       alt: "After disaster image of the assessed area",
       caption: imageCaption(afterRecord),
@@ -199,24 +171,7 @@ export function AssessmentImages({ detail, assets }: AssessmentImagesProps) {
     {
       key: "prediction",
       label: "AI Prediction",
-      icon: (
-        <svg
-          aria-hidden="true"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="h-4 w-4"
-        >
-          <path d="M3 7V5a2 2 0 0 1 2-2h2" />
-          <path d="M17 3h2a2 2 0 0 1 2 2v2" />
-          <path d="M21 17v2a2 2 0 0 1-2 2h-2" />
-          <path d="M7 21H5a2 2 0 0 1-2-2v-2" />
-          <path d="M3 12h18" />
-        </svg>
-      ),
+      icon: <ScanLine aria-hidden="true" className="h-4 w-4" />,
       url: assets?.prediction_mask_url ?? null,
       alt: "AI damage prediction mask for the assessed area",
       caption: detail.assessment_predictions
