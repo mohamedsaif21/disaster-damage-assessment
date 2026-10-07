@@ -17,14 +17,20 @@
  *
  * Submitting hands both validated files to the shared analyze
  * wrapper and, on success, navigates to the assessment the backend
- * just persisted. No `user_id` is ever read or sent, no Supabase
- * table is queried and no token is handled here; the shared API
- * client attaches authentication.
+ * just persisted. While that request runs, the form gives way to
+ * the indeterminate `AnalysisLoading` state, so the wait is
+ * explained without inventing a progress percentage the backend
+ * never reported. A failure returns the form exactly as it was,
+ * with the mapped error and a retry that reuses the selected
+ * images. No `user_id` is ever read or sent, no Supabase table is
+ * queried and no token is handled here; the shared API client
+ * attaches authentication.
  */
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
+import { AnalysisLoading } from "./AnalysisLoading";
 import {
   AssessmentForm,
   type AssessmentFormStatus,
@@ -45,6 +51,13 @@ import {
 // ============================================================
 // STATE MODEL
 // ============================================================
+
+/**
+ * Heading of the error state shown when the analysis request
+ * fails. The explanation underneath still comes from the shared
+ * error mapping, so only this heading is written here.
+ */
+const ANALYSIS_ERROR_TITLE = "Assessment could not be completed";
 
 interface AssessmentSlotState {
   image: ValidatedImage | null;
@@ -279,7 +292,12 @@ export function NewAssessmentView() {
       // activation cannot land on a discarded component.
       router.push(`/assessment/${encodeURIComponent(assessment.id)}`);
     } catch (error) {
+      // The guard and the submitting flag are released here, so the
+      // form comes back fully interactive: the selected images,
+      // their previews and the validation outcome all survived the
+      // attempt and the same request can simply be sent again.
       setMessage({
+        title: ANALYSIS_ERROR_TITLE,
         text: toAnalysisErrorMessage(error),
         severity: "error",
       });
@@ -303,33 +321,47 @@ export function NewAssessmentView() {
         <h2 className="text-2xl font-semibold tracking-tight text-slate-900">
           New Assessment
         </h2>
-        <p className="mt-1 text-sm text-slate-600">
-          Select a before and an after image of the same location. Both
-          images are checked in your browser and are only sent when the
-          analysis is started.
-        </p>
+
+        {/* The selection instructions only apply while the form is
+            on screen; during the analysis the loading state explains
+            itself instead. */}
+        {!isSubmitting && (
+          <p className="mt-1 text-sm text-slate-600">
+            Select a before and an after image of the same location. Both
+            images are checked in your browser and are only sent when the
+            analysis is started.
+          </p>
+        )}
       </div>
 
       <Card>
         <CardContent className="py-4 sm:py-6">
-          <AssessmentForm
-            before={before}
-            after={after}
-            beforePreviewUrl={slots.before.previewUrl}
-            afterPreviewUrl={slots.after.previewUrl}
-            beforeIssue={slots.before.issue}
-            afterIssue={slots.after.issue}
-            pairIssue={pairIssue}
-            validating={validating}
-            status={status}
-            message={message}
-            onSelect={handleSelect}
-            onRemove={handleRemove}
-            onClear={handleClear}
-            onSubmit={() => {
-              void handleSubmit();
-            }}
-          />
+          {isSubmitting ? (
+            // The form is replaced outright while the request runs,
+            // so no upload, replace, remove or analyze control can
+            // be reached, let alone duplicate the submission. The
+            // images themselves stay selected in this view's state.
+            <AnalysisLoading />
+          ) : (
+            <AssessmentForm
+              before={before}
+              after={after}
+              beforePreviewUrl={slots.before.previewUrl}
+              afterPreviewUrl={slots.after.previewUrl}
+              beforeIssue={slots.before.issue}
+              afterIssue={slots.after.issue}
+              pairIssue={pairIssue}
+              validating={validating}
+              status={status}
+              message={message}
+              onSelect={handleSelect}
+              onRemove={handleRemove}
+              onClear={handleClear}
+              onSubmit={() => {
+                void handleSubmit();
+              }}
+            />
+          )}
         </CardContent>
       </Card>
     </div>

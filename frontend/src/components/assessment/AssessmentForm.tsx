@@ -61,8 +61,13 @@ export type AssessmentValidationState = Record<
  * `error` is announced assertively because it reports a failed
  * request; `info` is only ever polite. Both carry an icon and text,
  * so severity is never communicated by colour alone.
+ *
+ * `title` is an optional heading for the message, used to give a
+ * failed analysis a clear state of its own. An error message also
+ * offers a retry action that reuses the already selected images.
  */
 export interface AssessmentMessage {
+  title?: string;
   text: string;
   severity: "info" | "error";
 }
@@ -166,14 +171,32 @@ export function AssessmentForm({
             />
           )}
 
-          <p
-            className={cn(
-              "text-xs leading-5",
-              message.severity === "error" ? "text-amber-900" : "text-slate-700",
+          <div className="min-w-0 flex-1">
+            <p
+              className={cn(
+                "text-xs leading-5",
+                message.severity === "error"
+                  ? "text-amber-900"
+                  : "text-slate-700",
+              )}
+            >
+              {message.title && (
+                <span className="font-semibold">{message.title}. </span>
+              )}
+              {message.text}
+            </p>
+
+            {message.severity === "error" && (
+              <Button
+                variant="secondary"
+                size="sm"
+                className="mt-2"
+                onClick={onSubmit}
+              >
+                Try again
+              </Button>
             )}
-          >
-            {message.text}
-          </p>
+          </div>
         </div>
       )}
 
