@@ -12,6 +12,7 @@ import type {
 } from "@/lib/api/types";
 import { toDetailErrorMessage } from "@/lib/assessment/detailErrors";
 import { AssessmentImages } from "./AssessmentImages";
+import { AssessmentReportAction } from "./AssessmentReportAction";
 import { AssessmentResultError } from "./AssessmentResultError";
 import { AssessmentResultSkeleton } from "./AssessmentResultSkeleton";
 import { AssessmentSummary } from "./AssessmentSummary";
@@ -160,12 +161,20 @@ export function AssessmentResultView({
           </p>
         </div>
 
-        <Link
-          href="/dashboard"
-          className="inline-flex h-9 items-center justify-center rounded-md border border-slate-300 bg-white px-4 text-sm font-medium text-slate-800 transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-500 focus-visible:ring-offset-2"
-        >
-          Back to Dashboard
-        </Link>
+        <div className="flex flex-wrap items-start justify-end gap-3">
+          <AssessmentReportAction
+            assessmentId={detail.id}
+            reportUrl={assets?.report_url ?? null}
+            onRefresh={retry}
+          />
+
+          <Link
+            href="/dashboard"
+            className="inline-flex h-9 items-center justify-center rounded-md border border-slate-300 bg-white px-4 text-sm font-medium text-slate-800 transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-500 focus-visible:ring-offset-2"
+          >
+            Back to Dashboard
+          </Link>
+        </div>
       </header>
 
       <div className="space-y-6">

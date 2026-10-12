@@ -120,3 +120,25 @@ export async function getAssessmentAssets(
 
   return data;
 }
+
+// ============================================================
+// REPORT DOWNLOAD
+//
+// The PDF report is delivered as a short-lived signed URL in the
+// assets response (`report_url`). This helper only fetches the
+// bytes behind that backend-provided URL through the shared client
+// so the caller can turn them into a file; it never builds or
+// rewrites a storage URL, and it never requests a privileged key.
+// The URL is used exactly as the backend returned it, so its
+// expiry still applies.
+// ============================================================
+
+export async function downloadAssessmentReport(
+  reportUrl: string,
+): Promise<Blob> {
+  const { data } = await apiClient.get<Blob>(reportUrl, {
+    responseType: "blob",
+  });
+
+  return data;
+}
