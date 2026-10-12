@@ -418,24 +418,35 @@ def _raise(message):
 
 def test_run_report_failure_is_non_fatal(failures, state):
     print("\n[5] run_assessment survives a report failure")
+    state["patch"].reset_calls()
     patch_pipeline(state["patch"])
     state["patch"].set(
         service,
-        "_store_assessment_report",
-        lambda assessment_id: _raise("report boom"),
+        "get_assessment_by_id",
+        lambda assessment_id: {"id": assessment_id},
+    )
+    state["patch"].set(
+        service,
+        "generate_assessment_report",
+        lambda assessment: SAMPLE_PDF,
     )
     state["patch"].set(
         service,
         "upload_assessment_report",
-        lambda assessment_id, pdf_bytes: state["patch"].calls.update(
-            {"upload": "called"}
-        ) or REPORT_PATH,
+        lambda assessment_id, pdf_bytes: _raise("upload failed"),
     )
     state["patch"].set(
         service,
         "set_report_storage_path",
         lambda assessment_id, path: state["patch"].calls.update(
             {"persist": "called"}
+        ),
+    )
+    state["patch"].set(
+        service,
+        "_discard_uploaded_objects",
+        lambda paths: state["patch"].calls.update(
+            {"discard": list(paths)}
         ),
     )
 
@@ -462,8 +473,8 @@ def test_run_report_failure_is_non_fatal(failures, state):
     )
 
     check(
-        "no report uploaded",
-        "upload" not in state["patch"].calls,
+        "no orphan object removed",
+        "discard" not in state["patch"].calls,
         str(state["patch"].calls),
         failures,
     )
@@ -471,6 +482,7 @@ def test_run_report_failure_is_non_fatal(failures, state):
 
 def test_run_report_success(failures, state):
     print("\n[6] run_assessment records a successful report")
+    state["patch"].reset_calls()
     patch_pipeline(state["patch"])
     state["patch"].set(
         service,
