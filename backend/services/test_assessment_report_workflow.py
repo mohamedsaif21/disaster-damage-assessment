@@ -356,6 +356,7 @@ def test_store_upload_failure(failures, state):
 
 def test_store_persist_failure(failures, state):
     print("\n[4] _store_assessment_report path-persist failure")
+    state["patch"].reset_calls()
     state["patch"].set(
         service,
         "get_assessment_by_id",

@@ -31,6 +31,7 @@ import urllib.request
 from dotenv import load_dotenv
 from fastapi.testclient import TestClient
 from PIL import Image
+from pypdf import PdfReader
 
 
 load_dotenv("backend/.env")
@@ -39,10 +40,6 @@ from backend.main import app
 from backend.services.supabase_service import get_supabase
 from backend.services.assessment_repository import (
     get_assessment_by_id,
-    set_report_storage_path,
-)
-from backend.services.report_service import (
-    generate_assessment_report,
 )
 from backend.services.storage_service import (
     STORAGE_BUCKET,
@@ -809,6 +806,15 @@ def run_checks(client, snapshot, failures, state):
     )
 
     check(
+        "report signed URL is present after analyze",
+        bool(assets["report_url"])
+        and "token=" in assets["report_url"]
+        and "/object/sign/" in assets["report_url"],
+        redact(assets["report_url"]),
+        failures
+    )
+
+    check(
         "response leaks no Supabase credential",
         SERVICE_ROLE_KEY not in response.text
         and "service_role" not in response.text.lower(),
@@ -825,19 +831,11 @@ def run_checks(client, snapshot, failures, state):
     print("-" * 66)
 
     check(
-        "absent report is null, not a placeholder URL",
-        assets["report_url"] is None,
-        f"report_url={assets['report_url']!r}",
-        failures
-    )
-
-    check(
-        "asset endpoint does not generate a report",
-        not any(
-            name.endswith(REPORT_FILENAME)
-            for name in all_bucket_objects()
-        ),
-        "no report.pdf anywhere in the bucket",
+        "asset endpoint never creates a report",
+        all_bucket_objects().count(
+            f"{created_id}/{REPORT_FILENAME}"
+        ) == 1,
+        "only the /analyze workflow stores report.pdf",
         failures
     )
 
@@ -905,6 +903,13 @@ def run_checks(client, snapshot, failures, state):
         failures
     )
 
+    check(
+        "absent report is null, not a placeholder URL",
+        ghost["report_url"] is None,
+        f"report_url={ghost['report_url']!r}",
+        failures
+    )
+
     # ---------------------------------------------------------
     # 8. PDF report delivery
     # ---------------------------------------------------------
@@ -914,35 +919,40 @@ def run_checks(client, snapshot, failures, state):
     print("-" * 66)
 
     full = get_assessment_by_id(created_id)
-    pdf_bytes = generate_assessment_report(full)
-
-    check(
-        "report is still a valid compact PDF",
-        pdf_bytes.startswith(PDF_MAGIC) and len(pdf_bytes) > 0,
-        f"{len(pdf_bytes)} bytes",
-        failures
-    )
-
+    persisted_path = full.get("report_storage_path")
     report_rel = f"{created_id}/{REPORT_FILENAME}"
-
-    bucket().upload(
-        report_rel,
-        pdf_bytes,
-        file_options={
-            "upsert": "false",
-            "content-type": "application/pdf",
-        },
-    )
-
-    set_report_storage_path(
-        created_id, f"{STORAGE_BUCKET}/{report_rel}"
-    )
 
     check(
         "report path follows the required pattern",
-        f"{STORAGE_BUCKET}/{report_rel}"
-        == f"{STORAGE_BUCKET}/{created_id}/{REPORT_FILENAME}",
-        f"{STORAGE_BUCKET}/{report_rel}",
+        persisted_path
+        == f"{STORAGE_BUCKET}/{report_rel}",
+        str(persisted_path),
+        failures
+    )
+
+    check(
+        "report object exists in the bucket",
+        bucket().exists(report_rel),
+        report_rel,
+        failures
+    )
+
+    info = bucket().info(report_rel)
+
+    check(
+        "report content type is application/pdf",
+        info.get("content_type") == "application/pdf",
+        str(info.get("content_type")),
+        failures
+    )
+
+    stored_pdf = bucket().download(report_rel)
+
+    check(
+        "stored report is a real PDF",
+        stored_pdf.startswith(PDF_MAGIC)
+        and len(stored_pdf) > 0,
+        f"{len(stored_pdf)} bytes",
         failures
     )
 
@@ -968,9 +978,34 @@ def run_checks(client, snapshot, failures, state):
         check(
             "report downloads through the signed URL",
             status == 200
-            and body.startswith(PDF_MAGIC)
-            and len(body) == len(pdf_bytes),
+            and body == stored_pdf,
             f"HTTP {status}, {len(body)} bytes",
+            failures
+        )
+
+    text = "\n".join(
+        page.extract_text() or ""
+        for page in PdfReader(io.BytesIO(stored_pdf)).pages
+    )
+
+    check(
+        "report contains the assessment ID",
+        created_id in text,
+        created_id,
+        failures
+    )
+
+    for class_name in (
+        "background",
+        "no_damage",
+        "minor_damage",
+        "major_damage",
+        "destroyed",
+    ):
+        check(
+            f"report contains class '{class_name}'",
+            class_name in text,
+            class_name,
             failures
         )
 

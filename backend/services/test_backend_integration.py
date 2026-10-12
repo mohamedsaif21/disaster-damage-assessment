@@ -913,14 +913,50 @@ def main():
         )
 
         check(
-            "exactly one before and one after object, "
+            "exactly one of each stored object, "
             "no duplicates",
             sorted(stored_for_assessment) == [
                 f"{created_id}/after.png",
                 f"{created_id}/before.png",
                 f"{created_id}/{MASK_FILENAME}",
+                f"{created_id}/report.pdf",
             ],
             str(stored_for_assessment),
+            failures
+        )
+
+        # Since this step, the analyze workflow also generates
+        # the PDF report from the persisted record, uploads it
+        # to the private bucket and records its path on the
+        # assessment row. The path is written only after the
+        # upload succeeded, so the object and the row must
+        # agree once analyze has returned.
+
+        check(
+            "report object exists for the assessment",
+            f"{created_id}/report.pdf" in stored_for_assessment,
+            str(stored_for_assessment),
+            failures
+        )
+
+        report_path = new_row["report_storage_path"]
+
+        check(
+            "report path recorded on the assessment row",
+            report_path
+            == f"{STORAGE_BUCKET}/{created_id}/report.pdf",
+            str(report_path),
+            failures
+        )
+
+        report_bytes = supabase.storage.from_(
+            STORAGE_BUCKET
+        ).download(f"{created_id}/report.pdf")
+
+        check(
+            "stored report is a real PDF",
+            report_bytes.startswith(b"%PDF-"),
+            repr(report_bytes[:8]),
             failures
         )
 
