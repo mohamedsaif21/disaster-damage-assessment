@@ -16,6 +16,7 @@ import { AssessmentResultError } from "./AssessmentResultError";
 import { AssessmentResultSkeleton } from "./AssessmentResultSkeleton";
 import { AssessmentSummary } from "./AssessmentSummary";
 import { DamageStatistics } from "./DamageStatistics";
+import { DamageStatisticsChart } from "./DamageStatisticsChart";
 import { ModelInformation } from "./ModelInformation";
 
 /**
@@ -201,6 +202,10 @@ export function AssessmentResultView({
         ) : null}
 
         <AssessmentImages detail={detail} assets={assets} />
+
+        <DamageStatisticsChart
+          statistics={detail.assessment_class_statistics}
+        />
 
         <DamageStatistics statistics={detail.assessment_class_statistics} />
 
