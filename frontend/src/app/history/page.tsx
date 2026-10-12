@@ -1,15 +1,13 @@
+import { HistoryView } from "@/components/history/HistoryView";
+
+/**
+ * Assessment history route.
+ *
+ * The application shell (sidebar and header) is provided by the
+ * root layout, so this page only renders the history content. A thin
+ * server component keeps the Supabase session and the history
+ * request inside the client view.
+ */
 export default function HistoryPage() {
-  return (
-    <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-semibold tracking-tight text-slate-900">
-          Assessment History
-        </h2>
-        <p className="mt-1 text-sm text-slate-600">
-          Stored assessments and their results will be implemented in a later
-          step.
-        </p>
-      </div>
-    </div>
-  );
+  return <HistoryView />;
 }
