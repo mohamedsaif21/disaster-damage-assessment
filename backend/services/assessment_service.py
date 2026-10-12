@@ -1,3 +1,4 @@
+import logging
 import os
 
 from backend.services.preprocessing import (
@@ -18,16 +19,23 @@ from backend.services.assessment_repository import (
     create_assessment,
     add_assessment_image,
     add_prediction,
-    add_class_statistics
+    add_class_statistics,
+    get_assessment_by_id,
+    set_report_storage_path
 )
 
 from backend.services.prediction_mask_service import (
     prediction_mask_to_png
 )
 
+from backend.services.report_service import (
+    generate_assessment_report
+)
+
 from backend.services.storage_service import (
     upload_prediction_mask,
     upload_assessment_image,
+    upload_assessment_report,
     delete_assessment_image
 )
 
@@ -43,6 +51,8 @@ from backend.services.auth_service import (
 CHECKPOINT = os.path.basename(
     CHECKPOINT_PATH
 )
+
+logger = logging.getLogger(__name__)
 
 
 # ============================================================
@@ -96,6 +106,63 @@ def _discard_uploaded_objects(
 
 
 # ============================================================
+# PDF REPORT
+# ============================================================
+
+def _store_assessment_report(
+    assessment_id: str
+) -> str:
+    """
+    Generate the PDF report for one completed assessment
+    from its persisted database record, upload it to the
+    private assessments bucket and record the storage path.
+
+    Returns the stored path.
+
+    The record is read back with get_assessment_by_id() so
+    the PDF always reflects real persisted results and class
+    statistics, never data assembled by this function.
+
+    Failure order matters:
+    - The path is written only after the upload succeeded,
+      so the assets endpoint can never advertise a report
+      that does not exist.
+    - If persisting the path fails after a successful
+      upload, the just-uploaded object is removed again so
+      no orphan report is left in the bucket.
+
+    Any failure raises; the caller decides how to surface it.
+    """
+
+    assessment = get_assessment_by_id(assessment_id)
+
+    if not assessment:
+        raise RuntimeError(
+            "Cannot generate a report: assessment "
+            f"{assessment_id} was not found."
+        )
+
+    pdf_bytes = generate_assessment_report(assessment)
+
+    report_storage_path = upload_assessment_report(
+        assessment_id=assessment_id,
+        pdf_bytes=pdf_bytes
+    )
+
+    try:
+        set_report_storage_path(
+            assessment_id,
+            report_storage_path
+        )
+    except Exception:
+        _discard_uploaded_objects([report_storage_path])
+
+        raise
+
+    return report_storage_path
+
+
+# ============================================================
 # ASSESSMENT PIPELINE
 # ============================================================
 
@@ -118,12 +185,19 @@ def run_assessment(
     5. Upload the before image, after image and prediction
        mask to the private assessments bucket.
     6. Record every stored path in the database.
-    7. Build the assessment result response.
+    7. Generate the PDF report from the persisted record,
+       upload it to the private bucket and record its path.
+    8. Build the assessment result response.
 
     The three objects are uploaded before their paths are
     written, so the database never records a path for a file
     that failed to upload. If a later step fails, the objects
     already uploaded are removed again.
+
+    The PDF report is a derived artifact handled after the
+    assessment has fully succeeded, so a report failure is
+    logged and reported as missing (report_url null) instead
+    of failing an otherwise successful analysis.
     """
 
     # --------------------------------------------------------
@@ -326,6 +400,37 @@ def run_assessment(
         _discard_uploaded_objects(uploaded_paths)
 
         raise
+
+    # --------------------------------------------------------
+    # PDF REPORT
+    #
+    # The report is a derived artifact, not part of the
+    # assessment result contract. The assessment itself has
+    # already succeeded and is fully persisted, so a report
+    # generation/upload/persistence failure must not turn a
+    # successful analysis into a failure or roll back its
+    # data.
+    #
+    # _store_assessment_report persists the path only after
+    # the PDF has been generated from the persisted record
+    # and uploaded to the private bucket, so report_url can
+    # never advertise an object that does not exist. On any
+    # failure report_storage_path stays NULL and
+    # GET /assets returns report_url = null, which the
+    # frontend already renders as "not available".
+    # --------------------------------------------------------
+
+    try:
+        _store_assessment_report(assessment_id)
+    except Exception as error:
+        logger.warning(
+            "PDF report could not be generated or stored "
+            "for assessment %s. report_storage_path was "
+            "left unset and the assessment remains "
+            "completed. Reason: %s",
+            assessment_id,
+            error,
+        )
 
     # --------------------------------------------------------
     # RESPONSE
