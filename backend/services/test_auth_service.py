@@ -600,6 +600,7 @@ def test_derived_ownership(failures):
     def fake_run(before_info, after_info, user_id, user_email=None):
         captured["run"] = (user_id, user_email)
         return {
+            "id": "analyzed-id",
             "status": "success",
             "message": "ok",
             "before_image": dict(image_info),
@@ -681,6 +682,14 @@ def test_derived_ownership(failures):
             and captured.get("run")
             == (TEST_USER_ID, TEST_EMAIL),
             f"{response.status_code} {captured.get('run')}",
+            failures,
+        )
+
+        check(
+            "analyze returns the id of the persisted assessment",
+            response.status_code == 200
+            and response.json().get("id") == "analyzed-id",
+            f"{response.status_code} {response.text[:80]}",
             failures,
         )
 
