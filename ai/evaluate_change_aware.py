@@ -551,6 +551,90 @@ def main():
         )
 
     # ========================================================
+    # CONSISTENCY CHECKS
+    # ========================================================
+
+    confusion_total = int(
+        confusion_matrix.sum()
+    )
+
+    actual_total = int(
+        actual_counts.sum()
+    )
+
+    predicted_total = int(
+        predicted_counts.sum()
+    )
+
+    print()
+    print("=" * 75)
+    print("CONSISTENCY CHECKS")
+    print("=" * 75)
+
+    print(
+        "Total pixels          :",
+        int(total_pixels)
+    )
+
+    print(
+        "Confusion matrix total:",
+        confusion_total
+    )
+
+    print(
+        "Actual counts total   :",
+        actual_total
+    )
+
+    print(
+        "Predicted counts total:",
+        predicted_total
+    )
+
+    consistency_errors = []
+
+    if confusion_total != total_pixels:
+
+        consistency_errors.append(
+            "confusion matrix total != total pixels"
+        )
+
+    if actual_total != total_pixels:
+
+        consistency_errors.append(
+            "actual counts total != total pixels"
+        )
+
+    if predicted_total != total_pixels:
+
+        consistency_errors.append(
+            "predicted counts total != total pixels"
+        )
+
+    if int(correct_pixels) != int(
+        np.trace(confusion_matrix)
+    ):
+
+        consistency_errors.append(
+            "correct pixels != confusion matrix trace"
+        )
+
+    if consistency_errors:
+
+        print()
+        print("INCONSISTENCIES DETECTED:")
+
+        for error in consistency_errors:
+
+            print("  -", error)
+
+        raise RuntimeError(
+            "Consistency checks failed; outputs not saved"
+        )
+
+    print("All consistency checks passed.")
+
+    # ========================================================
     # SAVE FILES
     # ========================================================
 
@@ -594,6 +678,69 @@ def main():
     )
 
     # ========================================================
+    # METADATA
+    # ========================================================
+
+    metadata = {
+        "step": "9.2",
+        "split": split,
+        "split_csv": split_csv,
+        "checkpoint": CHECKPOINT_PATH,
+        "checkpoint_epoch": int(
+            checkpoint["epoch"]
+        ),
+        "checkpoint_val_loss": float(
+            checkpoint["val_loss"]
+        ),
+        "device": str(DEVICE),
+        "image_size": IMAGE_SIZE,
+        "batch_size": BATCH_SIZE,
+        "num_classes": NUM_CLASSES,
+        "class_mapping": {
+            str(class_id): CLASS_NAMES[class_id]
+            for class_id in range(NUM_CLASSES)
+        },
+        "evaluated_samples": len(dataset),
+        "evaluated_pixels": int(total_pixels),
+        "metrics_convention": {
+            "pixel_accuracy":
+                "correct_pixels / total_pixels",
+            "precision":
+                "TP / (TP + FP); 0.0 when denominator is 0",
+            "recall":
+                "TP / (TP + FN); 0.0 when denominator is 0",
+            "f1":
+                "2*P*R / (P + R); 0.0 when P + R is 0",
+            "iou":
+                "TP / (TP + FP + FN); 0.0 when union is 0",
+            "mean_iou":
+                "unweighted mean of per-class IoU over all "
+                f"{NUM_CLASSES} classes (zero-union classes "
+                "contribute 0.0)",
+            "confusion_matrix":
+                "rows = actual (ground truth), "
+                "columns = predicted"
+        }
+    }
+
+    metadata_path = os.path.join(
+        output_dir,
+        "metadata.json"
+    )
+
+    with open(
+        metadata_path,
+        "w",
+        encoding="utf-8"
+    ) as handle:
+
+        json.dump(
+            metadata,
+            handle,
+            indent=2
+        )
+
+    # ========================================================
     # COMPLETE
     # ========================================================
 
@@ -625,6 +772,11 @@ def main():
             output_dir,
             "confusion_matrix.csv"
         )
+    )
+
+    print("Saved:")
+    print(
+        metadata_path
     )
 
 
