@@ -1,3 +1,5 @@
+import argparse
+import json
 import os
 import numpy as np
 import pandas as pd
@@ -14,18 +16,33 @@ from unet_change_aware import UNetChangeAware
 
 DATASET_ROOT = r"D:\Projects\Datasets\xBD"
 
-VAL_CSV = os.path.join(
-    DATASET_ROOT,
-    "splits",
-    "val.csv"
-)
+# Split manifests. "val" is the split used for checkpoint
+# selection and remains the default so the original validation
+# workflow is unchanged. "test" is the held-out split.
+SPLITS = {
+    "val": os.path.join(
+        DATASET_ROOT,
+        "splits",
+        "val.csv"
+    ),
+    "test": os.path.join(
+        DATASET_ROOT,
+        "splits",
+        "test.csv"
+    )
+}
+
+DEFAULT_SPLIT = "val"
+
+# Each split writes to its own directory so held-out test results
+# can never overwrite or be confused with validation results.
+OUTPUT_DIRS = {
+    "val": r"outputs\change_aware_evaluation",
+    "test": r"outputs\change_aware_test_evaluation"
+}
 
 CHECKPOINT_PATH = (
     r"ai\checkpoints\best_model_change_aware.pth"
-)
-
-OUTPUT_DIR = (
-    r"outputs\change_aware_evaluation"
 )
 
 IMAGE_SIZE = 256
@@ -48,13 +65,52 @@ DEVICE = torch.device(
 
 
 # ============================================================
+# CLI
+# ============================================================
+
+def parse_args(argv=None):
+    """Parse command-line arguments.
+
+    Only the evaluated split is configurable. The default ("val")
+    preserves the original validation workflow; "test" selects the
+    held-out split without duplicating this evaluator.
+    """
+
+    parser = argparse.ArgumentParser(
+        description=(
+            "Evaluate the Change-Aware U-Net checkpoint on a "
+            "dataset split."
+        )
+    )
+
+    parser.add_argument(
+        "--split",
+        choices=sorted(SPLITS.keys()),
+        default=DEFAULT_SPLIT,
+        help=(
+            "Split manifest to evaluate. Defaults to 'val' "
+            "(backward compatible); use 'test' for the held-out "
+            "test evaluation."
+        )
+    )
+
+    return parser.parse_args(argv)
+
+
+# ============================================================
 # MAIN
 # ============================================================
 
 def main():
 
+    args = parse_args()
+
+    split = args.split
+    split_csv = SPLITS[split]
+    output_dir = OUTPUT_DIRS[split]
+
     os.makedirs(
-        OUTPUT_DIR,
+        output_dir,
         exist_ok=True
     )
 
@@ -64,6 +120,8 @@ def main():
 
     print()
     print("Device    :", DEVICE)
+    print("Split     :", split)
+    print("Split CSV :", split_csv)
     print("Checkpoint:", CHECKPOINT_PATH)
     print("Input     : 9 channels")
     print("Classes   : 5")
@@ -73,28 +131,46 @@ def main():
     # DATASET
     # --------------------------------------------------------
 
-    val_dataset = XBDChangeAwareDataset(
+    dataset = XBDChangeAwareDataset(
         DATASET_ROOT,
-        VAL_CSV,
+        split_csv,
         image_size=IMAGE_SIZE
     )
 
-    val_loader = DataLoader(
-        val_dataset,
+    expected_samples = len(
+        pd.read_csv(split_csv)
+    )
+
+    print()
+    print(
+        "Split CSV rows   :",
+        expected_samples
+    )
+
+    print(
+        "Evaluated samples:",
+        len(dataset)
+    )
+
+    if len(dataset) != expected_samples:
+
+        raise RuntimeError(
+            "Dataset length "
+            f"({len(dataset)}) does not match "
+            f"the split manifest ({split_csv}, "
+            f"{expected_samples} rows)"
+        )
+
+    loader = DataLoader(
+        dataset,
         batch_size=BATCH_SIZE,
         shuffle=False,
         num_workers=0
     )
 
-    print()
     print(
-        "Validation samples:",
-        len(val_dataset)
-    )
-
-    print(
-        "Validation batches:",
-        len(val_loader)
+        "Evaluated batches:",
+        len(loader)
     )
 
     # --------------------------------------------------------
@@ -166,7 +242,7 @@ def main():
         for batch_index, (
             images,
             targets
-        ) in enumerate(val_loader):
+        ) in enumerate(loader):
 
             images = images.to(
                 DEVICE
@@ -239,7 +315,7 @@ def main():
                 print(
                     f"Processed "
                     f"{batch_index + 1}/"
-                    f"{len(val_loader)} batches"
+                    f"{len(loader)} batches"
                 )
 
     # ========================================================
@@ -480,7 +556,7 @@ def main():
 
     metrics_df.to_csv(
         os.path.join(
-            OUTPUT_DIR,
+            output_dir,
             "metrics.csv"
         ),
         index=False
@@ -492,7 +568,7 @@ def main():
 
     distribution_df.to_csv(
         os.path.join(
-            OUTPUT_DIR,
+            output_dir,
             "class_distribution.csv"
         ),
         index=False
@@ -512,7 +588,7 @@ def main():
 
     confusion_df.to_csv(
         os.path.join(
-            OUTPUT_DIR,
+            output_dir,
             "confusion_matrix.csv"
         )
     )
@@ -530,7 +606,7 @@ def main():
     print("Saved:")
     print(
         os.path.join(
-            OUTPUT_DIR,
+            output_dir,
             "metrics.csv"
         )
     )
@@ -538,7 +614,7 @@ def main():
     print("Saved:")
     print(
         os.path.join(
-            OUTPUT_DIR,
+            output_dir,
             "class_distribution.csv"
         )
     )
@@ -546,7 +622,7 @@ def main():
     print("Saved:")
     print(
         os.path.join(
-            OUTPUT_DIR,
+            output_dir,
             "confusion_matrix.csv"
         )
     )
