@@ -26,6 +26,9 @@ backend/.env.example
 # Dataset
 ai/data/
 
+# Generated held-out test evaluation outputs (Step 9.2)
+outputs/change_aware_test_evaluation/
+
 # Node
 node_modules/
 .next/
