@@ -4,6 +4,8 @@ An AI-powered disaster damage assessment system that analyzes pre-disaster and p
 
 The project combines **Deep Learning, Computer Vision, Geospatial AI, Explainable AI, and Full-Stack Web Development** into an end-to-end disaster assessment platform.
 
+![DDA UI](DDA%20ui.png)
+
 ---
 
 # Project Overview
