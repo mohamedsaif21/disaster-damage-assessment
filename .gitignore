@@ -29,6 +29,9 @@ ai/data/
 # Generated held-out test evaluation outputs (Step 9.2)
 outputs/change_aware_test_evaluation/
 
+# Generated damage-severity failure analysis outputs (Step 9.3)
+outputs/change_aware_failure_analysis/
+
 # Node
 node_modules/
 .next/
