@@ -1,0 +1,37 @@
+Project: AI Disaster Damage Assessment & Decision Support System
+
+Implement Step 9.4 — Correct Severity Metrics and Prepare the Next Experiment.
+
+### Current state
+Step 9.3 identified a bug in `ai/analyze_hierarchical_damage.py`: severity predictions are calculated by subtracting 2 from the five-class predictions, allowing background and no-damage predictions to become negative indices. These negative indices wrap around during confusion-matrix indexing and corrupt the severity metrics.
+
+The current held-out baseline is stored under:
+`outputs/change_aware_test_evaluation/`
+
+The failure analysis is under:
+`outputs/change_aware_failure_analysis/`
+
+### Requirements
+
+1. Check `git status`, HEAD, and the existing user changes before editing.
+2. Preserve the existing untracked `prompt.txt`. Review the untracked `ai/analyze_change_aware_failures.py` and modified `.gitignore`; do not discard or overwrite these changes.
+3. Inspect the full severity metric calculation and its intended definition before changing it.
+4. Fix the invalid-index behavior so background and no-damage predictions are handled according to the intended severity-evaluation contract. Do not silently classify them as minor, major, or destroyed.
+5. Add focused regression tests for negative/invalid predictions, valid severity classes, confusion-matrix orientation, and zero-denominator behavior.
+6. Run the new tests and relevant existing metric/evaluation tests.
+7. If existing severity outputs are regenerated, write them to a new clearly named output directory. Do not overwrite the held-out test baseline or claim the corrected metrics represent new model performance.
+8. Do not modify the model architecture, checkpoint, training pipeline, preprocessing, label mapping, or production inference code.
+9. Do not retrain the model or tune anything against the test set.
+10. Prepare a short proposed validation-only experiment plan for addressing the minority damage-class collapse. Keep it as a report; do not start training or implement model improvements in this step.
+11. Do not commit automatically.
+
+### Final report
+Include:
+- Files changed and why
+- The corrected severity-metric definition and regression-test results
+- Any regenerated outputs and their provenance
+- Confirmation that the held-out test baseline was preserved
+- The proposed next experiment and validation protocol
+- Final Git status
+
+Stop after Step 9.4. Do not start training or Step 9.5.
